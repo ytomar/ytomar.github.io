@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyberbolic Financial: Navigating Market Trends | Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1A202C; /* Dark Slate (gray-900) */
+            color: #E2E8F0; /* Light Slate (gray-300) */
+        }
+        .container-xl {
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .card {
+            background-color: #2D3748; /* Lighter Slate (gray-800) */
+            border-radius: 0.75rem; /* 12px */
+            padding: 2rem; /* 32px */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-content-wrapper {
+            flex-grow: 1;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(79, 209, 197, 0.2), 0 10px 10px -5px rgba(79, 209, 197, 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px; 
+            max-height: 320px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 320px;
+                max-height: 350px;
+            }
+        }
+        .stat-value-large {
+            font-size: 3rem; /* text-5xl */
+            font-weight: 700; /* bold */
+            color: #4FD1C5; /* Teal Accent */
+            line-height: 1.1;
+        }
+        .stat-label-large {
+            font-size: 1rem; /* text-base */
+            color: #A0AEC0; /* gray-500 */
+            margin-top: 0.5rem;
+        }
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* bold */
+            margin-bottom: 1rem; 
+            color: #FFFFFF; /* White */
+            text-align: center;
+        }
+        .section-subtitle {
+            font-size: 1.125rem; /* text-lg */
+            color: #A0AEC0; /* gray-500 */
+            margin-bottom: 3rem; 
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .feature-icon {
+            font-size: 2.5rem; /* text-4xl */
+            margin-bottom: 1rem;
+            color: #4FD1C5; /* Teal Accent */
+            display: inline-block;
+            padding: 0.75rem;
+            background-color: rgba(79, 209, 197, 0.1);
+            border-radius: 50%;
+        }
+        .keyword-highlight { /* Only for main headline */
+            color: #F0E68C; /* Light Gold for keyword text in headline */
+            font-weight: 700;
+        }
+        .text-accent-teal { color: #4FD1C5; }
+        .text-accent-blue { color: #63B3ED; }
+        .text-accent-gold { color: #D69E2E; }
+        .bg-accent-teal-transparent { background-color: rgba(79, 209, 197, 0.1); }
+        .border-accent-teal { border-color: #4FD1C5; }
+
+        .logo-H {
+            display: inline-block;
+            font-family: 'Times New Roman', Times, serif;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 2.5em; 
+            color: #FFFFFF; 
+            border: 3px solid #FFFFFF; 
+            padding: 0.15em 0.4em;
+            margin-right: 0.3em;
+            line-height: 1;
+        }
+        .logo-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 2em; 
+            color: #FFFFFF; 
+            letter-spacing: 0.05em;
+            vertical-align: middle;
+        }
+        .cta-button {
+            background-color: #4FD1C5; /* Teal */
+            color: #1A202C; /* Dark Slate for text on button */
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .cta-button:hover {
+            background-color: #38B2AC; /* Darker Teal */
+        }
+        .timeline { position: relative; padding: 20px 0; }
+        .timeline::before {
+            content: ''; position: absolute; top: 0; bottom: 0; width: 3px;
+            background: #4A5568; /* gray-700 */ left: 20px; margin-left: -1.5px;
+        }
+        .timeline-item { position: relative; margin-bottom: 30px; padding-left: 60px; }
+        .timeline-icon {
+            position: absolute; left: 0; top: 0; width: 40px; height: 40px;
+            border-radius: 50%; background: #4FD1C5; color: #1A202C;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.2rem;
+        }
+        .timeline-content { background: #2D3748; padding: 20px; border-radius: 8px; }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- 
+        Narrative Plan (Revised for Coherence & Liveliness):
+        1. Hero: The Core Problem - "Your Money is Leaking." Introduce Hyberbolic as the solution.
+        2. The Challenge Magnified: Detail "Portfolio Chaos" & "Trust Deficit" with impactful stats/visuals.
+        3. Hyberbolic Unveiled: AI-Powered Auditor & Compliant Co-Pilot - What it is.
+        4. How Hyberbolic Works (Key Features as Solutions):
+            - Data Unification: "Everything on One Dashboard."
+            - Transparent AI Insights: "AI You Can See & Verify." (Mention HFT/Low Latency data processing capabilities here)
+            - Compliant, Actionable Guidance: "Objective Truth, Expert Solutions." (Mention Risk Management here)
+        5. The Hyberbolic Edge (Value Proposition): Focus on benefits like unlocking potential, institutional alpha capabilities, robust security.
+        6. The Minds Behind the Machine (Team): Emphasize IIT, institutional, and HFT/Low Latency/Hardware Opt. expertise.
+        7. Market Opportunity & Trends: Briefly touch on why this is crucial now (e.g., rise of retail investing, complexity).
+        8. Join the Revolution (CTA): Contact details.
+
+        Visualization Choices Summary:
+        - Hero: Large text, simple graphic.
+        - Challenge: Donut chart for underperformance, icon-based points for chaos/distrust.
+        - How it Works: HTML/CSS based feature blocks with icons.
+        - Edge: List/cards.
+        - Team: "Profile" cards.
+        - Market Opp: Line chart for growth/complexity trend.
+
+        Chosen Color Palette (Dark Theme Fintech Inspired):
+        - Background: #1A202C (Dark Slate)
+        - Card Background: #2D3748 (Lighter Slate)
+        - Primary Text: #F7FAFC (Off-white)
+        - Accent Color 1 (Teal): #4FD1C5
+        - Accent Color 2 (Sky Blue): #63B3ED
+        - Gold Accent (Muted Gold): #D69E2E 
+
+        CONFIRMATION: NO SVG or Mermaid JS used. All diagrams are HTML/CSS or Canvas.
+    -->
+
+    <header class="py-16 md:py-24 text-center bg-gradient-to-br from-gray-900 to-gray-800">
+        <div class="container-xl px-4">
+            <div class="mb-6">
+                <span class="logo-H">H</span><span class="logo-text">HYBERBOLIC FINANCIAL</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                Your Money is Leaking. <br class="hidden md:inline"> We Help You Unlock Its <span class="keyword-highlight">True Potential</span>.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-3xl mx-auto">
+                Navigating today's complex markets requires clarity and precision. Hyberbolic Financial delivers AI-powered insights and institutional-grade tools to stop the leaks and amplify your financial outcomes, managing risk effectively.
+            </p>
+            <a href="#contact" class="cta-button text-lg">Discover Your Edge</a>
+        </div>
+    </header>
+
+    <main class="container-xl px-4 py-12 md:py-20">
+
+        <section id="the-challenge" class="mb-20 md:mb-32">
+            <h2 class="section-title">The Hidden Erosion of Wealth</h2>
+            <p class="section-subtitle">Industry trends reveal that most investors unknowingly lose significant portions of their returns to inefficiencies, opaque fees, and a lack of actionable intelligence. This is the critical market challenge we address.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold text-accent-teal mb-4 text-center">The ~2% Annual Underperformance</h3>
+                    <p class="text-gray-400 mb-6 text-center">Validated studies (SPIVA/DALBAR) consistently show retail portfolios underperform simple benchmarks by approximately 2% annually. On a 10% baseline return, this is a <strong class="text-white">20% loss of potential gains</strong>.</p>
+                    <div class="chart-container mx-auto">
+                        <canvas id="underperformanceChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4 text-center">Illustrative: Benchmark vs. Average Retail Portfolio Performance</p>
+                </div>
+                <div class="space-y-8">
+                    <div class="card">
+                        <div class="flex items-start">
+                            <span class="feature-icon mr-4">🌪️</span>
+                            <div>
+                                <h4 class="text-xl font-semibold text-white mb-1">Portfolio Chaos</h4>
+                                <p class="text-gray-400">Multiple reports, scattered data, and complex jargon lead to information overload, not insight. This makes effective risk management nearly impossible.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-start">
+                            <span class="feature-icon mr-4">📉</span>
+                            <div>
+                                <h4 class="text-xl font-semibold text-white mb-1">The Trust Deficit</h4>
+                                <p class="text-gray-400">Over 100 user interviews confirm deep investor distrust in "sugar-coated selling" and a desire for objective, verifiable truth about their financial standing and risks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="our-solution" class="mb-20 md:mb-32 text-center">
+            <span class="text-accent-teal font-semibold tracking-wider uppercase">THE HYBERBOLIC SOLUTION</span>
+            <h2 class="section-title mt-2">AI-Powered Clarity. Institutional-Grade Power.</h2>
+            <p class="section-subtitle">Hyberbolic Financial delivers a sophisticated B2B-grade platform that provides an AI-powered auditor for your entire portfolio and a compliant co-pilot for your wealth, designed for even the most demanding HFT and low-latency data environments.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card items-center text-center">
+                    <span class="feature-icon">🔗</span>
+                    <h3 class="text-xl font-semibold text-white mb-2">Unified Data Command Center</h3>
+                    <p class="text-gray-400 flex-grow">Securely ingest and consolidate data from all sources (Account Aggregators, PDFs, CSVs) into a single source of truth. Our highly scalable backend ensures even HFT-level data is processed efficiently.</p>
+                </div>
+                <div class="card items-center text-center">
+                    <span class="feature-icon">💡</span>
+                    <h3 class="text-xl font-semibold text-white mb-2">Transparent AI-Driven Insights</h3>
+                    <p class="text-gray-400 flex-grow">Query, grill, or ask for advice. Our AI interface allows you to question your net worth, understand performance drivers, and identify risks. All analysis is verifiable and auditable, providing institutional alpha insights.</p>
+                </div>
+                <div class="card items-center text-center">
+                    <span class="feature-icon">🛡️</span>
+                    <h3 class="text-xl font-semibold text-white mb-2">Compliant & Actionable Guidance</h3>
+                    <p class="text-gray-400 flex-grow">Data-backed approaches to beating consensus, powered by a proprietary risk engine. Portfolio remedies are routed through SEBI-registered Investment Advisers for compliant, considered guidance.</p>
+                </div>
+            </div>
+        </section>
+
+         <section id="platform-deep-dive" class="mb-20 md:mb-32">
+            <h2 class="section-title">Engineered for Peak Performance & Security</h2>
+            <p class="section-subtitle">Our platform's architecture is built to handle the complexities of modern markets, from institutional alpha strategies to high-frequency data and rigorous risk management.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold text-accent-blue mb-3"><span class="align-middle text-3xl mr-2">⚙️</span>Advanced Execution & HFT Readiness</h3>
+                    <p class="text-gray-400 mb-4">Engineered for <strong class="text-white">low latency</strong> and optimized for <strong class="text-white">HFT</strong>. We understand that <strong class="text-white">every RAM access is cost</strong>, designing for efficient <strong class="text-white">cache</strong> utilization and <strong class="text-white">core</strong> performance, down to <strong class="text-white">ultra-latency logging</strong>. This is critical for managing execution risk and capturing fleeting market opportunities.</p>
+                    <ul class="text-gray-400 space-y-1 text-sm">
+                        <li>✓ Intelligent Order Routing</li>
+                        <li>✓ Minimized Market Impact Algos</li>
+                        <li>✓ Real-time Transaction Cost Analysis</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold text-accent-blue mb-3"><span class="align-middle text-3xl mr-2">🔒</span>Proprietary IP & Risk Control Sandbox</h3>
+                    <p class="text-gray-400 mb-4">For our institutional partners, we offer a secure, containerized environment to deploy and test proprietary models without IP exposure. Robust <strong class="text-white">risk</strong> controls and scenario analysis tools are integrated to manage diverse market conditions.</p>
+                     <ul class="text-gray-400 space-y-1 text-sm">
+                        <li>✓ Secure "Black Box" Model Deployment</li>
+                        <li>✓ Advanced Backtesting Capabilities</li>
+                        <li>✓ Granular Risk Parameter Settings</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="team" class="mb-20 md:mb-32">
+            <h2 class="section-title">The Minds Behind Hyberbolic Financial</h2>
+            <p class="section-subtitle">A blend of Wall Street precision, startup agility, and deep technological expertise from IIT alumni, with proven experience in generating institutional alpha and managing complex financial risks.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card">
+                    <img src="https://placehold.co/100x100/2D3748/4FD1C5?text=YT&font=Inter" alt="Yogesh Tomar" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-accent-teal">
+                    <h4 class="text-xl font-semibold text-white text-center mb-1">Yogesh Tomar</h4>
+                    <p class="text-accent-teal text-center text-sm mb-2">Co-Founder (B.Tech, CSE@IITD)</p>
+                    <p class="text-gray-400 text-sm flex-grow">Ex-Nomura Systematic Trading (NYC), scaled ad-tech at Dailyhunt to $50M ARR. Expertise in large-scale systems and quantitative strategies.</p>
+                </div>
+                <div class="card">
+                    <img src="https://placehold.co/100x100/2D3748/4FD1C5?text=BP&font=Inter" alt="Biswanath Patel" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-accent-teal">
+                    <h4 class="text-xl font-semibold text-white text-center mb-1">Biswanath Patel</h4>
+                    <p class="text-accent-teal text-center text-sm mb-2">Co-Founder (B.Tech, CSE@IITB, CFA)</p>
+                    <p class="text-gray-400 text-sm flex-grow">Managed $2B+ in complex passive investing strategies. Deep financial acumen and experience in risk management and institutional alpha generation.</p>
+                </div>
+                <div class="card">
+                     <img src="https://placehold.co/100x100/2D3748/4FD1C5?text=MG&font=Inter" alt="Madhur Goel" class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-accent-teal">
+                    <h4 class="text-xl font-semibold text-white text-center mb-1">Madhur Goel</h4>
+                    <p class="text-accent-teal text-center text-sm mb-2">HFT & Low-Latency Architect (Ex-IIT Delhi)</p>
+                    <p class="text-gray-400 text-sm flex-grow">15+ years in ultra <strong class="text-white">low latency</strong> <strong class="text-white">HFT</strong> model development (NSE co-located). Master of <strong class="text-white">hardware optimization</strong> (kernel, cache, RAM, core) for peak financial system performance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="market-trends" class="mb-20 md:mb-32">
+            <h2 class="section-title">The Evolving Market Landscape</h2>
+            <p class="section-subtitle">Key industry trends underscore the growing need for sophisticated, transparent, and efficient financial tools. Hyberbolic Financial is at the forefront of this evolution.</p>
+            <div class="card">
+                <h3 class="text-2xl font-semibold text-accent-teal mb-4 text-center">Trend: Demand for Personalized & AI-Driven Finance</h3>
+                <p class="text-gray-400 mb-6 text-center">Investors increasingly seek personalized financial advice and tools that leverage AI for deeper insights and automation. The complexity of HFT and institutional strategies also demands advanced AI.</p>
+                <div class="chart-container mx-auto">
+                    <canvas id="aiAdoptionChart"></canvas>
+                </div>
+                <p class="text-xs text-gray-500 mt-4 text-center">Illustrative: Projected Growth of AI in Financial Services</p>
+            </div>
+        </section>
+        
+        <section id="contact" class="text-center py-16 md:py-20 bg-gray-800 rounded-lg">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Stop the Leaks and Unlock True Potential?</h2>
+            <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">Connect with Hyberbolic Financial to explore our platform and partnership opportunities.</p>
+            <div class="mb-6">
+                <p class="text-xl text-white font-semibold">Yogesh Tomar</p>
+                <a href="mailto:ytomar@hyberfin.com" class="text-accent-teal hover:text-accent-blue text-lg block">ytomar@hyberfin.com</a>
+                <a href="tel:+918377974764" class="text-accent-teal hover:text-accent-blue text-lg block">+91-8377974764</a>
+                <a href="https://www.hyberfin.com" target="_blank" rel="noopener noreferrer" class="text-accent-teal hover:text-accent-blue text-lg block">www.hyberfin.com</a>
+            </div>
+            <a href="mailto:ytomar@hyberfin.com" class="cta-button text-lg">Schedule a Consultation</a>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 mt-10 border-t border-gray-700">
+        <p class="text-sm text-gray-500">&copy; 2025 Hyberbolic Financial. All Rights Reserved. For discussion purposes only.</p>
+    </footer>
+
+    <script>
+        function wrapText(text, maxWidthChars = 16) {
+            if (typeof text !== 'string' || text.length <= maxWidthChars) { return text; }
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidthChars && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else { currentLine += word + ' '; }
+            }
+            if (currentLine.trim().length > 0) { lines.push(currentLine.trim()); }
+            return lines.length > 0 ? lines : [text];
+        }
+
+        const standardTooltipCallbacks = {
+            title: function(tooltipItems) {
+                if (tooltipItems.length > 0) {
+                    const item = tooltipItems[0];
+                    if (item.chart && item.chart.data && item.chart.data.labels && typeof item.dataIndex !== 'undefined' && item.dataIndex < item.chart.data.labels.length) {
+                         let label = item.chart.data.labels[item.dataIndex];
+                         return Array.isArray(label) ? label.join(' ') : label;
+                    }
+                }
+                return '';
+            }
+        };
+
+        const underperformanceCtx = document.getElementById('underperformanceChart');
+        if (underperformanceCtx) {
+            new Chart(underperformanceCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [wrapText('Potential Gains Lost to Inefficiencies'), wrapText('Realized Gains by Average Retail Investor')],
+                    datasets: [{
+                        label: 'Portfolio Performance Breakdown',
+                        data: [20, 80], // Represents 2% loss on 10% baseline (20% of the 10%)
+                        backgroundColor: ['#A0AEC0', '#4FD1C5'], // gray-500, Teal
+                        borderColor: ['#2D3748', '#2D3748'], // Card background
+                        borderWidth: 2,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'bottom',
+                            labels: { color: '#A0AEC0' }
+                        },
+                        tooltip: { callbacks: standardTooltipCallbacks, bodyColor: '#E2E8F0', titleColor: '#E2E8F0', backgroundColor: '#1A202C' }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        const aiAdoptionCtx = document.getElementById('aiAdoptionChart');
+        if (aiAdoptionCtx) {
+            new Chart(aiAdoptionCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2022', '2023', '2024', wrapText('2025 (Projected)'), wrapText('2026 (Projected)')],
+                    datasets: [{
+                        label: 'AI Adoption in Financial Services',
+                        data: [35, 45, 58, 75, 90], // Conceptual data
+                        borderColor: '#4FD1C5', // Teal
+                        backgroundColor: 'rgba(79, 209, 197, 0.2)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#4FD1C5',
+                        pointBorderColor: '#F7FAFC',
+                        pointHoverRadius: 7,
+                        pointHoverBackgroundColor: '#F7FAFC',
+                        pointHoverBorderColor: '#4FD1C5'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            suggestedMin: 30,
+                            suggestedMax: 100,
+                            ticks: { color: '#A0AEC0', stepSize: 10, callback: function(value) { return value + '%';} },
+                            grid: { color: 'rgba(160, 174, 192, 0.2)' }
+                        },
+                        x: {
+                            ticks: { color: '#A0AEC0' },
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { 
+                            callbacks: standardTooltipCallbacks,
+                            bodyColor: '#E2E8F0', titleColor: '#E2E8F0', backgroundColor: '#1A202C',
+                            mode: 'index', intersect: false
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
