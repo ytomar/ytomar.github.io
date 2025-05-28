@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 2% Value Leak: An Interactive Report - Card Deck</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Report Info: SPIVA data on fund underperformance (Table 1) -> Goal: Show extent of underperformance -> Viz: Bar Chart (Chart.js) -> Interaction: Hover for details -> Justification: Clear visual comparison of underperformance rates. (Remains on 'Evidence' slide)
+        - Report Info: Impact of TER (Table 2) -> Goal: Illustrate long-term cost effects -> Viz: Line Chart (Chart.js) -> Interaction: Tooltips -> Justification: Shows compounding effect of costs clearly. (Remains on 'Evidence' slide)
+        - Report Info: Investment Cost Overview (Table 3) -> Goal: Detail various fees -> Viz: Interactive info boxes/expandable sections -> Interaction: Click to reveal more details -> Justification: Organizes diverse cost information. (Remains on 'Evidence' slide, modal interaction)
+        - Report Info: Quantified aggregate loss (Table 4) -> Goal: Emphasize scale of the problem -> Viz: Large animated number display, simple bar chart for components -> Interaction: Hover on chart -> Justification: Impactful visual for large numbers. (Remains on 'Scale of Loss' slide)
+        - Report Info: Fragmentation, Literacy, Biases -> Goal: Explain indirect factors -> Viz: HTML/CSS diagram (fragmentation), highlighted stat (literacy), icon list (biases) -> Interaction: Hovers -> Justification: Visually represent concepts. (Remains on 'Culprits' slide)
+        - Report Info: Advanced Analytics/Factor Models -> Goal: Explain solution -> Viz: Conceptual diagram (HTML/CSS) -> Interaction: Hover on elements -> Justification: Simplify complex process. (Remains on 'Solutions' slide)
+        - All textual content is summarized and contextualized within its respective slide. CONFIRMING NO SVG/Mermaid used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling of the body itself */
+        }
+        .sticky-nav { /* Ensured nav is part of flex layout, not overlapping */
+            flex-shrink: 0; /* Prevent nav from shrinking */
+        }
+        .slide-viewport {
+            flex-grow: 1; /* Takes remaining height */
+            overflow: hidden;
+            position: relative;
+        }
+        .slide-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Smoother, slightly bouncy transition */
+        }
+        .slide {
+            min-width: 100%;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* Allow vertical scroll within a slide */
+            box-sizing: border-box;
+            /* Base padding, specific content padding will be inside the container div */
+        }
+        .slide-content-wrapper { /* For centering and padding content within a slide */
+            min-height: 100%; /* Ensure wrapper tries to fill slide height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically if it's short */
+        }
+        .slide-content-wrapper-scrollable { /* For slides with lots of content */
+             justify-content: flex-start;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px; /* Slightly smaller max-width for slides */
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px; /* Adjusted base height */
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 320px;
+            }
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .accordion-button.active + .accordion-content {
+            max-height: 1000px;
+        }
+        .stat-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1rem; /* Adjusted padding */
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem; /* Adjusted size */
+            font-weight: bold;
+            color: #1E3A8A;
+        }
+        .stat-label {
+            font-size: 0.8rem; /* Adjusted size */
+            color: #475569;
+            margin-top: 0.25rem;
+        }
+        h1.slide-title { /* For the very first slide's main title */
+             font-size: 2.5rem; /* text-4xl */
+             line-height: 1.2;
+        }
+        @media (min-width: 768px) {
+            h1.slide-title { font-size: 3rem; /* text-5xl */ }
+        }
+
+        h2.section-title { /* Main title for each subsequent slide */
+            font-size: 1.75rem; /* Between text-2xl and text-3xl */
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 1.5rem; /* mb-6 */
+            padding-bottom: 0.75rem; /* pb-3 */
+        }
+        h3.subsection-title { /* Sub-titles within slides */
+            font-size: 1.25rem; /* text-xl */
+            font-weight: bold;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem; /* mb-2 */
+            padding-bottom: 0.5rem; /* pb-2 */
+        }
+        .section-intro {
+            font-size: 1rem; /* text-base */
+            color: #334155;
+            margin-bottom: 1.5rem; /* mb-6 */
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        .highlight { color: #1D4ED8; font-weight: 600; }
+        .icon-placeholder { display: inline-block; width: 18px; height: 18px; background-color: #93c5fd; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+        /* Slide specific background and text colors */
+        .slide-bg-gradient { background-image: linear-gradient(to right, var(--tw-gradient-stops)); --tw-gradient-from: #e0f2fe; --tw-gradient-to: #e0e7ff; } /* from-sky-100 to-indigo-100 */
+        .slide-text-gradient { background-clip: text; -webkit-background-clip: text; color: transparent; background-image: linear-gradient(to right, var(--tw-gradient-stops)); --tw-gradient-from: #2563eb; --tw-gradient-to: #4f46e5; } /* from-blue-600 to-indigo-700 */
+        .slide-header-border { border-bottom-width: 2px; border-color: #c7d2fe; } /* border-indigo-200 */
+        
+        .slide-bg-slate-50 { background-color: #f8fafc; } /* bg-slate-50 */
+        .slide-bg-sky-50 { background-color: #f0f9ff; } /* bg-sky-50 */
+        .slide-bg-slate-800 { background-color: #1e293b; } /* bg-slate-800 */
+        .slide-text-slate-100 { color: #f1f5f9; } /* text-slate-100 */
+        .slide-text-slate-300 { color: #cbd5e1; } /* text-slate-300 */
+        .slide-text-sky-300 { color: #7dd3fc; } /* text-sky-300 */
+        .slide-header-border-sky { border-color: #38bdf8; } /* border-sky-500 */
+    </style>
+</head>
+<body class="bg-stone-100 text-slate-800">
+
+    <nav class="sticky-nav py-2 px-4 md:px-8 bg-white shadow-md z-50">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <div class="text-xl font-bold text-blue-700">2% Value Leak Report</div>
+            <button id="mobileMenuButton" class="md:hidden p-2 rounded-md text-slate-700 hover:bg-slate-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+            <div id="navLinksContainer" class="hidden md:flex md:items-center w-full md:w-auto space-y-2 md:space-y-0 md:space-x-1 mt-2 md:mt-0">
+                <a href="#intro" data-slide-index="0" class="nav-link block md:inline-block text-slate-700 text-sm">Intro</a>
+                <a href="#understanding" data-slide-index="1" class="nav-link block md:inline-block text-slate-700 text-sm">Understanding</a>
+                <a href="#evidence" data-slide-index="2" class="nav-link block md:inline-block text-slate-700 text-sm">Evidence</a>
+                <a href="#culprits" data-slide-index="3" class="nav-link block md:inline-block text-slate-700 text-sm">Culprits</a>
+                <a href="#quantifying" data-slide-index="4" class="nav-link block md:inline-block text-slate-700 text-sm">Scale</a>
+                <a href="#solution" data-slide-index="5" class="nav-link block md:inline-block text-slate-700 text-sm">Solutions</a>
+                <a href="#action" data-slide-index="6" class="nav-link block md:inline-block text-slate-700 text-sm">Action</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="slide-viewport">
+        <div class="slide-track">
+            <section id="intro" class="slide slide-bg-gradient flex items-center justify-center">
+                <div class="slide-content-wrapper text-center p-4 md:p-6 lg:p-8">
+                    <h1 class="slide-title font-extrabold mb-6 slide-text-gradient">
+                        The "2% Value Leak": Is Your Portfolio Silently Losing Money?
+                    </h1>
+                    <p class="section-intro text-slate-700">
+                        Many Indian investors unknowingly lose approximately <span class="highlight">1-2%</span> of their portfolio's potential value annually. This interactive report helps you understand this "value leak," see the evidence, and discover how to protect your investments.
+                    </p>
+                    <div class="mt-8">
+                        <button data-action="next" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 text-lg">
+                            Discover How It Happens
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="understanding" class="slide">
+                <div class="slide-content-wrapper slide-content-wrapper-scrollable container mx-auto py-8 md:py-12 px-4">
+                    <h2 class="section-title slide-text-gradient slide-header-border">Deconstructing the Value Leak</h2>
+                    <p class="section-intro">
+                        The "2% Value Leak" isn't just about visible fees. It's a multifaceted erosion of your investment's potential. Understanding these components is the first step to plugging the leak.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white p-4 rounded-lg shadow-lg border border-slate-200">
+                            <h3 class="subsection-title text-blue-700 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-red-300"></span>Direct Costs & Inefficiencies</h3>
+                            <p class="text-xs mb-2 mt-2">Explicit fees and structural issues that chip away at returns.</p>
+                            <button class="accordion-button text-xs text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
+                            <div class="accordion-content mt-2 text-xs">
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li><span class="font-semibold">High Expense Ratios</span></li>
+                                    <li><span class="font-semibold">Advisory & Distribution Fees</span></li>
+                                    <li><span class="font-semibold">Transactional Costs</span></li>
+                                    <li><span class="font-semibold">"Closet Indexing"</span></li>
+                                    <li><span class="font-semibold">Opaque Fees in Products</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-lg border border-slate-200">
+                            <h3 class="subsection-title text-blue-700 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-amber-300"></span>Opportunity Costs</h3>
+                            <p class="text-xs mb-2 mt-2">Potential returns foregone due to suboptimal choices or inaction.</p>
+                            <button class="accordion-button text-xs text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
+                            <div class="accordion-content mt-2 text-xs">
+                                 <ul class="list-disc list-inside space-y-1">
+                                    <li><span class="font-semibold">Underperforming Assets</span></li>
+                                    <li><span class="font-semibold">Ignoring Lower-Cost Alternatives</span></li>
+                                    <li><span class="font-semibold">Missed Rebalancing</span></li>
+                                    <li><span class="font-semibold">Suboptimal Strategies</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-lg border border-slate-200">
+                            <h3 class="subsection-title text-blue-700 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-emerald-300"></span>Systemic & Behavioral Factors</h3>
+                            <p class="text-xs mb-2 mt-2">Broader market issues and investor psychology that contribute to losses.</p>
+                            <button class="accordion-button text-xs text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
+                            <div class="accordion-content mt-2 text-xs">
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li><span class="font-semibold">Portfolio Blind Spots</span></li>
+                                    <li><span class="font-semibold">Low Financial Literacy</span></li>
+                                    <li><span class="font-semibold">Behavioral Biases</span></li>
+                                    <li><span class="font-semibold">Conflicts of Interest</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="evidence" class="slide slide-bg-slate-50">
+                <div class="slide-content-wrapper slide-content-wrapper-scrollable container mx-auto py-8 md:py-12 px-4">
+                    <h2 class="section-title slide-text-gradient slide-header-border">The Evidence: Value Leakage in India</h2>
+                    <p class="section-intro">
+                        The "2% Value Leak" is backed by substantial evidence from the Indian investment market.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-6 items-start">
+                        <div>
+                            <h3 class="subsection-title text-blue-700 border-b border-blue-200">Mutual Fund Underperformance (SPIVA Data)</h3>
+                            <p class="text-sm my-2">SPIVA scorecards show most active equity funds underperform benchmarks.</p>
+                            <div class="chart-container h-72 md:h-80 max-w-md">
+                                <canvas id="spivaChart"></canvas>
+                            </div>
+                            <p class="text-xs mt-1 text-center text-slate-500">SPIVA India Y.E. 2023.</p>
+                        </div>
+                        <div>
+                            <h3 class="subsection-title text-blue-700 border-b border-blue-200">The High Cost of Expense Ratios</h3>
+                            <p class="text-sm my-2">Direct vs. Regular plan TER differences (0.5%-1.5%+) compound significantly.</p>
+                            <div class="chart-container h-72 md:h-80 max-w-md">
+                                <canvas id="terImpactChart"></canvas>
+                            </div>
+                             <p class="text-xs mt-1 text-center text-slate-500">₹10k SIP, 12% gross, 20yr.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <h3 class="subsection-title text-blue-700 text-center border-b border-blue-200">Key Investment Cost Components</h3>
+                        <p class="section-intro text-xs mb-4">Overview of typical charges. Click for (simulated) details.</p>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <div class="cost-card bg-white p-3 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                                <h4 class="font-semibold text-blue-600 text-sm">Mutual Fund TERs</h4>
+                                <p class="text-xs">Direct: 0.15-1% | Regular: 1-2.5%+</p>
+                            </div>
+                            <div class="cost-card bg-white p-3 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                                <h4 class="font-semibold text-blue-600 text-sm">Advisory Fees (RIA)</h4>
+                                <p class="text-xs">AUM: up to 2.5% | Fixed: up to ₹1.25L</p>
+                            </div>
+                            <div class="cost-card bg-white p-3 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                                <h4 class="font-semibold text-blue-600 text-sm">MFD Commissions</h4>
+                                <p class="text-xs">Embedded (0.5-1.5% trail)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="culprits" class="slide">
+                 <div class="slide-content-wrapper slide-content-wrapper-scrollable container mx-auto py-8 md:py-12 px-4">
+                    <h2 class="section-title slide-text-gradient slide-header-border">The Hidden Culprits: Indirect Contributors</h2>
+                    <p class="section-intro">
+                        Value leakage isn't solely due to direct costs. Several indirect factors significantly contribute.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white p-4 rounded-lg shadow-lg text-center border border-slate-200">
+                            <div class="text-4xl mb-3">🧩</div>
+                            <h3 class="subsection-title text-blue-700 border-b border-blue-200">Portfolio Blind Spots</h3>
+                            <p class="text-xs mt-2">Fragmented investments obscure the full picture, hiding inefficiencies.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-lg text-center border border-slate-200">
+                             <div class="text-4xl mb-3">📉</div>
+                            <h3 class="subsection-title text-blue-700 border-b border-blue-200">Low Financial Literacy</h3>
+                            <p class="text-xs mt-2">~<span class="font-bold">27%</span> of Indian adults meet basic literacy. Leads to poor choices.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-lg text-center border border-slate-200">
+                             <div class="text-4xl mb-3">🧠</div>
+                            <h3 class="subsection-title text-blue-700 border-b border-blue-200">Behavioral Biases</h3>
+                            <p class="text-xs mt-2">Overconfidence, loss aversion, herding lead to irrational decisions.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quantifying" class="slide slide-bg-sky-50">
+                <div class="slide-content-wrapper slide-content-wrapper-scrollable container mx-auto py-8 md:py-12 px-4">
+                    <h2 class="section-title slide-text-gradient slide-header-border">The Scale of the Loss: A Multi-Crore Impact</h2>
+                    <p class="section-intro">
+                        The cumulative effect is staggering. For Indian retail MF investors, annual loss runs into thousands of crores.
+                    </p>
+                    <div class="flex flex-col md:flex-row justify-around items-center gap-6">
+                        <div class="stat-card w-full md:w-2/5">
+                            <div id="estimatedLossCounter" class="stat-number">₹0 Cr</div>
+                            <p class="stat-label">Est. Annual Value Leak (Retail MF)</p>
+                        </div>
+                        <div class="w-full md:w-3/5 chart-container h-60 md:h-72 max-w-xs">
+                            <canvas id="lossComponentsChart"></canvas>
+                        </div>
+                    </div>
+                    <p class="text-center mt-6 text-xs text-slate-600">
+                        Estimate (₹16,410 Cr - ₹23,505 Cr) from MF underperformance & excess TERs. Total is higher.
+                    </p>
+                </div>
+            </section>
+
+            <section id="solution" class="slide">
+                <div class="slide-content-wrapper slide-content-wrapper-scrollable container mx-auto py-8 md:py-12 px-4">
+                    <h2 class="section-title slide-text-gradient slide-header-border">Taking Control: The Path to Smarter Investing</h2>
+                    <p class="section-intro">
+                        The "2% Value Leak" is pervasive but not insurmountable. Advanced portfolio analytics can empower you.
+                    </p>
+                    <div class="bg-white p-4 md:p-6 rounded-lg shadow-xl border border-slate-200">
+                        <h3 class="subsection-title text-center text-blue-700 border-b border-blue-200">Advanced Portfolio Analytics: Your Financial "MRI"</h3>
+                        <div class="grid md:grid-cols-2 gap-6 items-center mt-4">
+                            <div>
+                                <p class="text-sm mb-3">Modern tools (AI, factor-analysis) provide a deep diagnostic "MRI scan" by:</p>
+                                <ul class="list-disc list-inside space-y-1 text-xs text-slate-700">
+                                    <li><span class="font-semibold">Unifying Your Financial Picture</span></li>
+                                    <li><span class="font-semibold">Pinpointing Performance Drivers</span></li>
+                                    <li><span class="font-semibold">Delivering Actionable Clarity</span></li>
+                                </ul>
+                            </div>
+                            <div class="mt-4 md:mt-0">
+                                <div class="border-2 border-dashed border-blue-300 p-4 rounded-lg text-center">
+                                    <div class="text-4xl mb-2">🔬</div>
+                                    <h4 class="text-md font-semibold text-blue-600">Factor-Based Analysis</h4>
+                                    <p class="text-xs text-slate-600 mt-1">Understand if returns are due to market (Beta), or factors like Size, Value, etc., not just manager "skill".</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-center text-sm font-medium text-emerald-700">Make data-driven decisions, reclaim lost value.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="action" class="slide slide-bg-slate-800 slide-text-slate-100">
+                 <div class="slide-content-wrapper slide-content-wrapper-scrollable container mx-auto py-8 md:py-12 px-4">
+                    <h2 class="section-title text-sky-300 slide-header-border-sky">Your Action Plan: Safeguard Your Wealth</h2>
+                    <p class="section-intro text-slate-300">
+                        Addressing the "2% Value Leak" requires vigilance and proactive steps. Start optimizing your portfolio.
+                    </p>
+                    <div class="max-w-2xl mx-auto grid sm:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-700 p-3 rounded-lg shadow"><h4 class="font-semibold text-sky-300 mb-1">Understand Total Costs</h4><p>Know all TERs, fees, charges.</p></div>
+                        <div class="bg-slate-700 p-3 rounded-lg shadow"><h4 class="font-semibold text-sky-300 mb-1">Benchmark Performance</h4><p>Compare net returns to benchmarks.</p></div>
+                        <div class="bg-slate-700 p-3 rounded-lg shadow"><h4 class="font-semibold text-sky-300 mb-1">Consider Low-Cost Options</h4><p>Evaluate direct plans, passive funds.</p></div>
+                        <div class="bg-slate-700 p-3 rounded-lg shadow"><h4 class="font-semibold text-sky-300 mb-1">Seek Conflict-Free Advice</h4><p>Understand advisor compensation.</p></div>
+                        <div class="bg-slate-700 p-3 rounded-lg shadow"><h4 class="font-semibold text-sky-300 mb-1">Get a Consolidated View</h4><p>Use tools for a holistic portfolio view.</p></div>
+                        <div class="bg-slate-700 p-3 rounded-lg shadow"><h4 class="font-semibold text-sky-300 mb-1">Mitigate Behavioral Biases</h4><p>Avoid emotional decisions.</p></div>
+                         <div class="bg-slate-700 p-3 rounded-lg shadow sm:col-span-2"><h4 class="font-semibold text-sky-300 mb-1">Enhance Financial Literacy</h4><p>Continuously learn for better decisions.</p></div>
+                    </div>
+                    <p class="text-center mt-6 text-sm text-slate-300">
+                        Take these steps to reduce value leakage and foster greater wealth creation.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="slide-navigation fixed bottom-0 left-0 right-0 bg-opacity-75 bg-gray-800 p-3 flex justify-between items-center space-x-2 z-50 md:hidden">
+        <button id="prevButton" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium shadow-md">
+            &larr; Previous
+        </button>
+        <div id="slideIndicator" class="text-sm text-white">1 / 7</div>
+        <button id="nextButton" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium shadow-md">
+            Next &rarr;
+        </button>
+    </div>
+    
+    <footer class="text-center py-2 text-xs text-slate-500 bg-white border-t border-slate-200 z-50 relative">
+        <p>&copy; 2025 Value Leak Report. Educational purposes only. Not financial advice.</p>
+    </footer>
+
+
+    <script>
+        const slideTrack = document.querySelector('.slide-track');
+        const slides = Array.from(slideTrack.children);
+        const nextButton = document.getElementById('nextButton');
+        const prevButton = document.getElementById('prevButton');
+        const navLinks = document.querySelectorAll('#navLinksContainer a.nav-link');
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.getElementById('navLinksContainer');
+        const slideIndicator = document.getElementById('slideIndicator');
+
+        let currentSlideIndex = 0;
+        const totalSlides = slides.length;
+
+        // Arrange slides side by side
+        slideTrack.style.width = `${100 * totalSlides}%`;
+
+        const goToSlide = (index, fromNavClick = false) => {
+            if (index < 0 || index >= totalSlides) return;
+
+            slideTrack.style.transform = `translateX(-${index * (100 / totalSlides)}%)`;
+            currentSlideIndex = index;
+            updateNavButtons();
+            updateActiveNavLink();
+            updateSlideIndicator();
+
+            // If on mobile and nav menu is open, close it after click
+            if (fromNavClick && window.innerWidth < 768 && !navLinksContainer.classList.contains('hidden')) {
+                navLinksContainer.classList.add('hidden');
+            }
+        };
+
+        const updateNavButtons = () => {
+            prevButton.disabled = currentSlideIndex === 0;
+            nextButton.disabled = currentSlideIndex === totalSlides - 1;
+        };
+
+        const updateActiveNavLink = () => {
+            navLinks.forEach(link => link.classList.remove('active'));
+            const activeLink = document.querySelector(`#navLinksContainer a[data-slide-index="${currentSlideIndex}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        };
+        
+        const updateSlideIndicator = () => {
+            if (slideIndicator) {
+                slideIndicator.textContent = `${currentSlideIndex + 1} / ${totalSlides}`;
+            }
+        };
+
+        nextButton.addEventListener('click', () => goToSlide(currentSlideIndex + 1));
+        prevButton.addEventListener('click', () => goToSlide(currentSlideIndex - 1));
+        
+        // For "Discover How It Happens" button on the first slide
+        const discoverButton = document.querySelector('#intro button[data-action="next"]');
+        if(discoverButton) {
+            discoverButton.addEventListener('click', () => goToSlide(currentSlideIndex + 1));
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const slideIndex = parseInt(link.dataset.slideIndex);
+                goToSlide(slideIndex, true);
+            });
+        });
+
+        mobileMenuButton.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('hidden');
+        });
+
+        // Swipe navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const swipeThreshold = 50; // Minimum distance for a swipe
+
+        slideTrack.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        slideTrack.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeDistance = touchEndX - touchStartX;
+            if (swipeDistance > swipeThreshold) { // Swipe Right
+                goToSlide(currentSlideIndex - 1);
+            } else if (swipeDistance < -swipeThreshold) { // Swipe Left
+                goToSlide(currentSlideIndex + 1);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                goToSlide(currentSlideIndex + 1);
+            } else if (e.key === 'ArrowLeft') {
+                goToSlide(currentSlideIndex - 1);
+            }
+        });
+
+        // Accordion functionality
+        const accordionButtons = document.querySelectorAll('.accordion-button');
+        accordionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+            });
+        });
+        
+        // Initial setup
+        goToSlide(0);
+
+
+        // Chart.js Configuration (Copied from previous, ensure IDs are unique if charts are re-used or adjust as needed)
+        Chart.defaults.font.family = 'Inter, sans-serif';
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        Chart.defaults.plugins.tooltip.titleFont = { size: 12, weight: 'bold' };
+        Chart.defaults.plugins.tooltip.bodyFont = { size: 10 };
+        Chart.defaults.plugins.tooltip.padding = 8;
+        Chart.defaults.plugins.tooltip.cornerRadius = 4;
+
+        const wrapLabel = (label, maxWidth) => {
+            const words = label.split(' ');
+            let line = '';
+            const lines = [];
+            for (let i = 0; i < words.length; i++) {
+                if ((line + words[i]).length > maxWidth) {
+                    lines.push(line.trim());
+                    line = '';
+                }
+                line += words[i] + ' ';
+            }
+            lines.push(line.trim());
+            return lines;
+        };
+
+        // SPIVA Chart
+        const spivaCtx = document.getElementById('spivaChart').getContext('2d');
+        new Chart(spivaCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Lg-Cap (vs BSE 100)', 'ELSS (vs BSE 200)', 'Mid/Sm-Cap (vs BSE 400 MS)'],
+                datasets: [
+                    {
+                        label: '1Y Underperform %',
+                        data: [51.6, 30.0, 73.6],
+                        backgroundColor: 'rgba(239, 68, 68, 0.7)', 
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '10Y Underperform %',
+                        data: [62.1, 67.6, 75.4],
+                        backgroundColor: 'rgba(249, 115, 22, 0.7)', 
+                        borderColor: 'rgba(249, 115, 22, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: '% Funds Underperforming', font: {size: 10} }, ticks: {font: {size: 9}} },
+                    x: { ticks: { callback: function(value) { return wrapLabel(this.getLabelForValue(value), 10); }, font: {size: 9} } }
+                },
+                plugins: {
+                    tooltip: { callbacks: { label: (context) => `${context.dataset.label}: ${context.raw}%` } },
+                    title: { display: true, text: 'Active Fund Underperformance (SPIVA India 2023)', font: { size: 12 } },
+                    legend: { labels: { font: {size: 9}, boxWidth:10 }, position: 'bottom' }
+                }
+            }
+        });
+
+        // TER Impact Chart
+        const terCtx = document.getElementById('terImpactChart').getContext('2d');
+        const terImpactChartData = {
+            labels: ['Yr 0', 'Yr 5', 'Yr 10', 'Yr 15', 'Yr 20'],
+            datasets: [
+                { label: 'Direct (1% TER)', data: [1.2, 8.03, 17.79, 34.43, 98.93], borderColor: 'rgba(34, 197, 94, 1)', backgroundColor: 'rgba(34, 197, 94, 0.1)', fill: true, tension: 0.1 },
+                { label: 'Regular (1.5% TER)', data: [1.2, 7.87, 17.09, 32.59, 91.52], borderColor: 'rgba(249, 115, 22, 1)', backgroundColor: 'rgba(249, 115, 22, 0.1)', fill: true, tension: 0.1 },
+                { label: 'Regular (2% TER)', data: [1.2, 7.71, 16.42, 30.87, 84.80], borderColor: 'rgba(239, 68, 68, 1)', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.1 }
+            ]
+        };
+        new Chart(terCtx, {
+            type: 'line',
+            data: terImpactChartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                 scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Corpus (₹L)', font: {size: 10} }, ticks: { callback: function(value) { return '₹' + value.toFixed(0); }, font: {size: 9} } },
+                    x: { title: { display: true, text: 'Horizon (Yrs)', font: {size: 10} }, ticks: {font: {size: 9}} }
+                },
+                plugins: {
+                    tooltip: { callbacks: { label: (context) => `${context.dataset.label}: ₹${context.raw.toFixed(2)}L` } },
+                    title: { display: true, text: 'Impact of TERs (₹10k SIP, 12% Gross)', font: { size: 12 } },
+                    legend: { position: 'bottom', labels: {font: {size:9}, boxWidth:10} }
+                }
+            }
+        });
+        
+        // Animated Counter for Estimated Loss
+        const lossCounter = document.getElementById('estimatedLossCounter');
+        if (lossCounter) { // Check if element exists on current slide
+            const targetLossMin = 16410; 
+            const targetLossMax = 23505; 
+            let currentLoss = 0;
+            const increment = Math.ceil(targetLossMin / 100); 
+            let counterInterval;
+
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    if (!counterInterval && currentLoss < targetLossMin) { // Start only if not already started or finished
+                         currentLoss = 0; // Reset if re-intersecting
+                         lossCounter.textContent = `₹0 Cr`;
+                         counterInterval = setInterval(animateCounter, 30);
+                    }
+                } else {
+                    // Optionally stop or reset counter if it goes out of view
+                    // clearInterval(counterInterval); counterInterval = null; 
+                }
+            }, { threshold: 0.5 });
+            
+            observer.observe(lossCounter);
+
+            function animateCounter() {
+                currentLoss += increment;
+                if (currentLoss >= targetLossMin) {
+                    lossCounter.textContent = `₹${targetLossMin.toLocaleString()}-${targetLossMax.toLocaleString()} Cr`;
+                    clearInterval(counterInterval);
+                    counterInterval = null; // Ensure it doesn't restart if already completed
+                } else {
+                    lossCounter.textContent = `₹${currentLoss.toLocaleString()} Cr`;
+                }
+            }
+        }
+
+        // Loss Components Chart
+        const lossComponentsCtx = document.getElementById('lossComponentsChart').getContext('2d');
+        new Chart(lossComponentsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Active MF Underperform.', 'Excess TER (Regular)'],
+                datasets: [{
+                    label: 'Est. Annual Loss (₹ Cr)',
+                    data: [7095, 9315], 
+                    backgroundColor: ['rgba(239, 68, 68, 0.7)', 'rgba(249, 115, 22, 0.7)'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'Key MF Leakage Components (Annual Est.)', font: { size: 12 } },
+                    legend: { display: true, position: 'bottom', labels:{ boxWidth: 10, padding:5, font: {size: 9} } }
+                }
+            }
+        });
+
+        // Modals for cost cards
+        document.querySelectorAll('.cost-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000] p-4';
+                
+                const modalContent = document.createElement('div');
+                modalContent.className = 'bg-white p-5 rounded-lg shadow-xl max-w-sm w-full text-center';
+                
+                const titleElement = card.querySelector('h4').cloneNode(true);
+                titleElement.className = 'text-lg font-semibold text-blue-700 mb-2';
+                
+                modalContent.appendChild(titleElement);
+                const hr = document.createElement('hr');
+                hr.className = 'my-2';
+                modalContent.appendChild(hr);
+                const detailText = document.createElement('p');
+                detailText.textContent = `Detailed information about ${card.querySelector('h4').textContent} (e.g., specific charge breakdowns, regulatory details, impact examples) would be presented here. This is a placeholder for more extensive content.`;
+                detailText.className = 'text-sm text-slate-700';
+                modalContent.appendChild(detailText);
+                
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Close';
+                closeButton.className = 'mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm';
+                
+                closeButton.onclick = () => {
+                    modal.remove();
+                };
+                modal.onclick = (e) => { // Close on backdrop click
+                    if (e.target === modal) {
+                        modal.remove();
+                    }
+                };
+                
+                modalContent.appendChild(closeButton);
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+            });
+        });
+
+    </script>
+</body>
+</html>
