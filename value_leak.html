@@ -74,18 +74,19 @@
             color: #475569; /* slate-600 */
             margin-top: 0.5rem;
         }
+        /* Global h2/h3 styles for base, specific overrides in HTML for beautification */
         h2 {
             font-size: 1.875rem; /* text-3xl */
             font-weight: bold;
-            margin-bottom: 1rem;
-            color: #1e293b; /* slate-800 */
+            margin-bottom: 1rem; /* Default, can be overridden by classes like mb-10 */
+            color: #1e293b; /* slate-800, Default, overridden by gradient/specific colors */
         }
         h3 {
             font-size: 1.5rem; /* text-2xl */
             font-weight: bold;
-            margin-top: 1.5rem;
-            margin-bottom: 0.75rem;
-            color: #334155; /* slate-700 */
+            margin-top: 1.5rem; /* Default mt-6, can be overridden */
+            margin-bottom: 0.75rem; /* Default mb-3, can be overridden */
+            color: #334155; /* slate-700, Default, overridden by text-blue-700 */
         }
         p, li {
             color: #475569; /* slate-600 */
@@ -153,13 +154,13 @@
         </section>
 
         <section id="understanding" class="py-12 md:py-16">
-            <h2 class="text-center mb-10">Deconstructing the Value Leak</h2>
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Deconstructing the Value Leak</h2>
             <p class="section-intro text-center">
                 The "2% Value Leak" isn't just about visible fees. It's a multifaceted erosion of your investment's potential, stemming from various direct and indirect factors. Understanding these components is the first step to plugging the leak.
             </p>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200">
-                    <h3 class="mb-3 text-blue-700"><span class="icon-placeholder bg-red-300"></span>Direct Costs & Inefficiencies</h3>
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3 pb-2 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-red-300"></span>Direct Costs & Inefficiencies</h3>
                     <p class="text-sm mb-2">Explicit fees and structural issues that chip away at returns.</p>
                     <button class="accordion-button text-sm text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
                     <div class="accordion-content mt-2 text-sm">
@@ -173,7 +174,7 @@
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200">
-                    <h3 class="mb-3 text-blue-700"><span class="icon-placeholder bg-amber-300"></span>Opportunity Costs</h3>
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3 pb-2 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-amber-300"></span>Opportunity Costs</h3>
                     <p class="text-sm mb-2">Potential returns foregone due to suboptimal choices or inaction.</p>
                     <button class="accordion-button text-sm text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
                     <div class="accordion-content mt-2 text-sm">
@@ -186,7 +187,7 @@
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200">
-                    <h3 class="mb-3 text-blue-700"><span class="icon-placeholder bg-emerald-300"></span>Systemic & Behavioral Factors</h3>
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3 pb-2 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-emerald-300"></span>Systemic & Behavioral Factors</h3>
                     <p class="text-sm mb-2">Broader market issues and investor psychology that contribute to losses.</p>
                     <button class="accordion-button text-sm text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
                     <div class="accordion-content mt-2 text-sm">
@@ -202,13 +203,13 @@
         </section>
 
         <section id="evidence" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-50 rounded-xl shadow-lg mb-12">
-            <h2 class="text-center mb-10">The Evidence: Value Leakage in India</h2>
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">The Evidence: Value Leakage in India</h2>
             <p class="section-intro text-center">
                 The "2% Value Leak" is not just a concept; it's backed by substantial evidence from the Indian investment market. Key data reveals how active fund underperformance and high costs directly impact investor returns.
             </p>
             <div class="grid md:grid-cols-2 gap-8 items-start">
                 <div>
-                    <h3>Mutual Fund Underperformance (SPIVA Data)</h3>
+                    <h3 class="text-2xl font-bold text-blue-700 mt-8 mb-4 pb-2 border-b border-blue-200">Mutual Fund Underperformance (SPIVA Data)</h3>
                     <p class="mb-4">S&P Dow Jones Indices Versus Active (SPIVA) scorecards consistently show a majority of Indian actively managed equity funds underperform their benchmarks over various time horizons. This means investors often pay higher fees for active management but receive returns lower than simpler, passive index funds.</p>
                     <div class="chart-container h-80 md:h-96 max-w-xl">
                         <canvas id="spivaChart"></canvas>
@@ -216,7 +217,7 @@
                     <p class="text-xs mt-2 text-center text-slate-500">Data based on SPIVA India Year-End 2023. Shows % of funds underperforming their respective benchmarks.</p>
                 </div>
                 <div>
-                    <h3>The High Cost of Expense Ratios</h3>
+                    <h3 class="text-2xl font-bold text-blue-700 mt-8 mb-4 pb-2 border-b border-blue-200">The High Cost of Expense Ratios</h3>
                     <p class="mb-4">The difference in Total Expense Ratios (TERs) between Direct Plans and Regular Plans of the same mutual fund can be substantial (often 0.5% to over 1.5% annually). This seemingly small difference compounds significantly over time, leading to a much smaller corpus for investors in Regular Plans.</p>
                     <div class="chart-container h-80 md:h-96 max-w-xl">
                         <canvas id="terImpactChart"></canvas>
@@ -225,7 +226,7 @@
                 </div>
             </div>
             <div class="mt-12">
-                <h3 class="text-center">Key Investment Cost Components</h3>
+                <h3 class="text-2xl font-bold text-blue-700 text-center mt-12 mb-6 pb-2 border-b border-blue-200">Key Investment Cost Components</h3>
                 <p class="section-intro text-center text-sm mb-6">Beyond TERs, investors face various other costs. Here's a quick overview of typical charges. Click each to learn more (simulated).</p>
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="cost-card bg-white p-4 rounded-lg shadow border cursor-pointer hover:shadow-md">
@@ -258,31 +259,31 @@
         </section>
 
         <section id="culprits" class="py-12 md:py-16">
-            <h2 class="text-center mb-10">The Hidden Culprits: Indirect Contributors</h2>
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">The Hidden Culprits: Indirect Contributors</h2>
             <p class="section-intro text-center">
                 Value leakage isn't solely due to direct costs or fund choices. Several indirect factors, often unseen or misunderstood, significantly contribute to investors losing potential wealth.
             </p>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center border border-slate-200">
                     <div class="text-5xl mb-4">🧩</div>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-700">Portfolio Blind Spots</h3>
+                    <h3 class="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b border-blue-200">Portfolio Blind Spots</h3>
                     <p class="text-sm">Investments scattered across platforms make it hard to see the full picture, assess true performance, or manage overall risk. This fragmentation leads to undetected inefficiencies.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center border border-slate-200">
                      <div class="text-5xl mb-4">📉</div>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-700">Low Financial Literacy</h3>
+                    <h3 class="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b border-blue-200">Low Financial Literacy</h3>
                     <p class="text-sm">Only about <span class="font-bold">27%</span> of Indian adults meet basic financial literacy standards. This knowledge gap makes investors vulnerable to mis-selling, poor choices, and underestimating the impact of costs.</p>
                 </div>
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center border border-slate-200">
                      <div class="text-5xl mb-4">🧠</div>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-700">Behavioral Biases</h3>
+                    <h3 class="text-2xl font-bold text-blue-700 mb-4 pb-2 border-b border-blue-200">Behavioral Biases</h3>
                     <p class="text-sm">Overconfidence, loss aversion, herding, and anchoring can lead to irrational investment decisions, excessive trading, or holding onto underperforming assets too long.</p>
                 </div>
             </div>
         </section>
 
         <section id="quantifying" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-sky-50 rounded-xl shadow-lg mb-12">
-            <h2 class="text-center mb-10">The Scale of the Loss: A Multi-Crore Impact</h2>
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">The Scale of the Loss: A Multi-Crore Impact</h2>
             <p class="section-intro text-center">
                 The cumulative effect of these value leaks is staggering. For Indian retail investors, especially within the mutual fund segment, the annual loss due to underperformance and excess fees runs into thousands of crores.
             </p>
@@ -301,12 +302,12 @@
         </section>
 
         <section id="solution" class="py-12 md:py-16">
-            <h2 class="text-center mb-10">Taking Control: The Path to Smarter Investing</h2>
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Taking Control: The Path to Smarter Investing</h2>
             <p class="section-intro text-center">
                 While the "2% Value Leak" is a pervasive issue, it's not insurmountable. Advanced portfolio analytics and a deeper understanding of investment drivers can empower you to identify and mitigate these losses.
             </p>
             <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-slate-200">
-                <h3 class="text-center text-blue-700 mb-6">Advanced Portfolio Analytics: Your Financial "MRI"</h3>
+                <h3 class="text-2xl font-bold text-center text-blue-700 mt-8 mb-6 pb-2 border-b border-blue-200">Advanced Portfolio Analytics: Your Financial "MRI"</h3>
                 <div class="grid md:grid-cols-2 gap-8 items-center">
                     <div>
                         <p class="mb-4">Traditional reports often hide the true picture. Modern tools, leveraging AI and factor-based analysis (like the Fama-French models), can provide a deep diagnostic "MRI scan" of your investments. They help by:</p>
@@ -329,7 +330,7 @@
         </section>
 
         <section id="action" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-800 text-slate-100 rounded-xl shadow-lg">
-            <h2 class="text-center mb-10 text-white">Your Action Plan: Safeguard Your Wealth</h2>
+            <h2 class="text-center mb-10 text-3xl font-bold text-sky-300 pb-3 border-b-2 border-sky-500">Your Action Plan: Safeguard Your Wealth</h2>
             <p class="section-intro text-center text-slate-300">
                 Addressing the "2% Value Leak" requires vigilance and proactive steps. Here’s how you can start optimizing your portfolio and protecting your financial future.
             </p>
@@ -388,12 +389,6 @@
         accordionButtons.forEach(button => {
             button.addEventListener('click', () => {
                 button.classList.toggle('active');
-                // const content = button.nextElementSibling;
-                // if (content.style.maxHeight) {
-                //     content.style.maxHeight = null;
-                // } else {
-                //     content.style.maxHeight = content.scrollHeight + "px";
-                // }
             });
         });
 
@@ -404,7 +399,7 @@
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
-                if (window.innerWidth < 768 && !navLinks.classList.contains('hidden')) { // If mobile menu is open, close it
+                if (window.innerWidth < 768 && !navLinks.classList.contains('hidden')) { 
                      navLinks.classList.add('hidden');
                 }
             });
@@ -416,7 +411,7 @@
           let current = "";
           sections.forEach((section) => {
             const sectionTop = section.offsetTop;
-            if (pageYOffset >= sectionTop - 60) { // 60px offset for sticky nav height
+            if (pageYOffset >= sectionTop - 60) { 
               current = section.getAttribute("id");
             }
           });
@@ -437,11 +432,6 @@
         Chart.defaults.plugins.tooltip.bodyFont = { size: 12 };
         Chart.defaults.plugins.tooltip.padding = 10;
         Chart.defaults.plugins.tooltip.cornerRadius = 4;
-
-        const formatLabel = (value, context) => {
-            const label = context.dataset.label || '';
-            return label + ': ' + value + '%';
-        };
         
         const wrapLabel = (label, maxWidth) => {
             const words = label.split(' ');
@@ -468,14 +458,14 @@
                     {
                         label: '1-Year Underperformance (%)',
                         data: [51.6, 30.0, 73.6],
-                        backgroundColor: 'rgba(239, 68, 68, 0.7)', // red-500
+                        backgroundColor: 'rgba(239, 68, 68, 0.7)', 
                         borderColor: 'rgba(239, 68, 68, 1)',
                         borderWidth: 1
                     },
                     {
                         label: '10-Year Underperformance (%)',
                         data: [62.1, 67.6, 75.4],
-                        backgroundColor: 'rgba(249, 115, 22, 0.7)', // orange-500
+                        backgroundColor: 'rgba(249, 115, 22, 0.7)', 
                         borderColor: 'rgba(249, 115, 22, 1)',
                         borderWidth: 1
                     }
@@ -492,7 +482,7 @@
                     x: {
                         ticks: {
                             callback: function(value, index, values) {
-                                return wrapLabel(this.getLabelForValue(value), 16); // Wrap label at 16 chars
+                                return wrapLabel(this.getLabelForValue(value), 16); 
                             }
                         }
                     }
@@ -518,7 +508,7 @@
                 {
                     label: 'Direct Plan (1.0% TER, Net 11%)',
                     data: [1.2, 8.03, 17.79, 34.43, 98.93], 
-                    borderColor: 'rgba(34, 197, 94, 1)', // green-500
+                    borderColor: 'rgba(34, 197, 94, 1)', 
                     backgroundColor: 'rgba(34, 197, 94, 0.1)',
                     fill: true,
                     tension: 0.1
@@ -526,7 +516,7 @@
                 {
                     label: 'Regular Plan (1.5% TER, Net 10.5%)',
                     data: [1.2, 7.87, 17.09, 32.59, 91.52],
-                    borderColor: 'rgba(249, 115, 22, 1)', // orange-500
+                    borderColor: 'rgba(249, 115, 22, 1)', 
                     backgroundColor: 'rgba(249, 115, 22, 0.1)',
                     fill: true,
                     tension: 0.1
@@ -534,7 +524,7 @@
                 {
                     label: 'Regular Plan (2.0% TER, Net 10%)',
                     data: [1.2, 7.71, 16.42, 30.87, 84.80], 
-                    borderColor: 'rgba(239, 68, 68, 1)', // red-500
+                    borderColor: 'rgba(239, 68, 68, 1)', 
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
                     fill: true,
                     tension: 0.1
@@ -581,7 +571,7 @@
         
         // Animated Counter for Estimated Loss
         const lossCounter = document.getElementById('estimatedLossCounter');
-        const targetLossMin = 16410; // in Crores
+        const targetLossMin = 16410; 
         const targetLossMax = 23505; 
         
         let currentLoss = 0;
@@ -628,7 +618,6 @@
         // Simulate click for cost cards (can be expanded to show modals)
         document.querySelectorAll('.cost-card').forEach(card => {
             card.addEventListener('click', () => {
-                // Replace alert with a more sophisticated modal in a real app
                 const modal = document.createElement('div');
                 modal.style.position = 'fixed';
                 modal.style.left = '0';
@@ -649,7 +638,6 @@
                 modalContent.style.textAlign = 'center';
                 
                 const titleElement = card.querySelector('h4').cloneNode(true);
-                const textElement = card.querySelector('p').cloneNode(true);
                 
                 modalContent.appendChild(titleElement);
                 const hr = document.createElement('hr');
@@ -658,14 +646,14 @@
                 const detailText = document.createElement('p');
                 detailText.textContent = `Detailed information about ${card.querySelector('h4').textContent} (e.g., specific charge breakdowns, regulatory details, impact examples) would be presented here. This is a placeholder for more extensive content.`;
                 detailText.style.fontSize = '0.875rem';
-                detailText.style.color = '#4A5568'; // gray-700
+                detailText.style.color = '#4A5568';
                 modalContent.appendChild(detailText);
                 
                 const closeButton = document.createElement('button');
                 closeButton.textContent = 'Close';
                 closeButton.style.marginTop = '20px';
                 closeButton.style.padding = '8px 16px';
-                closeButton.style.backgroundColor = '#3B82F6'; // blue-500
+                closeButton.style.backgroundColor = '#3B82F6'; 
                 closeButton.style.color = 'white';
                 closeButton.style.border = 'none';
                 closeButton.style.borderRadius = '4px';
