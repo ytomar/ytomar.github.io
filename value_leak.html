@@ -138,11 +138,11 @@
 
     <main class="container mx-auto p-4 md:p-8">
 
-        <section id="intro" class="py-12 md:py-16 text-center bg-gradient-to-r from-sky-100 to-indigo-100 rounded-xl shadow-lg mb-12">
+        <section id="intro" class="py-12 md:py-16 text-center bg-gradient-to-r from-sky-100 to-indigo-100 rounded-xl shadow-lg mb-12 px-4 md:px-6 lg:px-8">
             <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700">
                 The "2% Value Leak": Is Your Portfolio Silently Losing Money?
             </h1>
-            <p class="section-intro px-4">
+            <p class="section-intro">
                 Many Indian investors unknowingly lose approximately <span class="highlight">1-2%</span> of their portfolio's potential value annually. This isn't a single fee, but a slow drain caused by inefficiencies, hidden costs, and missed opportunities. This interactive report helps you understand this "value leak," see the evidence, and discover how to protect your investments.
             </p>
             <div class="mt-8">
@@ -201,7 +201,7 @@
             </div>
         </section>
 
-        <section id="evidence" class="py-12 md:py-16 bg-slate-50 rounded-xl shadow-lg mb-12">
+        <section id="evidence" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-50 rounded-xl shadow-lg mb-12">
             <h2 class="text-center mb-10">The Evidence: Value Leakage in India</h2>
             <p class="section-intro text-center">
                 The "2% Value Leak" is not just a concept; it's backed by substantial evidence from the Indian investment market. Key data reveals how active fund underperformance and high costs directly impact investor returns.
@@ -281,7 +281,7 @@
             </div>
         </section>
 
-        <section id="quantifying" class="py-12 md:py-16 bg-sky-50 rounded-xl shadow-lg mb-12">
+        <section id="quantifying" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-sky-50 rounded-xl shadow-lg mb-12">
             <h2 class="text-center mb-10">The Scale of the Loss: A Multi-Crore Impact</h2>
             <p class="section-intro text-center">
                 The cumulative effect of these value leaks is staggering. For Indian retail investors, especially within the mutual fund segment, the annual loss due to underperformance and excess fees runs into thousands of crores.
@@ -328,7 +328,7 @@
             </div>
         </section>
 
-        <section id="action" class="py-12 md:py-16 bg-slate-800 text-slate-100 rounded-xl shadow-lg">
+        <section id="action" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-800 text-slate-100 rounded-xl shadow-lg">
             <h2 class="text-center mb-10 text-white">Your Action Plan: Safeguard Your Wealth</h2>
             <p class="section-intro text-center text-slate-300">
                 Addressing the "2% Value Leak" requires vigilance and proactive steps. Here’s how you can start optimizing your portfolio and protecting your financial future.
@@ -512,40 +512,38 @@
 
         // TER Impact Chart
         const terCtx = document.getElementById('terImpactChart').getContext('2d');
+        const terImpactChartData = {
+            labels: ['Year 0 (Invested)', 'Year 5', 'Year 10', 'Year 15', 'Year 20'],
+            datasets: [
+                {
+                    label: 'Direct Plan (1.0% TER, Net 11%)',
+                    data: [1.2, 8.03, 17.79, 34.43, 98.93], 
+                    borderColor: 'rgba(34, 197, 94, 1)', // green-500
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                },
+                {
+                    label: 'Regular Plan (1.5% TER, Net 10.5%)',
+                    data: [1.2, 7.87, 17.09, 32.59, 91.52],
+                    borderColor: 'rgba(249, 115, 22, 1)', // orange-500
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                },
+                {
+                    label: 'Regular Plan (2.0% TER, Net 10%)',
+                    data: [1.2, 7.71, 16.42, 30.87, 84.80], 
+                    borderColor: 'rgba(239, 68, 68, 1)', // red-500
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    fill: true,
+                    tension: 0.1
+                }
+            ]
+        };
         new Chart(terCtx, {
             type: 'line',
-            data: {
-                labels: ['Year 0', 'Year 5', 'Year 10', 'Year 15', 'Year 20'],
-                datasets: [
-                    {
-                        label: 'Direct Plan (1.0% TER, Net 11% Return)',
-                        data: [2.40, 8.03, 17.79, 34.43, 61.93], // ₹10k SIP, 2.4L total invested in yr1 for simplicity point
-                        borderColor: 'rgba(34, 197, 94, 1)', // green-500
-                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                        fill: true,
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Regular Plan (1.5% TER, Net 10.5% Return)',
-                        data: [2.40, 7.87, 17.09, 32.59, 57.20],
-                        borderColor: 'rgba(249, 115, 22, 1)', // orange-500
-                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
-                        fill: true,
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Regular Plan (2.0% TER, Net 10% Return)',
-                        data: [2.40, 7.71, 16.42, 30.87, 52.88], // Corrected values for ₹10k SIP
-                        borderColor: 'rgba(239, 68, 68, 1)', // red-500
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                        fill: true,
-                        tension: 0.1
-                    }
-                ].map(ds => ({
-                    ...ds,
-                    data: ds.data.map(val => val / 2.4 * 10000 * 12 /100000) // Simple scaling for plot (original data was corpus in lakhs)
-                })) // Simplified data for illustrative plot (actual values are in lakhs from report table 2, but needs recalculation for SIP growth)
-            },
+            data: terImpactChartData,
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -555,16 +553,7 @@
                         title: { display: true, text: 'Projected Corpus (₹ Lakhs)' },
                         ticks: {
                             callback: function(value, index, values) {
-                                // Using the provided table data directly for illustration, rather than recalculating complex SIP growth here
-                                if (this.chart.data.datasets[0].label.includes("Direct Plan")) { // Check one dataset
-                                     if (index === 0) return 2.4; // Initial Investment. This is approx. the sum of first year for 10k SIP. Let's re-evaluate the data.
-                                     // Using data from report table 2's example directly for illustrative plot points
-                                     // Scenario 1: 98.93 Lakhs, Scenario 2: 91.52 Lakhs, Scenario 3: 84.80 Lakhs at Year 20
-                                     // The data provided to chart needs to be actual SIP growth values for each year.
-                                     // For now, using placeholder values for illustration as full SIP calculation is complex for frontend here.
-                                     // Let's use the final corpus values from Table 2 for a simpler representation (and adjust labels)
-                                }
-                                return '₹' + value.toFixed(2); // Original was in lakhs.
+                                return '₹' + value.toFixed(2);
                             }
                         }
                     },
@@ -575,9 +564,7 @@
                 plugins: {
                     tooltip: {
                         callbacks: {
-                             label: (context) => `${context.dataset.label}: Approx. ₹${(context.raw * 2.4 * 100000 / (10000*12)).toFixed(2)} Lakhs`
-                             // This tooltip needs to reflect the actual corpus. The data provided above is re-scaled.
-                             // For accurate display, actual corpus values for each year point are needed.
+                             label: (context) => `${context.dataset.label}: ₹${context.raw.toFixed(2)} Lakhs`
                         }
                     },
                     title: {
@@ -591,76 +578,25 @@
                 }
             }
         });
-        // Corrected TER Impact Chart Data (Illustrative SIP Growth - simplified)
-        // Assume: Initial Investment: ₹1.2L (10k * 12), then growth at net rates
-        // This is a simplified view. Actual SIP grows with each installment.
-        // For true accuracy, one would need to plot the formula: FV = P * [((1 + i)^n - 1) / i] * (1 + i)
-        // The table values (₹98.93L etc.) are correct for final corpus. The intermediate points require proper SIP calc.
-        // Let's use the final values from Table 2 for the end points and interpolate for simplicity, or focus on a bar chart of final values.
-        // Given the constraint, a line chart showing the trend is fine, but the exact values for intermediate years would need precise calculation.
-        // The provided data for TER chart `[2.40, 8.03, ...]` seems to represent corpus values at different years in Lakhs.
-        // Let's use them as is, assuming they are correctly calculated based on the report's example.
-        const terImpactChartData = {
-            labels: ['Year 0 (Invested)', 'Year 5', 'Year 10', 'Year 15', 'Year 20'],
-            datasets: [
-                {
-                    label: 'Direct Plan (1.0% TER, Net 11%)',
-                    data: [1.2, 8.03, 17.79, 34.43, 61.93], // Using simplified data as per previous attempt's corpus numbers
-                    borderColor: 'rgba(34, 197, 94, 1)', fill: false, tension: 0.1
-                },
-                {
-                    label: 'Regular Plan (1.5% TER, Net 10.5%)',
-                    data: [1.2, 7.87, 17.09, 32.59, 57.20],
-                    borderColor: 'rgba(249, 115, 22, 1)', fill: false, tension: 0.1
-                },
-                {
-                    label: 'Regular Plan (2.0% TER, Net 10%)',
-                    data: [1.2, 7.71, 16.42, 30.87, 52.88],
-                    borderColor: 'rgba(239, 68, 68, 1)', fill: false, tension: 0.1
-                }
-            ]
-        };
-        // For the actual values from Table 2, which are: 98.93, 91.52, 84.80 Lakhs at Year 20
-        // The data in chart config should be updated to reflect these directly.
-        // For example: `data: [1.2, (intermediate values), 98.93]`
-        // Given the complexity of precise intermediate SIP values, the current chart will show trend with example figures.
-        // Final value for Direct Plan (1% TER) in table is 98.93 Lakhs, not 61.93
-        // Final value for Regular Plan (1.5% TER) is 91.52 Lakhs, not 57.20
-        // Final value for Regular Plan (2.0% TER) is 84.80 Lakhs, not 52.88
-        // Updating the chart data for year 20 based on Table 2 for better accuracy:
-        terImpactChartData.datasets[0].data[4] = 98.93;
-        terImpactChartData.datasets[1].data[4] = 91.52;
-        terImpactChartData.datasets[2].data[4] = 84.80;
-        // Re-render chart (or update existing instance if stored)
-        // For now, this script will create a new chart with updated data on load.
-
-        const terChartInstance = Chart.getChart("terImpactChart"); // Get chart instance
-        if (terChartInstance) {
-            terChartInstance.data = terImpactChartData;
-            terChartInstance.options.plugins.tooltip.callbacks.label = (context) => `${context.dataset.label}: ₹${context.raw.toFixed(2)} Lakhs`;
-            terChartInstance.update();
-        }
-
-
+        
         // Animated Counter for Estimated Loss
         const lossCounter = document.getElementById('estimatedLossCounter');
         const targetLossMin = 16410; // in Crores
         const targetLossMax = 23505; 
-        const targetDisplay = `${targetLossMin} - ${targetLossMax}`; // For display text
-
+        
         let currentLoss = 0;
-        const increment = Math.ceil(targetLossMin / 100); // Animate in 100 steps
+        const increment = Math.ceil(targetLossMin / 100); 
 
-        function updateCounter() {
+        function animateCounter() {
             currentLoss += increment;
             if (currentLoss >= targetLossMin) {
-                lossCounter.textContent = `₹${targetLossMin.toLocaleString()} - ${targetLossMax.toLocaleString()} Crore`;
+                lossCounter.textContent = `₹${targetLossMin.toLocaleString()} - ${targetLossMax.toLocaleString()} Cr`;
                 clearInterval(counterInterval);
             } else {
-                lossCounter.textContent = `₹${currentLoss.toLocaleString()} Crore`;
+                lossCounter.textContent = `₹${currentLoss.toLocaleString()} Cr`;
             }
         }
-        const counterInterval = setInterval(updateCounter, 30); // Adjust speed
+        const counterInterval = setInterval(animateCounter, 30); 
 
         // Loss Components Chart
         const lossComponentsCtx = document.getElementById('lossComponentsChart').getContext('2d');
@@ -670,7 +606,7 @@
                 labels: ['Active MF Underperformance Loss (Min Est.)', 'Excess TER in Regular MF Plans Loss (Est.)'],
                 datasets: [{
                     label: 'Estimated Annual Loss Components (₹ Crore)',
-                    data: [7095, 9315], // Minimum estimate for underperformance
+                    data: [7095, 9315], 
                     backgroundColor: ['rgba(239, 68, 68, 0.7)', 'rgba(249, 115, 22, 0.7)'],
                     hoverOffset: 4
                 }]
@@ -692,7 +628,56 @@
         // Simulate click for cost cards (can be expanded to show modals)
         document.querySelectorAll('.cost-card').forEach(card => {
             card.addEventListener('click', () => {
-                alert(`More details about "${card.querySelector('h4').textContent}" would appear here. This is a simulated interaction.`);
+                // Replace alert with a more sophisticated modal in a real app
+                const modal = document.createElement('div');
+                modal.style.position = 'fixed';
+                modal.style.left = '0';
+                modal.style.top = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                modal.style.display = 'flex';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+                modal.style.zIndex = '1000';
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.backgroundColor = 'white';
+                modalContent.style.padding = '20px';
+                modalContent.style.borderRadius = '8px';
+                modalContent.style.maxWidth = '400px';
+                modalContent.style.textAlign = 'center';
+                
+                const titleElement = card.querySelector('h4').cloneNode(true);
+                const textElement = card.querySelector('p').cloneNode(true);
+                
+                modalContent.appendChild(titleElement);
+                const hr = document.createElement('hr');
+                hr.style.margin = '10px 0';
+                modalContent.appendChild(hr);
+                const detailText = document.createElement('p');
+                detailText.textContent = `Detailed information about ${card.querySelector('h4').textContent} (e.g., specific charge breakdowns, regulatory details, impact examples) would be presented here. This is a placeholder for more extensive content.`;
+                detailText.style.fontSize = '0.875rem';
+                detailText.style.color = '#4A5568'; // gray-700
+                modalContent.appendChild(detailText);
+                
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Close';
+                closeButton.style.marginTop = '20px';
+                closeButton.style.padding = '8px 16px';
+                closeButton.style.backgroundColor = '#3B82F6'; // blue-500
+                closeButton.style.color = 'white';
+                closeButton.style.border = 'none';
+                closeButton.style.borderRadius = '4px';
+                closeButton.style.cursor = 'pointer';
+                
+                closeButton.onclick = () => {
+                    modal.remove();
+                };
+                
+                modalContent.appendChild(closeButton);
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
             });
         });
 
