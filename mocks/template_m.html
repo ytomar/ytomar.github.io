@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elemental - Financial MRI Mockups</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; 
+            color: #1f2937; 
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1rem; 
+            margin-bottom: 1rem; 
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .card {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        .btn-primary {
+            background-color: #2563eb; 
+            color: white;
+            font-weight: 500;
+            padding: 0.625rem 1.25rem; 
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+            display: inline-block; 
+            text-align: center;
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8; 
+        }
+        .btn-secondary {
+            background-color: #e5e7eb; 
+            color: #374151; 
+            font-weight: 500;
+            padding: 0.625rem 1.25rem; 
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+            display: inline-block; 
+            text-align: center;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db; 
+        }
+        .nav-button {
+            background-color: #4b5563; 
+            color: white;
+            padding: 0.5rem 0.75rem; 
+            border-radius: 0.375rem;
+            margin: 0.25rem; 
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: inline-block; 
+        }
+        .nav-button.active {
+            background-color: #2563eb; 
+        }
+        .icon-microscope::before { content: '🔬'; font-size: 1.75rem; md:font-size: 2rem; color: #2563eb;}
+        .icon-chat::before { content: '💬'; font-size: 1.25rem; md:font-size: 1.5rem; color: #10b981;}
+
+        .chat-container {
+            height: 300px; 
+            overflow-y: auto;
+            border: 1px solid #d1d5db; 
+            border-radius: 0.5rem;
+            padding: 0.75rem; 
+            margin-bottom: 1rem;
+            background-color: #f9fafb; 
+        }
+         @media (min-width: 768px) { 
+            .chat-container {
+                height: 400px;
+                padding: 1rem;
+            }
+        }
+        .chat-message {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+            max-width: 85%; 
+            word-wrap: break-word;
+            font-size: 0.875rem; 
+        }
+         @media (min-width: 768px) { 
+            .chat-message {
+                 max-width: 80%;
+                 font-size: 1rem;
+            }
+        }
+        .user-message {
+            background-color: #dbeafe; 
+            color: #1e40af; 
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .ai-message {
+            background-color: #e5e7eb; 
+            color: #374151; 
+            align-self: flex-start;
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .chat-input {
+            flex-grow: 1;
+            padding: 0.625rem; 
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+         @media (min-width: 768px) { 
+            .chat-input {
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <script>
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen-content').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            const screenToShow = document.getElementById(screenId);
+            if (screenToShow) {
+                 screenToShow.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            const activeButton = document.querySelector(`.nav-button[onclick="showScreen('${screenId}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+        }
+
+        function updateHealthScoreArc() {
+            const percentage = 0.68; 
+            const angle = percentage * Math.PI;
+            const radius = 40;
+            const cx = 50;
+            const cy = 50;
+            const endX = cx - radius * Math.cos(angle);
+            const endY = cy - radius * Math.sin(angle);
+            const healthScoreArcElement = document.getElementById('healthScoreArc');
+            if (healthScoreArcElement) {
+                 healthScoreArcElement.setAttribute('d', `M10 50 A ${radius} ${radius} 0 ${percentage > 0.5 ? 1 : 0} 1 ${endX} ${endY}`);
+            }
+        }
+    </script>
+</head>
+<body class="p-2 sm:p-4 md:p-8">
+
+    <header class="mb-6 md:mb-8 text-center">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Elemental Financial MRI</h1>
+        <p class="text-sm sm:text-base text-gray-600">Unlocking Your Portfolio's True Potential</p>
+        <nav class="mt-3 md:mt-4 flex flex-wrap justify-center"> 
+            <button class="nav-button active" onclick="showScreen('summaryDashboard')">MRI Summary</button>
+            <button class="nav-button" onclick="showScreen('deepDiveAnalysis')">Deep Dive</button>
+            <button class="nav-button" onclick="showScreen('actionPlan')">Action Plan</button>
+            <button class="nav-button" onclick="showScreen('aiChat')">Talk to AI</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="summaryDashboard" class="screen-content max-w-3xl mx-auto">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4 md:mb-6 text-center">Your Elemental MRI Report is Ready.</h2>
+
+            <div class="card text-center border-2 border-red-500">
+                <h3 class="text-md sm:text-lg font-semibold text-red-700 mb-1">Your Estimated Annual Value Leak</h3>
+                <p class="text-3xl sm:text-4xl font-bold text-red-600">₹85,400</p>
+                <p class="text-xs sm:text-sm text-red-500 mt-1">
+                    This represents a potential <span class="font-semibold">1.9%</span> performance drag on your portfolio each year.
+                </p>
+            </div>
+
+            <div class="card text-center">
+                <h3 class="text-md sm:text-lg font-semibold text-gray-700 mb-3">Portfolio Health Score</h3>
+                <div class="relative w-32 h-16 sm:w-40 sm:h-20 mx-auto"> 
+                    <svg viewBox="0 0 100 50" class="w-full h-full">
+                        <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" stroke-width="10" />
+                        <path id="healthScoreArc" d="M10 50 A 40 40 0 0 1 10 50" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-end pb-1 sm:pb-2">
+                        <span class="text-2xl sm:text-3xl font-bold text-amber-600">C+</span>
+                        <span class="text-xxs sm:text-xs text-gray-500">(68/100)</span>
+                    </div>
+                </div>
+                <p class="text-sm sm:text-md font-medium text-amber-600 mt-2">Needs Improvement</p>
+            </div>
+
+            <div class="card">
+                <h3 class="text-md sm:text-lg font-semibold text-gray-700 mb-4 text-center">Key MRI Findings</h3>
+                <div class="space-y-3 md:space-y-4">
+                    <div class="flex items-start p-2 sm:p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl sm:text-3xl mr-2 sm:mr-3">💰</span>
+                        <div>
+                            <h4 class="font-semibold text-gray-800 text-sm sm:text-base">High Costs & Fees</h4>
+                            <p class="text-xs sm:text-sm text-gray-600">You could save <span class="font-bold text-green-600">~₹35,000</span> annually by optimizing high-cost funds.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-2 sm:p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl sm:text-3xl mr-2 sm:mr-3">📉</span>
+                        <div>
+                            <h4 class="font-semibold text-gray-800 text-sm sm:text-base">Benchmark Underperformance</h4>
+                            <p class="text-xs sm:text-sm text-gray-600">Your portfolio has trailed its blended benchmark by <span class="font-bold text-red-600">-2.3%</span> annually (avg. last 3 years).</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-2 sm:p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl sm:text-3xl mr-2 sm:mr-3">🔄</span>
+                        <div>
+                            <h4 class="font-semibold text-gray-800 text-sm sm:text-base">Portfolio Overlap</h4>
+                            <p class="text-xs sm:text-sm text-gray-600">Significant overlap across 6 funds reduces diversification. Example: HDFC Bank & Reliance Industries held in multiple products.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-6 md:mt-8">
+                <button class="btn-primary w-full sm:w-auto" onclick="showScreen('deepDiveAnalysis')">Deep Dive into Your Analysis</button>
+            </div>
+        </section>
+
+        <section id="deepDiveAnalysis" class="screen-content hidden max-w-4xl mx-auto">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4 md:mb-6 text-center">Deep Dive: The Science Behind Your Performance</h2>
+            <div class="card">
+                <h3 class="text-md sm:text-lg font-semibold text-gray-700 mb-3 md:mb-4 text-center">Performance Attribution</h3>
+                <div class="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <div class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                        <div class="flex justify-between"><span>Portfolio Gross Return:</span> <span class="font-semibold">12.1%</span></div>
+                        <div class="flex justify-between text-red-600"><span>Minus: Fees & Charges:</span> <span class="font-semibold">-1.1%</span></div>
+                        <div class="flex justify-between text-red-600"><span>Minus: Underperformance (Alpha vs. Factors):</span> <span class="font-semibold">-0.8%</span></div>
+                        <hr class="my-1 border-gray-300">
+                        <div class="flex justify-between text-blue-600"><span>Your Actual Net Return:</span> <span class="font-bold text-md sm:text-lg">10.2%</span></div>
+                    </div>
+                    <p class="text-xxs sm:text-xs text-gray-500 mt-2 sm:mt-3 text-center">This chart shows how fees and active management impact your gross returns.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="flex flex-col sm:flex-row items-center justify-center mb-3 md:mb-4 text-center sm:text-left">
+                    <span class="icon-microscope mr-0 sm:mr-2 mb-2 sm:mb-0"></span>
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-700">Factor Analysis: What's Really Driving Your Returns?</h3>
+                </div>
+                <p class="text-xs sm:text-sm text-gray-600 mb-4 md:mb-6 text-center">
+                    We analyzed your portfolio to see if your returns are driven by broad market movements (Beta) or specific factors like Size, Value, and Profitability, rather than just manager "skill." This helps assess if high active fees are justified. (Based on Fama-French Nobel-winning research)
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-6"> 
+                    <div class="p-3 sm:p-4 bg-blue-50 rounded-lg">
+                        <h4 class="font-semibold text-blue-700 mb-1 text-sm sm:text-base">Market Risk (Beta)</h4>
+                        <p class="text-xl sm:text-2xl font-bold text-blue-800">1.05</p>
+                        <p class="text-xxs sm:text-xs text-gray-500">Indicates your portfolio is slightly more volatile than the Nifty 500.</p>
+                    </div>
+                    <div class="p-3 sm:p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-semibold text-green-700 mb-1 text-sm sm:text-base">Size Tilt</h4>
+                        <p class="text-lg sm:text-xl font-bold text-green-800">Strong Large-Cap Bias</p>
+                        <p class="text-xxs sm:text-xs text-gray-500">Primarily invested in large, established companies.</p>
+                    </div>
+                    <div class="p-3 sm:p-4 bg-purple-50 rounded-lg">
+                        <h4 class="font-semibold text-purple-700 mb-1 text-sm sm:text-base">Value vs. Growth Tilt</h4>
+                        <p class="text-lg sm:text-xl font-bold text-purple-800">Neutral / No Clear Style</p>
+                        <p class="text-xxs sm:text-xs text-gray-500">No significant leaning towards value or growth strategies.</p>
+                    </div>
+                    <div class="p-3 sm:p-4 bg-red-50 rounded-lg">
+                        <h4 class="font-semibold text-red-700 mb-1 text-sm sm:text-base">Manager "Skill" (Alpha)</h4>
+                        <p class="text-xl sm:text-2xl font-bold text-red-800">-0.8%</p>
+                        <p class="text-xxs sm:text-xs text-gray-500">After accounting for market and factor exposures, active management has detracted value.</p>
+                    </div>
+                </div>
+                <div class="mt-4 md:mt-6 p-3 sm:p-4 bg-amber-50 border-l-4 border-amber-500 rounded">
+                    <h4 class="font-semibold text-amber-700 text-sm sm:text-base">Key Insight:</h4>
+                    <p class="text-xs sm:text-sm text-amber-800">
+                        Your portfolio performs very similarly to a Nifty 100 index fund but costs <span class="font-bold">15x more</span> in fees. The data shows you are paying for "active management" but receiving a negative "skill" contribution.
+                    </p>
+                </div>
+            </div>
+            <div class="text-center mt-6 md:mt-8">
+                <button class="btn-primary w-full sm:w-auto" onclick="showScreen('actionPlan')">See Your Action Plan</button>
+            </div>
+        </section>
+
+        <section id="actionPlan" class="screen-content hidden max-w-3xl mx-auto">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-2 text-center">Your Action Plan: How to Reclaim Lost Value</h2>
+            <div class="card bg-green-50 border border-green-200 text-center mb-4 md:mb-6">
+                <p class="text-sm sm:text-md text-green-700">
+                    By taking these steps, you could potentially add back
+                    <span class="font-bold text-xl sm:text-2xl text-green-800 block">₹85,400</span>
+                    to your portfolio annually.
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="text-md sm:text-lg font-semibold text-gray-700 mb-4">Recommended Actions:</h3>
+                <ul class="space-y-3 md:space-y-4">
+                    <li class="p-3 sm:p-4 border border-red-200 rounded-lg bg-red-50">
+                        <span class="font-bold text-red-700 text-xs sm:text-sm">1. High Priority: Reduce High-Cost Funds</span>
+                        <p class="text-xs sm:text-sm text-gray-700 mt-1">
+                            Consider switching from <span class="font-semibold">"ABC Aggressive Growth Fund" (TER: 2.2%)</span>
+                            to <span class="font-semibold">"Nifty 100 Index Fund Direct" (TER: 0.1%)</span>.
+                        </p>
+                        <p class="text-xxs sm:text-xs text-green-600 font-medium">Potential Annual Savings: ~₹18,500</p>
+                    </li>
+                    <li class="p-3 sm:p-4 border border-amber-200 rounded-lg bg-amber-50">
+                        <span class="font-bold text-amber-700 text-xs sm:text-sm">2. Medium Priority: Consolidate Overlapping Funds</span>
+                        <p class="text-xs sm:text-sm text-gray-700 mt-1">
+                           Your portfolio holds 4 large-cap funds with 65% overlap. Consider consolidating into a single, diversified large-and-mid-cap fund to improve diversification and simplify management.
+                        </p>
+                    </li>
+                     <li class="p-3 sm:p-4 border border-blue-200 rounded-lg bg-blue-50">
+                        <span class="font-bold text-blue-700 text-xs sm:text-sm">3. Long-Term: Optimize Tax Harvesting</span>
+                        <p class="text-xs sm:text-sm text-gray-700 mt-1">
+                           You have an unrealized loss of <span class="font-semibold">₹12,000</span> in <span class="font-semibold">"XYZ Thematic Fund"</span>. Consider booking this loss to offset future capital gains.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="card mt-6 md:mt-8">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4 text-center">Ready to Optimize?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"> 
+                    <div class="p-4 sm:p-6 border border-gray-300 rounded-lg text-center">
+                        <h4 class="text-md sm:text-lg font-semibold text-gray-800 mb-2">Implement Yourself</h4>
+                        <p class="text-xs sm:text-sm text-gray-600 mb-4">Download your detailed MRI report and take control of the changes.</p>
+                        <button class="btn-secondary w-full">Download Full Report</button>
+                    </div>
+                    <div class="p-4 sm:p-6 border-2 border-blue-500 rounded-lg text-center bg-blue-50">
+                        <h4 class="text-md sm:text-lg font-semibold text-blue-700 mb-2">Get Expert Help (Recommended)</h4>
+                        <p class="text-xs sm:text-sm text-gray-700 mb-4">Schedule a consultation with a SEBI-registered advisor from Hyberfin to review this plan and implement it for you seamlessly.</p>
+                        <button class="btn-primary w-full">Schedule Your Consultation</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="aiChat" class="screen-content hidden max-w-2xl mx-auto">
+            <div class="flex flex-col sm:flex-row items-center justify-center mb-3 md:mb-4 card bg-emerald-50 border border-emerald-200 text-center sm:text-left">
+                <span class="icon-chat mr-0 sm:mr-3 mb-2 sm:mb-0"></span>
+                <h2 class="text-xl sm:text-2xl font-semibold text-emerald-700">Talk to Your Elemental AI</h2>
+            </div>
+            <p class="text-xs sm:text-sm text-gray-600 mb-4 md:mb-6 text-center">
+                Ask questions about your portfolio analysis, understand specific terms, or explore "what-if" scenarios.
+                Our AI is here to help you make sense of your financial data.
+            </p>
+
+            <div class="card">
+                <div id="chatMessages" class="chat-container flex flex-col">
+                    <div class="chat-message ai-message">
+                        Hello! I'm your Elemental AI assistant. How can I help you understand your portfolio better today? For example, you could ask "Explain my portfolio's Beta" or "What are my most expensive funds?"
+                    </div>
+                </div>
+                <div class="chat-input-area mt-4">
+                    <input type="text" id="userInput" class="chat-input" placeholder="Type your question here...">
+                    <button id="sendMessageBtn" class="btn-primary text-sm sm:text-base">Send</button>
+                </div>
+                 <div id="loadingIndicator" class="text-center text-gray-500 mt-2 hidden">
+                    <p class="text-xs sm:text-sm">Elemental AI is thinking...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center mt-8 md:mt-12 py-3 md:py-4 border-t border-gray-300">
+        <p class="text-xs sm:text-sm text-gray-500">&copy; <span id="year"></span> Hyberfin (Elemental). All rights reserved.</p>
+        <p class="text-xxs sm:text-xs text-gray-400 mt-1">This is a conceptual mockup for illustration purposes.</p>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateHealthScoreArc(); 
+            showScreen('summaryDashboard'); 
+
+            const sendMessageBtn = document.getElementById('sendMessageBtn');
+            const userInput = document.getElementById('userInput');
+            const chatMessagesContainer = document.getElementById('chatMessages');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+
+            function addChatMessage(message, type) {
+                if (!chatMessagesContainer) return; 
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('chat-message', type === 'user' ? 'user-message' : 'ai-message');
+                messageDiv.textContent = message;
+                chatMessagesContainer.appendChild(messageDiv);
+                chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight; 
+            }
+
+            async function handleSendMessage() {
+                if (!userInput || !chatMessagesContainer || !loadingIndicator) return; 
+                const messageText = userInput.value.trim();
+                if (messageText === '') return;
+
+                addChatMessage(messageText, 'user');
+                userInput.value = ''; 
+                loadingIndicator.classList.remove('hidden'); 
+
+                let chatHistory = []; 
+                chatHistory.push({ role: "user", parts: [{ text: messageText }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = ""; 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('API Error:', errorData);
+                        addChatMessage(`Error: ${errorData.error?.message || 'Failed to get response from AI.'}`, 'ai');
+                        return; 
+                    }
+
+                    const result = await response.json();
+                    let aiResponseText = "Sorry, I couldn't process that.";
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        aiResponseText = result.candidates[0].content.parts[0].text;
+                    } else {
+                        console.warn("Unexpected AI response structure:", result);
+                    }
+                    addChatMessage(aiResponseText, 'ai');
+
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    addChatMessage("An error occurred while contacting the AI. Please try again.", 'ai');
+                } finally {
+                     loadingIndicator.classList.add('hidden'); 
+                }
+            }
+
+            if (sendMessageBtn) {
+                sendMessageBtn.addEventListener('click', handleSendMessage);
+            }
+            if (userInput) {
+                userInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        handleSendMessage();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
