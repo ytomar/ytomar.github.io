@@ -145,16 +145,30 @@
         }
 
         function updateHealthScoreArc() {
-            const percentage = 0.68; 
-            const angle = percentage * Math.PI;
-            const radius = 40;
-            const cx = 50;
-            const cy = 50;
-            const endX = cx - radius * Math.cos(angle);
-            const endY = cy - radius * Math.sin(angle);
-            const healthScoreArcElement = document.getElementById('healthScoreArc');
-            if (healthScoreArcElement) {
-                 healthScoreArcElement.setAttribute('d', `M10 50 A ${radius} ${radius} 0 ${percentage > 0.5 ? 1 : 0} 1 ${endX} ${endY}`);
+            const percentage = 0.68; // Score: 68% for C+
+            const scoreArcElement = document.getElementById('healthScoreArc');
+
+            if (scoreArcElement) {
+                // The 'd' attribute in HTML should define the full 180-degree arc path.
+                // Example: d="M10 50 A 40 40 0 0 1 90 50"
+                
+                const totalLength = scoreArcElement.getTotalLength(); 
+
+                // Set the dash array to the total length, making the path one continuous dash
+                scoreArcElement.style.strokeDasharray = totalLength;
+                // Offset the dash to reveal only the percentage of the arc
+                scoreArcElement.style.strokeDashoffset = totalLength * (1 - percentage);
+
+                // Change stroke color based on the score percentage
+                let strokeColor = "#f59e0b"; // Default: Amber for medium scores
+                if (percentage < 0.4) { // e.g., less than 40%
+                    strokeColor = "#ef4444"; // Red for low scores
+                } else if (percentage < 0.7) { // e.g., 40% - 69%
+                    strokeColor = "#f59e0b"; // Amber for medium scores
+                } else { // e.g., 70% and above
+                    strokeColor = "#22c55e"; // Green for high scores
+                }
+                scoreArcElement.setAttribute('stroke', strokeColor);
             }
         }
     </script>
@@ -188,8 +202,10 @@
                 <h3 class="text-md sm:text-lg font-semibold text-gray-700 mb-3">Portfolio Health Score</h3>
                 <div class="relative w-32 h-16 sm:w-40 sm:h-20 mx-auto"> 
                     <svg viewBox="0 0 100 50" class="w-full h-full">
+                        {/* Background track for the gauge */}
                         <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" stroke-width="10" />
-                        <path id="healthScoreArc" d="M10 50 A 40 40 0 0 1 10 50" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
+                        {/* Foreground progress arc, d attribute defines the full path */}
+                        <path id="healthScoreArc" d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-end pb-1 sm:pb-2">
                         <span class="text-2xl sm:text-3xl font-bold text-amber-600">C+</span>
