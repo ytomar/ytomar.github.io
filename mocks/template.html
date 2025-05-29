@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elemental - Financial MRI Mockups</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* More rounded */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem; /* 24px */
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background-color: #2563eb; /* Blue-600 */
+            color: white;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8; /* Blue-700 */
+        }
+        .btn-secondary {
+            background-color: #e5e7eb; /* Gray-200 */
+            color: #374151; /* Gray-700 */
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db; /* Gray-300 */
+        }
+        .nav-button {
+            background-color: #4b5563; /* Gray-600 */
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            margin: 0 0.25rem;
+            font-size: 0.875rem;
+        }
+        .nav-button.active {
+            background-color: #2563eb; /* Blue-600 */
+        }
+        /* Microscope Icon (Placeholder - replace with actual SVG or Font Icon) */
+        .icon-microscope::before {
+            content: '🔬'; /* Simple emoji, replace with better icon */
+            font-size: 2rem;
+            color: #2563eb;
+        }
+        .health-score-gauge {
+            width: 120px;
+            height: 60px; /* Half circle */
+            border-top-left-radius: 120px;
+            border-top-right-radius: 120px;
+            background-color: #e5e7eb; /* Gray-200 for the track */
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .health-score-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #22c55e; /* Green-500 for good score */
+            transform-origin: bottom center;
+        }
+        .health-score-text {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+    </style>
+    <script>
+        // Simple navigation logic
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen-content').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.nav-button[onclick="showScreen('${screenId}')"]`).classList.add('active');
+        }
+    </script>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800">Elemental Financial MRI</h1>
+        <p class="text-gray-600">Unlocking Your Portfolio's True Potential</p>
+        <nav class="mt-4">
+            <button class="nav-button active" onclick="showScreen('summaryDashboard')">MRI Summary</button>
+            <button class="nav-button" onclick="showScreen('deepDiveAnalysis')">Deep Dive</button>
+            <button class="nav-button" onclick="showScreen('actionPlan')">Action Plan</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="summaryDashboard" class="screen-content max-w-3xl mx-auto">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Your Elemental MRI Report is Ready.</h2>
+
+            <div class="card text-center border-2 border-red-500">
+                <h3 class="text-lg font-semibold text-red-700 mb-1">Your Estimated Annual Value Leak</h3>
+                <p class="text-4xl font-bold text-red-600">₹85,400</p>
+                <p class="text-sm text-red-500 mt-1">
+                    This represents a potential <span class="font-semibold">1.9%</span> performance drag on your portfolio each year.
+                </p>
+            </div>
+
+            <div class="card text-center">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">Portfolio Health Score</h3>
+                <div class="relative w-40 h-20 mx-auto"> <svg viewBox="0 0 100 50" class="w-full h-full">
+                        <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" stroke-width="10" />
+                        <path id="healthScoreArc" d="M10 50 A 40 40 0 0 1 10 50" fill="none" stroke="#f59e0b" stroke-width="10" stroke-linecap="round"/>
+                         </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-end pb-2">
+                        <span class="text-3xl font-bold text-amber-600">C+</span>
+                        <span class="text-xs text-gray-500">(68/100)</span>
+                    </div>
+                </div>
+                <p class="text-md font-medium text-amber-600 mt-2">Needs Improvement</p>
+            </div>
+             <script>
+                // Script to animate the health score arc for C+ (68%)
+                // Max angle for semicircle is 180 degrees. 68% of 180 is 122.4 degrees.
+                // Arc starts at -90 degrees (top). So end angle is -90 + 122.4 = 32.4 degrees.
+                // SVG path d attribute: M startX startY A rx ry x-axis-rotation large-arc-flag sweep-flag endX endY
+                // For a 68% score, the arc should go 68% of the way.
+                // The arc is from (10,50) to (90,50).
+                // Let's calculate the end point for 68%
+                const percentage = 0.68;
+                const angle = percentage * Math.PI; // Angle in radians (0 to PI for semicircle)
+                const radius = 40;
+                const cx = 50; // center x
+                const cy = 50; // center y
+                const endX = cx - radius * Math.cos(angle);
+                const endY = cy - radius * Math.sin(angle);
+                const largeArcFlag = angle > Math.PI/2 ? 1 : 0; // Should be 1 if angle > 90 deg
+
+                document.getElementById('healthScoreArc').setAttribute('d', `M10 50 A ${radius} ${radius} 0 ${percentage > 0.5 ? 1 : 0} 1 ${endX} ${endY}`);
+            </script>
+
+
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center">Key MRI Findings</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start p-3 bg-gray-50 rounded-lg">
+                        <span class="text-3xl mr-3">💰</span> <div>
+                            <h4 class="font-semibold text-gray-800">High Costs & Fees</h4>
+                            <p class="text-sm text-gray-600">You could save <span class="font-bold text-green-600">~₹35,000</span> annually by optimizing high-cost funds.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-3 bg-gray-50 rounded-lg">
+                        <span class="text-3xl mr-3">📉</span> <div>
+                            <h4 class="font-semibold text-gray-800">Benchmark Underperformance</h4>
+                            <p class="text-sm text-gray-600">Your portfolio has trailed its blended benchmark by <span class="font-bold text-red-600">-2.3%</span> annually (avg. last 3 years).</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-3 bg-gray-50 rounded-lg">
+                        <span class="text-3xl mr-3">🔄</span> <div>
+                            <h4 class="font-semibold text-gray-800">Portfolio Overlap</h4>
+                            <p class="text-sm text-gray-600">Significant overlap across 6 funds reduces diversification. Example: HDFC Bank & Reliance Industries held in multiple products.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button class="btn-primary" onclick="showScreen('deepDiveAnalysis')">Deep Dive into Your Analysis</button>
+            </div>
+        </section>
+
+        <section id="deepDiveAnalysis" class="screen-content hidden max-w-4xl mx-auto">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Deep Dive: The Science Behind Your Performance</h2>
+
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center">Performance Attribution</h3>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between"><span>Portfolio Gross Return:</span> <span class="font-semibold">12.1%</span></div>
+                        <div class="flex justify-between text-red-600"><span>Minus: Fees & Charges:</span> <span class="font-semibold">-1.1%</span></div>
+                        <div class="flex justify-between text-red-600"><span>Minus: Underperformance (Alpha vs. Factors):</span> <span class="font-semibold">-0.8%</span></div>
+                        <hr class="my-1 border-gray-300">
+                        <div class="flex justify-between text-blue-600"><span>Your Actual Net Return:</span> <span class="font-bold text-lg">10.2%</span></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">This chart shows how fees and active management impact your gross returns.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="flex items-center justify-center mb-4">
+                    <span class="icon-microscope mr-2"></span>
+                    <h3 class="text-xl font-semibold text-gray-700">Factor Analysis: What's Really Driving Your Returns?</h3>
+                </div>
+                <p class="text-sm text-gray-600 mb-6 text-center">
+                    We analyzed your portfolio to see if your returns are driven by broad market movements (Beta) or specific factors like Size, Value, and Profitability, rather than just manager "skill." This helps assess if high active fees are justified. (Based on Fama-French Nobel-winning research)
+                </p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <h4 class="font-semibold text-blue-700 mb-1">Market Risk (Beta)</h4>
+                        <p class="text-2xl font-bold text-blue-800">1.05</p>
+                        <p class="text-xs text-gray-500">Indicates your portfolio is slightly more volatile than the Nifty 500.</p>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-semibold text-green-700 mb-1">Size Tilt</h4>
+                        <p class="text-xl font-bold text-green-800">Strong Large-Cap Bias</p>
+                        <p class="text-xs text-gray-500">Primarily invested in large, established companies.</p>
+                    </div>
+                    <div class="p-4 bg-purple-50 rounded-lg">
+                        <h4 class="font-semibold text-purple-700 mb-1">Value vs. Growth Tilt</h4>
+                        <p class="text-xl font-bold text-purple-800">Neutral / No Clear Style</p>
+                        <p class="text-xs text-gray-500">No significant leaning towards value or growth strategies.</p>
+                    </div>
+                    <div class="p-4 bg-red-50 rounded-lg">
+                        <h4 class="font-semibold text-red-700 mb-1">Manager "Skill" (Alpha)</h4>
+                        <p class="text-2xl font-bold text-red-800">-0.8%</p>
+                        <p class="text-xs text-gray-500">After accounting for market and factor exposures, active management has detracted value.</p>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-amber-50 border-l-4 border-amber-500 rounded">
+                    <h4 class="font-semibold text-amber-700">Key Insight:</h4>
+                    <p class="text-sm text-amber-800">
+                        Your portfolio performs very similarly to a Nifty 100 index fund but costs <span class="font-bold">15x more</span> in fees. The data shows you are paying for "active management" but receiving a negative "skill" contribution.
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button class="btn-primary" onclick="showScreen('actionPlan')">See Your Action Plan</button>
+            </div>
+        </section>
+
+        <section id="actionPlan" class="screen-content hidden max-w-3xl mx-auto">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-2 text-center">Your Action Plan: How to Reclaim Lost Value</h2>
+            <div class="card bg-green-50 border border-green-200 text-center mb-6">
+                <p class="text-md text-green-700">
+                    By taking these steps, you could potentially add back
+                    <span class="font-bold text-2xl text-green-800 block">₹85,400</span>
+                    to your portfolio annually.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Recommended Actions:</h3>
+                <ul class="space-y-4">
+                    <li class="p-4 border border-red-200 rounded-lg bg-red-50">
+                        <span class="font-bold text-red-700 text-sm">1. High Priority: Reduce High-Cost Funds</span>
+                        <p class="text-sm text-gray-700 mt-1">
+                            Consider switching from <span class="font-semibold">"ABC Aggressive Growth Fund" (TER: 2.2%)</span>
+                            to <span class="font-semibold">"Nifty 100 Index Fund Direct" (TER: 0.1%)</span>.
+                        </p>
+                        <p class="text-xs text-green-600 font-medium">Potential Annual Savings: ~₹18,500</p>
+                    </li>
+                    <li class="p-4 border border-amber-200 rounded-lg bg-amber-50">
+                        <span class="font-bold text-amber-700 text-sm">2. Medium Priority: Consolidate Overlapping Funds</span>
+                        <p class="text-sm text-gray-700 mt-1">
+                           Your portfolio holds 4 large-cap funds with 65% overlap. Consider consolidating into a single, diversified large-and-mid-cap fund to improve diversification and simplify management.
+                        </p>
+                    </li>
+                     <li class="p-4 border border-blue-200 rounded-lg bg-blue-50">
+                        <span class="font-bold text-blue-700 text-sm">3. Long-Term: Optimize Tax Harvesting</span>
+                        <p class="text-sm text-gray-700 mt-1">
+                           You have an unrealized loss of <span class="font-semibold">₹12,000</span> in <span class="font-semibold">"XYZ Thematic Fund"</span>. Consider booking this loss to offset future capital gains.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card mt-8">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">Ready to Optimize?</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-6 border border-gray-300 rounded-lg text-center">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-2">Implement Yourself</h4>
+                        <p class="text-sm text-gray-600 mb-4">Download your detailed MRI report and take control of the changes.</p>
+                        <button class="btn-secondary w-full">Download Full Report</button>
+                    </div>
+                    <div class="p-6 border-2 border-blue-500 rounded-lg text-center bg-blue-50">
+                        <h4 class="text-lg font-semibold text-blue-700 mb-2">Get Expert Help (Recommended)</h4>
+                        <p class="text-sm text-gray-700 mb-4">Schedule a consultation with a SEBI-registered advisor from Hyberfin to review this plan and implement it for you seamlessly.</p>
+                        <button class="btn-primary w-full">Schedule Your Consultation</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center mt-12 py-4 border-t border-gray-300">
+        <p class="text-sm text-gray-500">&copy; <span id="year"></span> Hyberfin (Elemental). All rights reserved.</p>
+        <p class="text-xs text-gray-400 mt-1">This is a conceptual mockup for illustration purposes.</p>
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        // Set the first screen as active on load
+        window.onload = () => {
+            showScreen('summaryDashboard');
+        };
+    </script>
+</body>
+</html>
+
