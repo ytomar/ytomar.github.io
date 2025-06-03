@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elemental - The Great Indian Value Leak & The Scientific Solution</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Inter', sans-serif; background-color: #E5F2FF; }
+.hero { background: linear-gradient(to right, #004AAD, #0073E6); }
+.stat-card { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+.card { background-color: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+.flowchart-node { border: 2px solid #80B9F2; background-color: #E5F2FF; color: #004AAD; }
+.flowchart-connector { position: absolute; left: 50%; width: 2px; background-color: #80B9F2; }
+.timeline-item::before { content: ''; position: absolute; left: -21px; top: 0px; width: 42px; height: 42px; background-color: #0073E6; border-radius: 50%; border: 4px solid #CCE5FF; z-index: 1; }
+.timeline-line { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #CCE5FF; }
+</style>
+</head>
+<body class="antialiased">
+<!-- Palette: Brilliant Blues. No SVG or Mermaid JS was used in this output. All diagrams and charts are implemented using HTML/CSS with Tailwind and Chart.js on Canvas. -->
+<header class="hero text-white p-8 text-center sticky top-0 z-50 shadow-lg">
+<h1 class="text-3xl md:text-4xl font-extrabold">Elemental: Unlocking Your Portfolio's True Potential</h1>
+<p class="mt-2 text-lg text-blue-200">The Scientific Solution to India's $250 Billion "Value Leak"</p>
+</header>
+
+<main class="p-4 md:p-10">
+    <section id="problem" class="mb-16">
+        <div class="text-center">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[#004AAD]">The <span class="text-[#0073E6]">$250 Billion</span> Blind Spot</h2>
+            <p class="mt-4 text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">Indian investors are projected to lose a staggering ~$250 billion over the next 10 years. This isn't from market crashes. It's a silent, persistent drain from hidden inefficiencies. High fees and underperformance are just the symptoms of a deeper problem.</p>
+        </div>
+        <div class="mt-12 card p-8">
+            <h3 class="text-2xl font-bold text-center text-[#004AAD] mb-6">The Real Disease: Flawed Portfolio Construction</h3>
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h4 class="text-xl font-semibold text-[#0073E6] mb-2">The Illusion of Diversification</h4>
+                    <p class="text-gray-600 mb-4">You might own multiple funds, believing you're diversified. But our research shows many portfolios are just concentrated collections of the same few stocks, leading to unrewarded risk. This flowchart illustrates how separate funds often lead back to the same overlapping investments.</p>
+                    <div class="relative p-4 bg-gray-50 rounded-lg h-64 md:h-80">
+                        <div class="flowchart-node w-1/3 absolute top-4 left-4 p-2 rounded-md text-xs shadow-md">Fund A</div>
+                        <div class="flowchart-node w-1/3 absolute top-4 right-4 p-2 rounded-md text-xs shadow-md">Fund B</div>
+                        <div class="w-px h-16 bg-[#80B9F2] absolute top-14" style="left: calc(16.66% + 1rem);"></div>
+                        <div class="w-px h-16 bg-[#80B9F2] absolute top-14" style="right: calc(16.66% + 1rem);"></div>
+                        <div class="flowchart-node w-2/5 absolute bottom-4 left-1/2 transform -translate-x-1/2 p-2 rounded-md text-sm shadow-lg text-center">Overlapping Holdings<br><span class="text-xs font-mono">(HDFC, RELIANCE, etc.)</span></div>
+                        <div class="h-px w-2/5 bg-[#80B9F2] absolute top-1/2 left-1/4"></div>
+                        <div class="h-px w-2/5 bg-[#80B9F2] absolute top-1/2 right-1/4"></div>
+                        <div class="w-px h-16 bg-[#80B9F2] absolute top-1/2 left-1/2 transform -translate-x-1/2"></div>
+                    </div>
+                     <p class="mt-2 text-xs text-center text-gray-500">Structured HTML and CSS are used to create this diagram, confirming no SVG or Mermaid JS was used.</p>
+                </div>
+                <div class="chart-container relative h-96 w-full max-w-xl mx-auto mt-8 md:mt-0">
+                    <canvas id="factorExposureChart"></canvas>
+                    <p class="mt-4 text-center text-gray-600">The result is often a portfolio with lopsided exposure to the proven "elements" or factors that drive market returns, leaving performance on the table.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="solution" class="mb-16">
+        <div class="text-center">
+             <h2 class="text-3xl md:text-5xl font-extrabold text-[#004AAD]">The Solution: A <span class="text-[#0073E6]">Deep Financial MRI</span></h2>
+            <p class="mt-4 text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">Elemental isn't just another fee checker. It's a scientific diagnostic platform that reveals the true underlying structure of your portfolio, grounded in Nobel prize-winning research and made simple for you.</p>
+        </div>
+        <div class="mt-12 relative p-8">
+            <div class="timeline-line hidden md:block"></div>
+            <div class="space-y-16">
+                <div class="relative pl-12 md:pl-16">
+                    <div class="timeline-item"></div>
+                    <div class="card p-6">
+                        <h4 class="text-xl font-bold text-[#004AAD]">1. Connect & Aggregate</h4>
+                        <p class="mt-2 text-gray-600">Securely connect your scattered portfolio data from CAMS, brokers, and even PDFs. We create one single, unified source of truth for your entire financial picture.</p>
+                    </div>
+                </div>
+                <div class="relative pl-12 md:pl-16">
+                     <div class="timeline-item"></div>
+                     <div class="card p-6">
+                        <h4 class="text-xl font-bold text-[#004AAD]">2. Diagnose & Reveal True Factor DNA</h4>
+                        <p class="mt-2 text-gray-600">Our AI-powered "MRI" runs a deep analysis, revealing your true exposure to critical market drivers like Value, Size, Quality, and Momentum. We quantify your total Value Leak from fees, underperformance, AND suboptimal factor exposure.</p>
+                    </div>
+                </div>
+                <div class="relative pl-12 md:pl-16">
+                    <div class="timeline-item"></div>
+                    <div class="card p-6">
+                        <h4 class="text-xl font-bold text-[#004AAD]">3. Act on the "Remedy"</h4>
+                        <p class="mt-2 text-gray-600">We translate complex findings into a clear, actionable plan. The "Remedy" is often a scientifically constructed, low-cost ETF portfolio, implemented via our SEBI-registered advisory, Hyberfin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="advantage" class="mb-16">
+         <div class="text-center">
+             <h2 class="text-3xl md:text-5xl font-extrabold text-[#004AAD]">Our Unfair Advantage: <span class="text-[#0073E6]">Why We Win</span></h2>
+            <p class="mt-4 text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">Our unique edge comes from a rare combination of proven execution in both consumer technology and institutional finance.</p>
+        </div>
+        <div class="mt-12 grid md:grid-cols-2 gap-8">
+            <div class="card p-8 text-center flex flex-col justify-center items-center">
+                <p class="text-6xl md:text-7xl font-extrabold text-[#0073E6]">$50M</p>
+                <h4 class="mt-2 text-xl font-bold text-[#004AAD]">Scaled B2C Tech Founders</h4>
+                <p class="mt-2 text-gray-600">Our core team previously built and sold India's largest shopping comparison site, demonstrating expertise in user acquisition, product-led growth, and scaling technology for millions.</p>
+            </div>
+             <div class="card p-8 text-center flex flex-col justify-center items-center">
+                 <p class="text-6xl md:text-7xl font-extrabold text-[#0073E6]">2.5</p>
+                <h4 class="mt-2 text-xl font-bold text-[#004AAD]">"Hedge Fund Hardened" Quants</h4>
+                <p class="mt-2 text-gray-600">As ex-PMs from a $2B hedge fund, we have a real-money track record of generating significant alpha (Net Sharpe 2.5) in India, forming the DNA of our proprietary, patented risk engine.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="outcome">
+        <div class="text-center">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-[#004AAD]">The Outcome: An <span class="text-[#0073E6]">Optimized Future</span></h2>
+            <p class="mt-4 text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">Elemental doesn't just find problems; it empowers you with a path to a more efficient and potentially more rewarding investment future.</p>
+        </div>
+        <div class="mt-12 grid md:grid-cols-2 gap-8 items-center">
+             <div class="chart-container relative h-80 w-full max-w-lg mx-auto">
+                <canvas id="outcomeChart"></canvas>
+                <p class="mt-4 text-center text-gray-600">Conceptually, Elemental aims to minimize the drag from costs and inefficiencies, unlocking your portfolio's true growth potential.</p>
+            </div>
+            <div class="card p-8">
+                <h4 class="text-2xl font-bold text-[#004AAD]">Introducing Prime-Factors</h4>
+                <p class="mt-4 text-gray-600">For select clients, our invite-only premium service, **Prime-Factors**, uses our proprietary risk engine for ongoing, dynamic rebalancing of your ETF portfolio. It aims to generate an additional 1-2% net annual return by intelligently navigating Indian market regimes.</p>
+                <a href="#" class="mt-6 inline-block bg-[#004AAD] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#003B8E] transition-colors">Request Early Access</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    const brilliantBluesPalette = {
+        darkBlue: '#004AAD',
+        brightBlue: '#0073E6',
+        mediumBlue: '#80B9F2',
+        lightBlue: '#CCE5FF',
+        paleBlue: '#E5F2FF'
+    };
+
+    function wrapLabels(labels, maxChars) {
+        return labels.map(label => {
+            if (label.length <= maxChars) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxChars) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        });
+    }
+
+    const tooltipConfig = {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                          return label.join(' ');
+                        }
+                        return label;
+                    }
+                }
+            },
+            legend: {
+                labels: {
+                    color: '#374151'
+                }
+            }
+        },
+        scales: {
+            y: { ticks: { color: '#374151' } },
+            x: { ticks: { color: '#374151' } }
+        },
+        maintainAspectRatio: false
+    };
+
+    const factorExposureCtx = document.getElementById('factorExposureChart');
+    if (factorExposureCtx) {
+        new Chart(factorExposureCtx, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['Typical Lopsided Portfolio', 'Elemental Optimized Portfolio'], 16),
+                datasets: [{
+                    label: 'Value Factor',
+                    data: [20, 33],
+                    backgroundColor: brilliantBluesPalette.darkBlue,
+                }, {
+                    label: 'Growth Factor',
+                    data: [70, 33],
+                     backgroundColor: brilliantBluesPalette.brightBlue,
+                }, {
+                    label: 'Quality Factor',
+                    data: [40, 34],
+                     backgroundColor: brilliantBluesPalette.mediumBlue,
+                }]
+            },
+            options: {
+                ...tooltipConfig,
+                responsive: true,
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, max: 130 }
+                },
+                 plugins: { ...tooltipConfig.plugins, title: { display: true, text: 'Portfolio Factor Exposures (%)' } }
+            }
+        });
+    }
+
+    const outcomeCtx = document.getElementById('outcomeChart');
+    if(outcomeCtx) {
+        new Chart(outcomeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Optimized Return', 'Costs & Inefficiency Drag'],
+                datasets: [{
+                    data: [98, 2],
+                    backgroundColor: [brilliantBluesPalette.brightBlue, brilliantBluesPalette.lightBlue],
+                    borderColor: '#ffffff',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                 ...tooltipConfig,
+                responsive: true,
+                plugins: { ...tooltipConfig.plugins, title: { display: true, text: 'Conceptual Outcome: Minimizing Drag' } }
+            }
+        });
+    }
+</script>
+</body>
+</html>
