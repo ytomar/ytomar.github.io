@@ -4,130 +4,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elemental - The Great Indian Value Leak & The Scientific Solution</title>
+<title>The Great Indian Value Leak: A Deep Research Report on Portfolio Inefficiency</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <style>
-body { font-family: 'Inter', sans-serif; background-color: #E5F2FF; }
-.hero { background: linear-gradient(to right, #004AAD, #0073E6); }
-.stat-card { background-color: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
-.card { background-color: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-.flowchart-node { border: 2px solid #80B9F2; background-color: #E5F2FF; color: #004AAD; }
-.flowchart-connector { position: absolute; left: 50%; width: 2px; background-color: #80B9F2; }
-.timeline-item::before { content: ''; position: absolute; left: -21px; top: 0px; width: 42px; height: 42px; background-color: #0073E6; border-radius: 50%; border: 4px solid #CCE5FF; z-index: 1; }
+body { font-family: 'Inter', sans-serif; background-color: #f0f5ff; }
+.hero-section { background: linear-gradient(135deg, #004AAD 0%, #0073E6 100%); }
+.card { background-color: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+.chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+.flowchart-step { border: 2px solid #80B9F2; background-color: #E5F2FF; color: #004AAD; }
+.flowchart-arrow { color: #80B9F2; }
+.venn-circle { border-radius: 50%; border: 3px solid #0073E6; background-color: rgba(128, 185, 242, 0.3); }
+.timeline-item::before { content: '✔'; position: absolute; left: -14px; top: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background-color: #0073E6; color: white; font-weight: bold; border-radius: 50%; z-index: 10; }
 .timeline-line { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background-color: #CCE5FF; }
 </style>
 </head>
-<body class="antialiased">
-<!-- Palette: Brilliant Blues. No SVG or Mermaid JS was used in this output. All diagrams and charts are implemented using HTML/CSS with Tailwind and Chart.js on Canvas. -->
-<header class="hero text-white p-8 text-center sticky top-0 z-50 shadow-lg">
-<h1 class="text-3xl md:text-4xl font-extrabold">Elemental: Unlocking Your Portfolio's True Potential</h1>
-<p class="mt-2 text-lg text-blue-200">The Scientific Solution to India's $250 Billion "Value Leak"</p>
+<body class="text-gray-800 antialiased">
+<!-- Palette: Brilliant Blues (#004AAD, #0073E6, #80B9F2, #CCE5FF, #E5F2FF). No SVG or Mermaid JS was used in this output. All diagrams and charts are implemented using HTML/CSS with Tailwind and Chart.js on Canvas. -->
+<header class="hero-section text-white py-16 px-4 text-center shadow-lg">
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">The Great Indian Value Leak</h1>
+<p class="mt-4 text-lg md:text-xl text-blue-200 max-w-3xl mx-auto">A Deep Research Report on the Hidden Inefficiencies in Retail Investment Portfolios and the Emergence of Scientific, Data-Driven Solutions.</p>
 </header>
 
-<main class="p-4 md:p-10">
-    <section id="problem" class="mb-16">
+<main class="container mx-auto p-4 md:p-8">
+    <section id="the-problem" class="mb-20">
         <div class="text-center">
-            <h2 class="text-3xl md:text-5xl font-extrabold text-[#004AAD]">The <span class="text-[#0073E6]">$250 Billion</span> Blind Spot</h2>
-            <p class="mt-4 text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">Indian investors are projected to lose a staggering ~$250 billion over the next 10 years. This isn't from market crashes. It's a silent, persistent drain from hidden inefficiencies. High fees and underperformance are just the symptoms of a deeper problem.</p>
-        </div>
-        <div class="mt-12 card p-8">
-            <h3 class="text-2xl font-bold text-center text-[#004AAD] mb-6">The Real Disease: Flawed Portfolio Construction</h3>
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                    <h4 class="text-xl font-semibold text-[#0073E6] mb-2">The Illusion of Diversification</h4>
-                    <p class="text-gray-600 mb-4">You might own multiple funds, believing you're diversified. But our research shows many portfolios are just concentrated collections of the same few stocks, leading to unrewarded risk. This flowchart illustrates how separate funds often lead back to the same overlapping investments.</p>
-                    <div class="relative p-4 bg-gray-50 rounded-lg h-64 md:h-80">
-                        <div class="flowchart-node w-1/3 absolute top-4 left-4 p-2 rounded-md text-xs shadow-md">Fund A</div>
-                        <div class="flowchart-node w-1/3 absolute top-4 right-4 p-2 rounded-md text-xs shadow-md">Fund B</div>
-                        <div class="w-px h-16 bg-[#80B9F2] absolute top-14" style="left: calc(16.66% + 1rem);"></div>
-                        <div class="w-px h-16 bg-[#80B9F2] absolute top-14" style="right: calc(16.66% + 1rem);"></div>
-                        <div class="flowchart-node w-2/5 absolute bottom-4 left-1/2 transform -translate-x-1/2 p-2 rounded-md text-sm shadow-lg text-center">Overlapping Holdings<br><span class="text-xs font-mono">(HDFC, RELIANCE, etc.)</span></div>
-                        <div class="h-px w-2/5 bg-[#80B9F2] absolute top-1/2 left-1/4"></div>
-                        <div class="h-px w-2/5 bg-[#80B9F2] absolute top-1/2 right-1/4"></div>
-                        <div class="w-px h-16 bg-[#80B9F2] absolute top-1/2 left-1/2 transform -translate-x-1/2"></div>
-                    </div>
-                     <p class="mt-2 text-xs text-center text-gray-500">Structured HTML and CSS are used to create this diagram, confirming no SVG or Mermaid JS was used.</p>
-                </div>
-                <div class="chart-container relative h-96 w-full max-w-xl mx-auto mt-8 md:mt-0">
-                    <canvas id="factorExposureChart"></canvas>
-                    <p class="mt-4 text-center text-gray-600">The result is often a portfolio with lopsided exposure to the proven "elements" or factors that drive market returns, leaving performance on the table.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="solution" class="mb-16">
-        <div class="text-center">
-             <h2 class="text-3xl md:text-5xl font-extrabold text-[#004AAD]">The Solution: A <span class="text-[#0073E6]">Deep Financial MRI</span></h2>
-            <p class="mt-4 text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">Elemental isn't just another fee checker. It's a scientific diagnostic platform that reveals the true underlying structure of your portfolio, grounded in Nobel prize-winning research and made simple for you.</p>
-        </div>
-        <div class="mt-12 relative p-8">
-            <div class="timeline-line hidden md:block"></div>
-            <div class="space-y-16">
-                <div class="relative pl-12 md:pl-16">
-                    <div class="timeline-item"></div>
-                    <div class="card p-6">
-                        <h4 class="text-xl font-bold text-[#004AAD]">1. Connect & Aggregate</h4>
-                        <p class="mt-2 text-gray-600">Securely connect your scattered portfolio data from CAMS, brokers, and even PDFs. We create one single, unified source of truth for your entire financial picture.</p>
-                    </div>
-                </div>
-                <div class="relative pl-12 md:pl-16">
-                     <div class="timeline-item"></div>
-                     <div class="card p-6">
-                        <h4 class="text-xl font-bold text-[#004AAD]">2. Diagnose & Reveal True Factor DNA</h4>
-                        <p class="mt-2 text-gray-600">Our AI-powered "MRI" runs a deep analysis, revealing your true exposure to critical market drivers like Value, Size, Quality, and Momentum. We quantify your total Value Leak from fees, underperformance, AND suboptimal factor exposure.</p>
-                    </div>
-                </div>
-                <div class="relative pl-12 md:pl-16">
-                    <div class="timeline-item"></div>
-                    <div class="card p-6">
-                        <h4 class="text-xl font-bold text-[#004AAD]">3. Act on the "Remedy"</h4>
-                        <p class="mt-2 text-gray-600">We translate complex findings into a clear, actionable plan. The "Remedy" is often a scientifically constructed, low-cost ETF portfolio, implemented via our SEBI-registered advisory, Hyberfin.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="advantage" class="mb-16">
-         <div class="text-center">
-             <h2 class="text-3xl md:text-5xl font-extrabold text-[#004AAD]">Our Unfair Advantage: <span class="text-[#0073E6]">Why We Win</span></h2>
-            <p class="mt-4 text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">Our unique edge comes from a rare combination of proven execution in both consumer technology and institutional finance.</p>
-        </div>
-        <div class="mt-12 grid md:grid-cols-2 gap-8">
-            <div class="card p-8 text-center flex flex-col justify-center items-center">
-                <p class="text-6xl md:text-7xl font-extrabold text-[#0073E6]">$50M</p>
-                <h4 class="mt-2 text-xl font-bold text-[#004AAD]">Scaled B2C Tech Founders</h4>
-                <p class="mt-2 text-gray-600">Our core team previously built and sold India's largest shopping comparison site, demonstrating expertise in user acquisition, product-led growth, and scaling technology for millions.</p>
-            </div>
-             <div class="card p-8 text-center flex flex-col justify-center items-center">
-                 <p class="text-6xl md:text-7xl font-extrabold text-[#0073E6]">2.5</p>
-                <h4 class="mt-2 text-xl font-bold text-[#004AAD]">"Hedge Fund Hardened" Quants</h4>
-                <p class="mt-2 text-gray-600">As ex-PMs from a $2B hedge fund, we have a real-money track record of generating significant alpha (Net Sharpe 2.5) in India, forming the DNA of our proprietary, patented risk engine.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="outcome">
-        <div class="text-center">
-            <h2 class="text-3xl md:text-5xl font-extrabold text-[#004AAD]">The Outcome: An <span class="text-[#0073E6]">Optimized Future</span></h2>
-            <p class="mt-4 text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">Elemental doesn't just find problems; it empowers you with a path to a more efficient and potentially more rewarding investment future.</p>
+            <p class="text-xl font-semibold text-[#0073E6]">The Core Problem</p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-extrabold text-[#004AAD]">A ~$14 Billion Annual Blind Spot</h2>
+            <p class="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">Our research indicates that Indian retail investors collectively lose an estimated ~$14 billion USD (over ₹1.14 lakh crore) annually due to a "Value Leak." This isn't from market crashes, but from a persistent 1-2% performance drag caused by hidden fees, flawed portfolio construction, and a profound trust deficit in conventional advice.</p>
         </div>
         <div class="mt-12 grid md:grid-cols-2 gap-8 items-center">
-             <div class="chart-container relative h-80 w-full max-w-lg mx-auto">
-                <canvas id="outcomeChart"></canvas>
-                <p class="mt-4 text-center text-gray-600">Conceptually, Elemental aims to minimize the drag from costs and inefficiencies, unlocking your portfolio's true growth potential.</p>
+            <div class="card p-6">
+                <h3 class="text-xl font-bold text-[#004AAD] mb-4">The "2% Value Leak" Breakdown</h3>
+                <p class="text-gray-600 mb-4">This chart visualizes the concept. For every ₹100 of potential returns, approximately ₹2 are silently eroded by these inefficiencies, significantly impacting long-term wealth creation.</p>
+                <div class="chart-container h-80">
+                    <canvas id="valueLeakDonutChart"></canvas>
+                </div>
             </div>
-            <div class="card p-8">
-                <h4 class="text-2xl font-bold text-[#004AAD]">Introducing Prime-Factors</h4>
-                <p class="mt-4 text-gray-600">For select clients, our invite-only premium service, **Prime-Factors**, uses our proprietary risk engine for ongoing, dynamic rebalancing of your ETF portfolio. It aims to generate an additional 1-2% net annual return by intelligently navigating Indian market regimes.</p>
-                <a href="#" class="mt-6 inline-block bg-[#004AAD] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#003B8E] transition-colors">Request Early Access</a>
+            <div class="card p-6">
+                <h3 class="text-xl font-bold text-[#004AAD] mb-4">Root Causes of the Leak</h3>
+                 <div class="space-y-6">
+                    <div>
+                        <h4 class="font-semibold text-lg text-[#0073E6]">Portfolio Chaos & Fragmentation</h4>
+                        <p class="mt-1 text-gray-600">Investment data is scattered across platforms (CAMS, brokers, PDFs), making a unified view impossible and obscuring true performance.</p>
+                    </div>
+                     <div>
+                        <h4 class="font-semibold text-lg text-[#0073E6]">The Illusion of Diversification</h4>
+                        <p class="mt-1 text-gray-600">Many funds, despite different names, are "closet indexers" holding the same popular stocks, leading to portfolio overlap and reduced diversification.</p>
+                         <div class="mt-4 flex justify-center items-center h-24">
+                            <div class="venn-circle w-28 h-28 flex items-center justify-center text-sm font-semibold text-blue-800">Fund A</div>
+                            <div class="venn-circle w-28 h-28 flex items-center justify-center text-sm font-semibold text-blue-800 -ml-12">Fund B</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-[#0073E6]">Pervasive Trust Deficit</h4>
+                        <p class="mt-1 text-gray-600">Our interviews reveal deep investor distrust in "sugar-coated," sales-driven financial advice that often lacks transparency and scientific rigor.</p>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <section id="the-solution" class="mb-20">
+         <div class="text-center">
+            <p class="text-xl font-semibold text-[#0073E6]">The Emergent Solution</p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-extrabold text-[#004AAD]">Tech-First Portfolio Intelligence Platforms</h2>
+            <p class="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">The market is responding with a new category of tech-first platforms designed to empower investors. These solutions act as a "Financial MRI," providing a deep, scientific diagnosis of portfolio health.</p>
+        </div>
+        <div class="mt-12 card p-8 relative">
+             <div class="timeline-line hidden md:block"></div>
+             <div class="space-y-12">
+                <div class="relative pl-10 md:pl-16">
+                    <div class="timeline-item"></div>
+                    <h4 class="text-xl font-bold text-[#004AAD]">1. Unify the Financial Picture</h4>
+                    <p class="mt-2 text-gray-600">The first step is aggregating all investment data from scattered sources into a single, clear dashboard, solving the problem of fragmentation.</p>
+                </div>
+                <div class="relative pl-10 md:pl-16">
+                    <div class="timeline-item"></div>
+                    <h4 class="text-xl font-bold text-[#004AAD]">2. Diagnose with Factor Analysis</h4>
+                    <p class="mt-2 text-gray-600">Leveraging Nobel prize-winning research (like the Fama-French models), these platforms decompose holdings to identify the true drivers of returns and risks—the "elements" of performance like Value, Size, Quality, and Momentum.</p>
+                </div>
+                <div class="relative pl-10 md:pl-16">
+                    <div class="timeline-item"></div>
+                    <h4 class="text-xl font-bold text-[#004AAD]">3. Deliver Actionable Clarity</h4>
+                    <p class="mt-2 text-gray-600">The final step is translating complex analysis into simple, actionable "Remedies"—often a switch to a more efficient, scientifically constructed, low-cost portfolio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="competitive-landscape" class="mb-20">
+        <div class="text-center">
+            <p class="text-xl font-semibold text-[#0073E6]">Competitive Landscape</p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-extrabold text-[#004AAD]">Comparing Solution Providers</h2>
+            <p class="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">While various players exist, a new breed of "Portfolio Intelligence" platforms offers significantly deeper analysis than traditional tools.</p>
+        </div>
+        <div class="mt-12 grid md:grid-cols-2 gap-8 items-center">
+            <div class="card p-6">
+                <h3 class="text-xl font-bold text-[#004AAD] mb-4">Capability Comparison</h3>
+                <p class="text-gray-600 mb-4">This radar chart illustrates the capability gap between emerging Portfolio Intelligence platforms and typical retail apps or traditional advisory services.</p>
+                <div class="chart-container h-80">
+                    <canvas id="competitiveRadarChart"></canvas>
+                </div>
+            </div>
+             <div class="card p-6">
+                <h3 class="text-xl font-bold text-[#004AAD] mb-4">Market Share by Advice Source (Illustrative)</h3>
+                 <p class="text-gray-600 mb-4">Despite the need for deep analysis, a large portion of the market still relies on traditional or superficial sources of advice, highlighting a massive opportunity for disruption.</p>
+                 <div class="chart-container h-80">
+                    <canvas id="marketSharePieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="future-outlook">
+         <div class="text-center">
+            <p class="text-xl font-semibold text-[#0073E6]">Future Outlook & Projections</p>
+            <h2 class="mt-2 text-3xl md:text-4xl font-extrabold text-[#004AAD]">The Growth of Data-Driven Wealth Management</h2>
+            <p class="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">The trend towards data-driven, transparent, and scientific investing is set to accelerate, fundamentally transforming the wealth management industry.</p>
+        </div>
+        <div class="mt-12 card p-8">
+             <h3 class="text-2xl font-bold text-center text-[#004AAD] mb-6">Projected AUM Shift (Next 5 Years)</h3>
+             <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="text-gray-600">
+                    <p class="mb-4">We project a significant shift in Assets Under Management (AUM) over the next five years. While traditional advisory services will still command a large share, there will be substantial growth in tech-first platforms.</p>
+                    <p class="mb-4">Notably, the fastest-growing segment will be <strong>Portfolio Intelligence Platforms</strong>, which are expected to capture a meaningful portion of the market by offering deeper, science-backed value propositions that go beyond simple robo-advisory.</p>
+                    <p>This shift reflects increasing investor sophistication and a demand for the demonstrable value that remedies the "Value Leak."</p>
+                </div>
+                 <div class="chart-container h-96">
+                    <canvas id="aumGrowthChart"></canvas>
+                </div>
+             </div>
         </div>
     </section>
 </main>
+
+<footer class="bg-[#004AAD] text-white mt-12 py-8 px-4 text-center">
+    <p class="font-bold">A Deep Research Report by Elemental</p>
+    <p class="text-sm text-blue-200 mt-2">&copy; 2025 Hyberfin. All rights reserved.</p>
+</footer>
 
 <script>
     const brilliantBluesPalette = {
@@ -144,10 +160,10 @@ body { font-family: 'Inter', sans-serif; background-color: #E5F2FF; }
                 return label;
             }
             const words = label.split(' ');
-            const lines = [];
+            let lines = [];
             let currentLine = '';
             words.forEach(word => {
-                if ((currentLine + ' ' + word).trim().length > maxChars) {
+                if ((currentLine + ' ' + word).trim().length > maxChars && currentLine.length > 0) {
                     lines.push(currentLine.trim());
                     currentLine = word;
                 } else {
@@ -160,8 +176,10 @@ body { font-family: 'Inter', sans-serif; background-color: #E5F2FF; }
             return lines;
         });
     }
-
-    const tooltipConfig = {
+    
+    const commonChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             tooltip: {
                 callbacks: {
@@ -172,134 +190,115 @@ body { font-family: 'Inter', sans-serif; background-color: #E5F2FF; }
                             return label.join(' ');
                         }
                         return label;
-                    },
-                    label: function(context) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
-                        }
-                        if (context.parsed !== null) {
-                            label += context.parsed + '%';
-                        }
-                        return label;
                     }
                 }
             },
             legend: {
-                position: 'bottom',
-                labels: {
-                    color: '#374151',
-                    padding: 20,
-                    usePointStyle: true,
-                    pointStyle: 'circle'
-                }
+                position: 'top',
+                labels: { color: '#1f2937', font: { size: 12 } }
             }
         },
         scales: {
-            y: { 
-                ticks: { 
-                    color: '#374151',
-                    callback: function(value) {
-                        return value + '%';
-                    }
-                },
-                stacked: true,
-                max: 130
-            },
-            x: { 
-                ticks: { 
-                    color: '#374151'
-                },
-                stacked: true
-            }
-        },
-        maintainAspectRatio: false,
-        responsive: true
+            y: { ticks: { color: '#4b5563' }, grid: { color: '#e5e7eb' } },
+            x: { ticks: { color: '#4b5563' }, grid: { display: false } }
+        }
     };
 
-    const factorExposureCtx = document.getElementById('factorExposureChart');
-    if (factorExposureCtx) {
-        new Chart(factorExposureCtx, {
-            type: 'bar',
+    const valueLeakCtx = document.getElementById('valueLeakDonutChart');
+    if (valueLeakCtx) {
+        new Chart(valueLeakCtx, {
+            type: 'doughnut',
             data: {
-                labels: ['Typical Lopsided Portfolio', 'Elemental Optimized Portfolio'],
+                labels: ['Potential Return', 'Annual Value Leak'],
                 datasets: [{
-                    label: 'Value Factor',
-                    data: [20, 33],
-                    backgroundColor: brilliantBluesPalette.darkBlue
-                }, {
-                    label: 'Growth Factor',
-                    data: [70, 33],
-                    backgroundColor: brilliantBluesPalette.brightBlue
-                }, {
-                    label: 'Quality Factor',
-                    data: [40, 34],
-                    backgroundColor: brilliantBluesPalette.mediumBlue
+                    data: [98, 2],
+                    backgroundColor: [brilliantBluesPalette.brightBlue, '#ef4444'],
+                    borderColor: '#ffffff',
+                    borderWidth: 4,
+                    hoverOffset: 4
                 }]
             },
-            options: {
-                ...tooltipConfig,
-                plugins: {
-                    ...tooltipConfig.plugins,
-                    title: {
-                        display: true,
-                        text: 'Portfolio Factor Exposures (%)',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 30
-                        }
-                    }
-                }
-            }
+            options: { ...commonChartOptions, cutout: '70%', plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'The 2% Annual Value Leak', color: '#1f2937', font: {size: 16} } } }
         });
     }
 
-    const outcomeCtx = document.getElementById('outcomeChart');
-    if (outcomeCtx) {
-        new Chart(outcomeCtx, {
-            type: 'doughnut',
+    const competitiveRadarCtx = document.getElementById('competitiveRadarChart');
+    if(competitiveRadarCtx){
+        new Chart(competitiveRadarCtx, {
+            type: 'radar',
             data: {
-                labels: ['Optimized Return', 'Costs & Inefficiency Drag'],
+                labels: wrapLabels(['Factor Analysis Depth', 'Fee Transparency', 'Scientific Rigor', 'Holistic View', 'Personalization'], 16),
+                datasets: [
+                    {
+                        label: 'Portfolio Intelligence Platform',
+                        data: [9, 8, 9, 8, 7],
+                        fill: true,
+                        backgroundColor: 'rgba(0, 115, 230, 0.2)',
+                        borderColor: brilliantBluesPalette.brightBlue,
+                        pointBackgroundColor: brilliantBluesPalette.brightBlue,
+                    },
+                    {
+                        label: 'Typical Retail App / Advisory',
+                        data: [2, 5, 3, 4, 4],
+                        fill: true,
+                        backgroundColor: 'rgba(128, 185, 242, 0.2)',
+                        borderColor: brilliantBluesPalette.mediumBlue,
+                        pointBackgroundColor: brilliantBluesPalette.mediumBlue,
+                    }
+                ]
+            },
+            options: { ...commonChartOptions, scales: { r: { angleLines: { color: '#d1d5db' }, grid: { color: '#d1d5db' }, pointLabels: { font: { size: 10 }, color: '#374151' }, ticks: { backdropColor: 'white', color: '#4b5563'} } } }
+        });
+    }
+    
+    const marketShareCtx = document.getElementById('marketSharePieChart');
+    if(marketShareCtx){
+        new Chart(marketShareCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Bank RMs', 'Independent Financial Advisors', 'Online Influencers / Friends', 'Robo-Advisors', 'Self-Directed'],
                 datasets: [{
-                    data: [98, 2],
+                    data: [35, 25, 15, 10, 15],
                     backgroundColor: [
-                        brilliantBluesPalette.brightBlue, 
-                        brilliantBluesPalette.lightBlue
+                       brilliantBluesPalette.darkBlue,
+                       brilliantBluesPalette.brightBlue,
+                       brilliantBluesPalette.mediumBlue,
+                       '#a0aec0',
+                       brilliantBluesPalette.lightBlue,
                     ],
                     borderColor: '#ffffff',
-                    borderWidth: 4
+                    borderWidth: 2,
                 }]
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    ...tooltipConfig.plugins,
-                    title: {
-                        display: true,
-                        text: 'Conceptual Outcome: Minimizing Drag',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 30
-                        }
+            options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Primary Source of Investment Advice (Illustrative)', color: '#1f2937', font: {size: 16} } } }
+        });
+    }
+    
+    const aumGrowthCtx = document.getElementById('aumGrowthChart');
+    if(aumGrowthCtx){
+        new Chart(aumGrowthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Year 1', 'Year 3', 'Year 5'],
+                datasets: [
+                    {
+                        label: 'Traditional Advisory AUM',
+                        data: [80, 75, 70],
+                        backgroundColor: brilliantBluesPalette.lightBlue,
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return `${context.label}: ${context.raw}%`;
-                            }
-                        }
+                    {
+                        label: 'Robo-Advisory AUM',
+                        data: [15, 18, 20],
+                        backgroundColor: brilliantBluesPalette.mediumBlue,
+                    },
+                    {
+                        label: 'Portfolio Intelligence Platform AUM',
+                        data: [5, 7, 10],
+                        backgroundColor: brilliantBluesPalette.darkBlue,
                     }
-                }
-            }
+                ]
+            },
+            options: { ...commonChartOptions, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: function(value) { return value + '%' } } } }, plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Projected AUM Share by Platform Type (%)', color: '#1f2937', font: {size: 16} } } }
         });
     }
 </script>
