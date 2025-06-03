@@ -169,23 +169,52 @@ body { font-family: 'Inter', sans-serif; background-color: #E5F2FF; }
                         const item = tooltipItems[0];
                         let label = item.chart.data.labels[item.dataIndex];
                         if (Array.isArray(label)) {
-                          return label.join(' ');
+                            return label.join(' ');
+                        }
+                        return label;
+                    },
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed !== null) {
+                            label += context.parsed + '%';
                         }
                         return label;
                     }
                 }
             },
             legend: {
+                position: 'bottom',
                 labels: {
-                    color: '#374151'
+                    color: '#374151',
+                    padding: 20,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
                 }
             }
         },
         scales: {
-            y: { ticks: { color: '#374151' } },
-            x: { ticks: { color: '#374151' } }
+            y: { 
+                ticks: { 
+                    color: '#374151',
+                    callback: function(value) {
+                        return value + '%';
+                    }
+                },
+                stacked: true,
+                max: 130
+            },
+            x: { 
+                ticks: { 
+                    color: '#374151'
+                },
+                stacked: true
+            }
         },
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        responsive: true
     };
 
     const factorExposureCtx = document.getElementById('factorExposureChart');
@@ -193,50 +222,83 @@ body { font-family: 'Inter', sans-serif; background-color: #E5F2FF; }
         new Chart(factorExposureCtx, {
             type: 'bar',
             data: {
-                labels: wrapLabels(['Typical Lopsided Portfolio', 'Elemental Optimized Portfolio'], 16),
+                labels: ['Typical Lopsided Portfolio', 'Elemental Optimized Portfolio'],
                 datasets: [{
                     label: 'Value Factor',
                     data: [20, 33],
-                    backgroundColor: brilliantBluesPalette.darkBlue,
+                    backgroundColor: brilliantBluesPalette.darkBlue
                 }, {
                     label: 'Growth Factor',
                     data: [70, 33],
-                     backgroundColor: brilliantBluesPalette.brightBlue,
+                    backgroundColor: brilliantBluesPalette.brightBlue
                 }, {
                     label: 'Quality Factor',
                     data: [40, 34],
-                     backgroundColor: brilliantBluesPalette.mediumBlue,
+                    backgroundColor: brilliantBluesPalette.mediumBlue
                 }]
             },
             options: {
                 ...tooltipConfig,
-                responsive: true,
-                scales: {
-                    x: { stacked: true },
-                    y: { stacked: true, max: 130 }
-                },
-                 plugins: { ...tooltipConfig.plugins, title: { display: true, text: 'Portfolio Factor Exposures (%)' } }
+                plugins: {
+                    ...tooltipConfig.plugins,
+                    title: {
+                        display: true,
+                        text: 'Portfolio Factor Exposures (%)',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    }
+                }
             }
         });
     }
 
     const outcomeCtx = document.getElementById('outcomeChart');
-    if(outcomeCtx) {
+    if (outcomeCtx) {
         new Chart(outcomeCtx, {
             type: 'doughnut',
             data: {
                 labels: ['Optimized Return', 'Costs & Inefficiency Drag'],
                 datasets: [{
                     data: [98, 2],
-                    backgroundColor: [brilliantBluesPalette.brightBlue, brilliantBluesPalette.lightBlue],
+                    backgroundColor: [
+                        brilliantBluesPalette.brightBlue, 
+                        brilliantBluesPalette.lightBlue
+                    ],
                     borderColor: '#ffffff',
-                    borderWidth: 4,
+                    borderWidth: 4
                 }]
             },
             options: {
-                 ...tooltipConfig,
                 responsive: true,
-                plugins: { ...tooltipConfig.plugins, title: { display: true, text: 'Conceptual Outcome: Minimizing Drag' } }
+                maintainAspectRatio: false,
+                plugins: {
+                    ...tooltipConfig.plugins,
+                    title: {
+                        display: true,
+                        text: 'Conceptual Outcome: Minimizing Drag',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
             }
         });
     }
