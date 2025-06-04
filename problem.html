@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Great Indian Value Leak: An Interactive Report by Elemental by Hyberfin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 400px; 
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-link {
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: #1E40AF; 
+            color: white;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .accordion-button.active + .accordion-content {
+            max-height: 1000px; 
+        }
+        .stat-card {
+            background-color: #f8fafc; 
+            border: 1px solid #e2e8f0; 
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.25rem; 
+            font-weight: bold;
+            color: #1E3A8A; 
+        }
+        .stat-label {
+            font-size: 0.875rem; 
+            color: #475569; 
+            margin-top: 0.5rem;
+        }
+        h2 {
+            font-size: 1.875rem; 
+            font-weight: bold;
+            margin-bottom: 1rem; 
+            color: #1e293b; 
+        }
+        h3 {
+            font-size: 1.5rem; 
+            font-weight: bold;
+            margin-top: 1.5rem; 
+            margin-bottom: 0.75rem; 
+            color: #334155; 
+        }
+        p, li {
+            color: #475569; 
+            line-height: 1.6;
+        }
+        .section-intro {
+            font-size: 1.125rem; 
+            color: #334155; 
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .highlight {
+            color: #1D4ED8; 
+            font-weight: 600;
+        }
+        .icon-placeholder {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #93c5fd; 
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .venn-diagram-container { display: flex; justify-content: center; align-items: center; margin-top: 1rem; }
+        .venn-circle-custom { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.75rem; font-weight: 600; color: #1E3A8A; }
+        .venn-circle-a { background-color: rgba(59, 130, 246, 0.3); border: 2px solid rgba(59, 130, 246, 0.7); }
+        .venn-circle-b { background-color: rgba(34, 197, 94, 0.3); border: 2px solid rgba(34, 197, 94, 0.7); margin-left: -20px; }
+
+        .solution-timeline { margin-top: 2rem; }
+        .timeline-step { display: flex; align-items: flex-start; margin-bottom: 2rem; }
+        .timeline-step-icon {
+            flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background-color: #1E40AF; color: white;
+            display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; margin-right: 1rem;
+        }
+        .timeline-step-content h4 { font-size: 1.25rem; font-weight: bold; color: #1E40AF; margin-bottom: 0.25rem; }
+        .timeline-step-content p { font-size: 0.95rem; color: #475569; }
+
+        /* Styles for the new hero intro */
+        #hero-intro::before { /* Optional: if you want a pseudo-element for overlay instead of nested div */
+            content: '';
+            position: absolute;
+            inset: 0;
+            /* background-image: url('YOUR_BACKGROUND_IMAGE_URL_HERE.jpg'); */ /* Replace with actual image */
+            /* background-size: cover; */
+            /* background-position: center; */
+            /* filter: brightness(0.6); */ /* Adjust brightness if needed */
+            /* z-index: 0; */
+        }
+        .hero-overlay-content {
+            position: relative;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body class="bg-stone-100 text-slate-800">
+
+    <nav class="sticky-nav py-2 px-4 md:px-8">
+        <div class="container mx-auto flex flex-wrap justify-between items-center">
+            <div class="text-2xl font-bold text-blue-700">GIVL Report</div>
+            <button id="mobileMenuButton" class="md:hidden p-2 rounded-md text-slate-700 hover:bg-slate-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+            <div id="navLinks" class="hidden md:flex md:items-center w-full md:w-auto space-y-2 md:space-y-0 md:space-x-1 mt-2 md:mt-0">
+                <a href="#hero-intro" class="nav-link block md:inline-block text-slate-700">Introduction</a>
+                <a href="#understanding" class="nav-link block md:inline-block text-slate-700">Understanding</a>
+                <a href="#evidence" class="nav-link block md:inline-block text-slate-700">Evidence</a>
+                <a href="#quantifying" class="nav-link block md:inline-block text-slate-700">Scale of Loss</a>
+                <a href="#competitive-landscape" class="nav-link block md:inline-block text-slate-700">Current Solutions</a>
+                <a href="#action" class="nav-link block md:inline-block text-slate-700">Action Plan</a>
+                <a href="#solution" class="nav-link block md:inline-block text-slate-700">Mitigation</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-0 md:p-8" style="padding-bottom: 5vh;">
+
+        <!-- New Hero Intro Section -->
+        <section id="hero-intro" class="relative text-white py-20 md:py-32 px-4 text-center overflow-hidden bg-slate-800">
+            <!-- Background Image Placeholder (replace with actual image URL in style) -->
+            <div class="absolute inset-0 bg-cover bg-center" 
+                 style="background-image: url('https://placehold.co/1600x800/1a202c/4a5568?text=Visual+Concept:+Subtle+Financial+Graph'); opacity: 0.15;">
+            </div>
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-800/70 to-indigo-700/60 "></div>
+
+            <div class="hero-overlay-content container mx-auto">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight animate-fade-in-down">
+                    Is Your Portfolio <span class="text-sky-300">Silently Leaking</span> Value?
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-200 mb-8 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 0.3s;">
+                    Millions of Indian investors unknowingly lose a significant portion of their wealth annually to hidden costs, inefficiencies, and suboptimal allocation. This report uncovers how.
+                </p>
+
+                <div class="mb-10 animate-fade-in-up" style="animation-delay: 0.6s;">
+                    <p class="text-lg text-sky-200 mb-2">Estimated Annual Value Leak Across India:</p>
+                    <div id="introAnnualLossCounter" class="text-5xl md:text-6xl font-bold text-amber-400 tracking-tight">
+                        $0 Billion
+                    </div>
+                </div>
+
+                <a href="#understanding" 
+                   class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-4 px-10 rounded-lg shadow-xl transition duration-300 text-lg transform hover:scale-105 inline-block animate-fade-in-up"
+                   style="animation-delay: 0.9s;">
+                    Uncover the Truth &raquo;
+                </a>
+            </div>
+        </section>
+
+        <section id="understanding" class="py-12 md:py-16 container mx-auto px-4 md:px-8">
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Deconstructing the Value Leak</h2>
+            <p class="section-intro text-center">
+                The "Value Leak" isn't just about visible fees. It's a multifaceted erosion of your investment's potential, stemming from various direct and indirect factors. Understanding these components is the first step to plugging the leak.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3 pb-2 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-red-300"></span>Direct Costs & Inefficiencies</h3>
+                    <p class="text-sm mb-2">Explicit fees and structural issues that chip away at returns.</p>
+                    <button class="accordion-button text-sm text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
+                    <div class="accordion-content mt-2 text-sm">
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><span class="font-semibold">High Expense Ratios:</span> Particularly in regular mutual fund plans vs. direct plans, where the difference primarily accounts for distributor commissions.</li>
+                            <li><span class="font-semibold">Advisory & Distribution Fees:</span> Asset-based charges or embedded commissions in various financial products.</li>
+                            <li><span class="font-semibold">Transactional Costs:</span> Brokerage, Securities Transaction Tax (STT), DP charges that add up, especially with frequent portfolio churn.</li>
+                            <li><span class="font-semibold">"Closet Indexing":</span> Paying higher active management fees for funds that largely mimic a benchmark index, offering little to no true alpha.</li>
+                            <li><span class="font-semibold">Opaque Fees in Complex Products:</span> Difficult-to-understand charges in products like ULIPs, PMS, and AIFs.</li>
+                        </ul>
+                        <h5 class="font-semibold mt-3 text-blue-600 text-xs">The Illusion of Diversification:</h5>
+                        <div class="venn-diagram-container">
+                            <div class="venn-circle-custom venn-circle-a">Fund A Stocks</div>
+                            <div class="venn-circle-custom venn-circle-b">Fund B Stocks</div>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Apparent diversification can be misleading if underlying holdings significantly overlap.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3 pb-2 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-amber-300"></span>Opportunity Costs & Suboptimal Choices</h3>
+                    <p class="text-sm mb-2">Potential returns foregone due to flawed strategies or inaction.</p>
+                    <button class="accordion-button text-sm text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
+                    <div class="accordion-content mt-2 text-sm">
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><span class="font-semibold">Underperforming Assets:</span> Persistently holding onto funds or investments that consistently lag relevant benchmarks and peer groups.</li>
+                            <li><span class="font-semibold">Ignoring Lower-Cost Alternatives:</span> Failing to switch to direct plans of mutual funds or consider passive index funds/ETFs where appropriate.</li>
+                            <li><span class="font-semibold">Missed or Improper Rebalancing:</span> Failure to periodically adjust asset allocation according to the financial plan, leading to unmanaged risk or missed potential gains.</li>
+                            <li><span class="font-semibold">Suboptimal Investment Strategies:</span> Investment choices not aligned with long-term goals, risk tolerance, or time horizon, often due to poor advice or lack of knowledge.</li>
+                            <li><span class="font-semibold">Tax Inefficiency:</span> Not structuring investments or transactions in a tax-optimal manner, leading to higher tax outgo than necessary.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-slate-200">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3 pb-2 border-b border-blue-200 flex items-center"><span class="icon-placeholder bg-emerald-300"></span>Systemic & Behavioral Factors</h3>
+                    <p class="text-sm mb-2">Broader market issues and investor psychology contributing to losses.</p>
+                    <button class="accordion-button text-sm text-blue-600 hover:text-blue-800 font-semibold py-1">Learn More &raquo;</button>
+                    <div class="accordion-content mt-2 text-sm">
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><span class="font-semibold">Portfolio Blind Spots & Fragmentation:</span> Investment data scattered across multiple platforms (CAMS/KFintech, brokers, physical statements) makes a unified portfolio view difficult, obscuring true performance and risk.</li>
+                            <li><span class="font-semibold">Low Financial Literacy:</span> A general lack of deep understanding about financial products, costs, risk-return trade-offs, and benchmarks among many retail investors.</li>
+                            <li><span class="font-semibold">Behavioral Biases:</span> Psychological traps like overconfidence, loss aversion, herding mentality, anchoring, and recency bias leading to irrational investment decisions.</li>
+                            <li><span class="font-semibold">Conflicts of Interest & Trust Deficit:</span> Advice driven by commissions rather than fiduciary responsibility can lead to mis-selling or recommendations not in the investor's best interest. This erodes trust in financial advice.</li>
+                            <li><span class="font-semibold">Information Asymmetry:</span> Retail investors often have less access to quality research and data compared to institutional players.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="evidence" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-50 rounded-xl shadow-lg mb-12 container mx-auto">
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">The Evidence: Value Leakage in India</h2>
+            <p class="section-intro text-center">
+                The Value Leak is not just a concept; it's backed by substantial evidence. Key data reveals how active fund underperformance and high costs directly impact investor returns.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-700 mt-8 mb-4 pb-2 border-b border-blue-200">Mutual Fund Underperformance (SPIVA Data)</h3>
+                    <p class="mb-4">S&P Dow Jones Indices Versus Active (SPIVA) scorecards consistently show a majority of Indian actively managed equity funds underperform their benchmarks over various time horizons. This means investors often pay higher fees for active management but receive returns lower than simpler, passive index funds.</p>
+                    <div class="chart-container h-80 md:h-96 max-w-xl">
+                        <canvas id="spivaChart"></canvas>
+                    </div>
+                    <p class="text-xs mt-2 text-center text-slate-500">Data based on SPIVA India Year-End 2024. Shows % of funds underperforming benchmarks.</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-700 mt-8 mb-4 pb-2 border-b border-blue-200">The High Cost of Expense Ratios</h3>
+                    <p class="mb-4">The difference in Total Expense Ratios (TERs) between Direct Plans and Regular Plans of the same mutual fund can be substantial (often 0.5% to over 1.5% annually). This seemingly small difference compounds significantly over time, leading to a much smaller corpus for investors in Regular Plans.</p>
+                    <div class="chart-container h-80 md:h-96 max-w-xl">
+                        <canvas id="terImpactChart"></canvas>
+                    </div>
+                     <p class="text-xs mt-2 text-center text-slate-500">Illustrative example: ₹10,000 monthly SIP, 12% gross annual return, 20-year horizon.</p>
+                </div>
+            </div>
+            <div class="mt-12">
+                <h3 class="text-2xl font-bold text-blue-700 text-center mt-12 mb-6 pb-2 border-b border-blue-200">Key Investment Cost Components</h3>
+                <p class="section-intro text-center text-sm mb-6">Beyond TERs, investors face various other costs. Here's a quick overview of typical charges. Click each to learn more (simulated).</p>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="cost-card bg-white p-4 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                        <h4 class="font-semibold text-blue-700">Mutual Fund TERs</h4>
+                        <p class="text-xs">Equity Direct: 0.15-1.0% | Equity Regular: 1.0-2.5%+</p>
+                    </div>
+                    <div class="cost-card bg-white p-4 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                        <h4 class="font-semibold text-blue-700">Advisory Fees (RIA)</h4>
+                        <p class="text-xs">AUM-based: up to 2.5% | Fixed Fee: up to ₹1.25L p.a.</p>
+                    </div>
+                    <div class="cost-card bg-white p-4 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                        <h4 class="font-semibold text-blue-700">MFD Commissions</h4>
+                        <p class="text-xs">Embedded in Regular Plan TERs (0.5-1.5% trail)</p>
+                    </div>
+                    <div class="cost-card bg-white p-4 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                        <h4 class="font-semibold text-blue-700">Brokerage (Equity)</h4>
+                        <p class="text-xs">Full-service: 0.01-0.5% | Discount: Flat ₹10-₹20</p>
+                    </div>
+                     <div class="cost-card bg-white p-4 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                        <h4 class="font-semibold text-blue-700">STT & Stamp Duty</h4>
+                        <p class="text-xs">STT: e.g., 0.1% (delivery) | Stamp: e.g., 0.015% (delivery)</p>
+                    </div>
+                    <div class="cost-card bg-white p-4 rounded-lg shadow border cursor-pointer hover:shadow-md">
+                        <h4 class="font-semibold text-blue-700">ULIP & PMS Charges</h4>
+                        <p class="text-xs">Multiple charges, can be complex and high.</p>
+                    </div>
+                </div>
+                 <p class="text-xs mt-4 text-center text-slate-500">Note: Ranges are indicative. GST and other levies may apply. Click for (simulated) details.</p>
+            </div>
+        </section>
+
+        <section id="quantifying" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-sky-50 rounded-xl shadow-lg mb-12 container mx-auto">
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">The Staggering Scale: A Multi-Billion Dollar Annual Drain</h2>
+            <p class="section-intro text-center">
+                The cumulative impact of inefficiencies, hidden costs, and suboptimal strategies results in a massive annual "Value Leak" for Indian investors. While individual experiences vary, industry analysis and observations suggest this collective erosion of wealth can reach an estimated <span class="highlight">$14 billion USD annually</span> when all contributing factors are considered. This isn't just about direct fees; it's about the total drag on potential returns.
+            </p>
+
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg border border-slate-200 mb-10">
+                <h3 class="text-xl font-bold text-blue-700 mb-6 text-center">Key Contributors to the Value Leak & Underperformance</h3>
+                <div class="grid md:grid-cols-2 gap-x-8 gap-y-4 text-sm text-slate-700">
+                    <div>
+                        <h4 class="font-semibold text-blue-600 mb-1">1. Excessive Costs in Investment Products:</h4>
+                        <ul class="list-disc list-inside space-y-1 pl-2">
+                            <li>Higher TERs in Regular vs. Direct Mutual Funds (commissions).</li>
+                            <li>Opaque and high charges in insurance-linked investments (ULIPs, traditional plans).</li>
+                            <li>Steep fees in PMS, AIFs, and other specialized products.</li>
+                            <li>Frequent transaction costs (brokerage, STT, etc.) from excessive churn.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-blue-600 mb-1">2. Active Management & Fund Performance Issues:</h4>
+                        <ul class="list-disc list-inside space-y-1 pl-2">
+                            <li>Widespread underperformance of many actively managed funds against benchmarks (as evidenced by SPIVA reports).</li>
+                            <li>"Closet Indexing," where funds charge active fees but largely mirror an index.</li>
+                            <li>Inability of many active strategies to consistently generate alpha net of costs.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-blue-600 mb-1">3. Suboptimal Financial Planning & Investor Inertia:</h4>
+                        <ul class="list-disc list-inside space-y-1 pl-2">
+                            <li>Flawed asset allocation not aligned with risk profiles or goals.</li>
+                            <li>Failure to rebalance portfolios periodically.</li>
+                            <li>Opportunity costs from holding onto underperforming assets or excess cash.</li>
+                            <li>Neglecting tax-efficient investment strategies.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-blue-600 mb-1">4. Behavioral Penalties & Biases:</h4>
+                        <ul class="list-disc list-inside space-y-1 pl-2">
+                            <li>Emotion-driven investment decisions (fear, greed).</li>
+                            <li>Cognitive biases like herding, anchoring, overconfidence, and loss aversion.</li>
+                            <li>Poor market timing attempts based on noise rather than fundamentals.</li>
+                        </ul>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h4 class="font-semibold text-blue-600 mb-1">5. Ineffective Advice & Financial Literacy Gaps:</h4>
+                        <ul class="list-disc list-inside space-y-1 pl-2">
+                            <li>Advice driven by commissions leading to mis-selling of unsuitable products.</li>
+                            <li>Lack of deep financial literacy among many investors regarding product complexities, risks, and costs.</li>
+                            <li>Information asymmetry between financial product providers/advisors and retail investors.</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-center mt-6 text-md font-medium text-slate-800">
+                    Collectively, these factors mean investors often achieve returns significantly below their potential, hindering long-term wealth creation.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center mb-10">
+                <div class="stat-card w-full">
+                    <div id="estimatedTotalAnnualLossUSD" class="stat-number">$0 Billion</div>
+                    <p class="stat-label">Broad Estimated Annual Value Leak Across All Sources (approx. USD)</p>
+                </div>
+                 <div class="w-full chart-container h-64 md:h-72 max-w-xs">
+                    <canvas id="valueLeakConceptDonutChart"></canvas> 
+                 </div>
+            </div>
+            
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg border border-slate-200 mt-10">
+                <h3 class="text-xl font-bold text-blue-700 mb-4 text-center">Projected Cumulative Value Leak Over 10 Years</h3>
+                <p class="text-sm text-slate-600 mb-4 text-center">
+                    If the broad estimated annual value leak of ~$14 billion continues, the cumulative impact over a decade can be astronomical, especially if market AUMs continue to grow.
+                </p>
+                <div class="chart-container h-80 md:h-96 max-w-2xl">
+                    <canvas id="cumulativeLossProjectionChart"></canvas>
+                </div>
+                <p class="text-xs mt-2 text-center text-slate-500">Note: Projection based on an illustrative $14 billion annual leak, assuming this figure grows proportionally with a 10% annual AUM growth. This highlights the compounding nature of the problem.</p>
+            </div>
+        </section>
+
+        <section id="competitive-landscape" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-50 rounded-xl shadow-lg mb-12 container mx-auto">
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Market Landscape: Navigating Advice</h2>
+             <p class="section-intro text-center">
+                While various players exist, a new breed of "Portfolio Intelligence" platforms offers significantly deeper analysis than traditional tools. Understanding the source of advice is crucial.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-700 mt-8 mb-4 pb-2 border-b border-blue-200">Capability Comparison</h3>
+                    <p class="mb-4">Emerging Portfolio Intelligence platforms showcase a significant capability gap compared to typical retail apps or traditional advisory services, especially in depth of analysis and transparency.</p>
+                    <div class="chart-container h-80 md:h-96 max-w-xl">
+                        <canvas id="competitiveLandscapeRadarChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-700 mt-8 mb-4 pb-2 border-b border-blue-200">Primary Source of Investment Advice (Illustrative)</h3>
+                    <p class="mb-4">Despite the need for deep analysis, a large portion of the market still relies on traditional or superficial sources of advice, highlighting a massive opportunity for disruption by platforms offering genuine portfolio intelligence. Public data suggests reliance on brokers and personal networks, alongside growing digital platform use for self-directed investing.</p>
+                    <div class="chart-container h-80 md:h-96 max-w-xl">
+                        <canvas id="marketShareAdvicePieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>     
+
+        <section id="action" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-800 text-slate-100 rounded-xl shadow-lg container mx-auto">
+            <h2 class="text-center mb-10 text-3xl font-bold text-sky-300 pb-3 border-b-2 border-sky-500">Your Action Plan: Safeguard Your Wealth</h2>
+            <p class="section-intro text-center text-slate-300">
+                Addressing the "Value Leak" requires vigilance and proactive steps. Here’s how you can start optimizing your portfolio and protecting your financial future.
+            </p>
+            <div class="max-w-3xl mx-auto grid sm:grid-cols-2 gap-6">
+                <div class="bg-slate-700 p-4 rounded-lg shadow">
+                    <h4 class="font-semibold text-sky-300 mb-1">Understand Total Costs</h4>
+                    <p class="text-xs text-slate-200">Look beyond gross returns. Know all TERs, fees, and charges.</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-lg shadow">
+                    <h4 class="font-semibold text-sky-300 mb-1">Benchmark Performance</h4>
+                    <p class="text-xs text-slate-200">Regularly compare net returns against relevant benchmarks.</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-lg shadow">
+                    <h4 class="font-semibold text-sky-300 mb-1">Consider Low-Cost Options</h4>
+                    <p class="text-xs text-slate-200">Evaluate direct MF plans and passive ETFs/index funds.</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-lg shadow">
+                    <h4 class="font-semibold text-sky-300 mb-1">Seek Conflict-Free Advice</h4>
+                    <p class="text-xs text-slate-200">Understand your advisor's compensation. Fee-only RIAs can offer aligned advice.</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-lg shadow">
+                    <h4 class="font-semibold text-sky-300 mb-1">Get a Consolidated View</h4>
+                    <p class="text-xs text-slate-200">Use tools to see your entire portfolio in one place.</p>
+                </div>
+                <div class="bg-slate-700 p-4 rounded-lg shadow">
+                    <h4 class="font-semibold text-sky-300 mb-1">Mitigate Behavioral Biases</h4>
+                    <p class="text-xs text-slate-200">Be aware of cognitive errors; avoid emotional decisions.</p>
+                </div>
+                 <div class="bg-slate-700 p-4 rounded-lg shadow sm:col-span-2">
+                    <h4 class="font-semibold text-sky-300 mb-1">Enhance Financial Literacy</h4>
+                    <p class="text-xs text-slate-200">Continuously learn. Informed investors make better decisions.</p>
+                </div>
+            </div>
+            <p class="text-center mt-10 text-slate-300">
+                By taking these steps, and leveraging innovative solutions, Indian investors can significantly reduce value leakage, fostering greater wealth creation and trust in the financial markets.
+            </p>
+        </section>      
+
+        <section id="solution" class="py-12 md:py-16 container mx-auto px-4 md:px-8">
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Taking Control: The Path to Smarter Investing</h2>
+            <p class="section-intro text-center">
+                While the "Value Leak" is a pervasive issue, it's not insurmountable. Advanced portfolio analytics and a deeper understanding of investment drivers can empower you to identify and mitigate these losses. The market is responding with tech-first platforms acting as a "Financial MRI".
+            </p>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-slate-200">
+                <h3 class="text-2xl font-bold text-center text-blue-700 mb-6 pb-2 border-b border-blue-200">The Process: From Chaos to Clarity</h3>
+                <div class="solution-timeline">
+                    <div class="timeline-step">
+                        <div class="timeline-step-icon">1</div>
+                        <div class="timeline-step-content">
+                            <h4>Unify the Financial Picture</h4>
+                            <p>Aggregate all investment data from scattered sources into a single, clear dashboard, solving portfolio fragmentation.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-step-icon">2</div>
+                        <div class="timeline-step-content">
+                            <h4>Diagnose with Factor Analysis</h4>
+                            <p>Leverage Nobel prize-winning research (e.g., Fama-French models) to decompose holdings and identify true drivers of returns and risks—like Value, Size, Quality, Momentum. This helps assess if high active fees are justified.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-step-icon">3</div>
+                        <div class="timeline-step-content">
+                            <h4>Deliver Actionable Clarity</h4>
+                            <p>Translate complex analysis into simple, actionable remedies, often suggesting a switch to more efficient, scientifically constructed, low-cost portfolios. This shows true net-of-fee performance and the real impact of costs.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 md:mt-0 border-2 border-dashed border-blue-300 p-6 rounded-lg text-center">
+                    <div class="text-6xl mb-4">🔬</div>
+                    <h4 class="text-xl font-semibold text-blue-600">Advanced Portfolio Analytics</h4>
+                    <p class="text-sm text-slate-600 mt-2">Understand if your returns are due to broad market movements (Beta), or specific factors like <span class="font-medium">Size</span>, <span class="font-medium">Value</span>, <span class="font-medium">Profitability</span>, or <span class="font-medium">Investment</span> style, rather than just manager "skill".</p>
+                </div>
+                <p class="mt-6 text-center text-md font-medium text-emerald-700">Empowering you to make data-driven decisions and potentially reclaim lost value.</p>
+            </div>
+        </section>  
+
+        <footer class="text-center py-8 text-sm text-slate-500 container mx-auto px-4 md:px-8">
+            <p>&copy; 2025 Elemental by Hyberfin.</p>
+            <p>The Great Indian Value Leak: A Deep Research Report. This report incorporates publicly available data and established financial research principles for analysis.</p>
+            <p>This interactive summary is for educational purposes only and does not constitute financial advice.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const navLinksContainer = document.getElementById('navLinks'); 
+        if (mobileMenuButton && navLinksContainer) {
+            mobileMenuButton.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('hidden');
+            });
+        }
+
+        // Accordion functionality
+        const accordionButtons = document.querySelectorAll('.accordion-button');
+        accordionButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.classList.toggle('active');
+                const content = button.nextElementSibling;
+                if (content) { // Check if content exists
+                    if (button.classList.contains('active')) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    } else {
+                        content.style.maxHeight = "0";
+                    }
+                }
+            });
+        });
+
+        // Smooth scrolling for nav links & active link highlighting
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+                if (window.innerWidth < 768 && navLinksContainer && !navLinksContainer.classList.contains('hidden')) { 
+                     navLinksContainer.classList.add('hidden');
+                }
+            });
+        });
+        
+        const sections = document.querySelectorAll('section');
+        const navLi = document.querySelectorAll('nav #navLinks a');
+        window.onscroll = () => {
+          let current = "";
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 75) { 
+              current = section.getAttribute("id");
+            }
+          });
+
+          navLi.forEach((a) => {
+            a.classList.remove("active");
+            if (a.getAttribute('href') && a.getAttribute('href').substring(1) === current) {
+              a.classList.add("active");
+            }
+          });
+        };
+
+        Chart.defaults.font.family = 'Inter, sans-serif';
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        Chart.defaults.plugins.tooltip.titleFont = { size: 14, weight: 'bold' };
+        Chart.defaults.plugins.tooltip.bodyFont = { size: 12 };
+        Chart.defaults.plugins.tooltip.padding = 10;
+        Chart.defaults.plugins.tooltip.cornerRadius = 4;
+        
+        const wrapLabel = (label, maxWidth) => {
+            if (typeof label !== 'string') return label; 
+            const words = label.split(' ');
+            let line = '';
+            const lines = [];
+            for (let i = 0; i < words.length; i++) {
+                if ((line + words[i]).length > maxWidth && line.length > 0) {
+                    lines.push(line.trim());
+                    line = '';
+                }
+                line += words[i] + ' ';
+            }
+            lines.push(line.trim());
+            return lines;
+        };
+        
+        const brilliantBluesPalette = { 
+            darkBlue: '#004AAD', brightBlue: '#0073E6', mediumBlue: '#80B9F2',
+            lightBlue: '#CCE5FF', paleBlue: '#E5F2FF'
+        };
+
+        // Animated Counter for Intro Section
+        const introLossCounter = document.getElementById('introAnnualLossCounter');
+        if (introLossCounter) {
+            const targetIntroLossUSD = 14; // Billions (representative broad estimate for intro)
+            let currentIntroLossUSD = 0;
+            const incrementIntroUSD = targetIntroLossUSD / 100; 
+            let counterIntervalIntroUSD; // Declare variable to hold interval ID
+
+            function animateIntroCounterUSD() {
+                currentIntroLossUSD += incrementIntroUSD;
+                if (currentIntroLossUSD >= targetIntroLossUSD) {
+                    introLossCounter.textContent = `$${targetIntroLossUSD.toFixed(0)} Billion`;
+                    if(counterIntervalIntroUSD) clearInterval(counterIntervalIntroUSD);
+                } else {
+                    introLossCounter.textContent = `$${currentIntroLossUSD.toFixed(1)} Billion`;
+                }
+            }
+            counterIntervalIntroUSD = setInterval(animateIntroCounterUSD, 35); 
+        }
+
+
+        // SPIVA Chart
+        const spivaCtx = document.getElementById('spivaChart');
+        if (spivaCtx) {
+            new Chart(spivaCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Indian Equity Large-Cap (vs S&P BSE 100)', 'Indian ELSS (vs S&P BSE 200)', 'Indian Eq. Mid-/Small-Cap (vs S&P BSE 400 MidSmallCap)'],
+                    datasets: [
+                        {
+                            label: '1-Year Underperformance (%) (2024)', data: [60.0, 45.0, 53.57],
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)', borderColor: 'rgba(239, 68, 68, 1)', borderWidth: 1
+                        },
+                        {
+                            label: '10-Year Underperformance (%) (End 2024)', data: [74.04, 83.78, 88.14],
+                            backgroundColor: 'rgba(249, 115, 22, 0.7)', borderColor: 'rgba(249, 115, 22, 1)', borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, title: { display: true, text: '% of Funds Underperforming' } }, x: { ticks: { callback: function(value) { return wrapLabel(this.getLabelForValue(value), 16); } } } },
+                    plugins: { tooltip: { callbacks: { label: (context) => `${context.dataset.label}: ${context.raw}%` } }, title: { display: true, text: 'Active Fund Underperformance (SPIVA India Year-End 2024)', font: { size: 16 } } }
+                }
+            });
+        }
+
+        // TER Impact Chart
+        const terCtx = document.getElementById('terImpactChart');
+        if (terCtx) {
+            const terImpactChartData = { 
+                labels: ['Year 0 (Invested)', 'Year 5', 'Year 10', 'Year 15', 'Year 20'],
+                datasets: [ 
+                    { label: 'Direct Plan (1.0% TER, Net 11%)', data: [1.2, 8.03, 17.79, 34.43, 98.93], borderColor: 'rgba(34, 197, 94, 1)', backgroundColor: 'rgba(34, 197, 94, 0.1)', fill: true, tension: 0.1 },
+                    { label: 'Regular Plan (1.5% TER, Net 10.5%)', data: [1.2, 7.87, 17.09, 32.59, 91.52], borderColor: 'rgba(249, 115, 22, 1)', backgroundColor: 'rgba(249, 115, 22, 0.1)', fill: true, tension: 0.1 },
+                    { label: 'Regular Plan (2.0% TER, Net 10%)', data: [1.2, 7.71, 16.42, 30.87, 84.80], borderColor: 'rgba(239, 68, 68, 1)', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.1 }
+                ]
+            };
+            new Chart(terCtx, {
+                type: 'line', data: terImpactChartData,
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, title: { display: true, text: 'Projected Corpus (₹ Lakhs)' }, ticks: { callback: function(value) { return '₹' + value.toFixed(2); } } }, x: { title: { display: true, text: 'Investment Horizon (Years)' } } },
+                    plugins: { tooltip: { callbacks: { label: (context) => `${context.dataset.label}: ₹${context.raw.toFixed(2)} Lakhs` } }, title: { display: true, text: 'Impact of Expense Ratios on ₹10k Monthly SIP (20 Yrs, 12% Gross Return)', font: { size: 16 } }, legend: { position: 'bottom' } }
+                }
+            });
+        }
+        
+        // Animated Counter for Estimated Total Annual Loss (USD) in Quantifying section
+        const lossCounterTotalAnnualUSD = document.getElementById('estimatedTotalAnnualLossUSD');
+        if (lossCounterTotalAnnualUSD) {
+            const targetTotalAnnualLossUSD_quantify = 14; 
+            let currentTotalAnnualLossUSD_quantify = 0;
+            const incrementTotalAnnualUSD_quantify = targetTotalAnnualLossUSD_quantify / 100; 
+            let counterIntervalTotalAnnualUSD_quantify;
+
+            function animateTotalAnnualCounterUSD_quantify() {
+                currentTotalAnnualLossUSD_quantify += incrementTotalAnnualUSD_quantify;
+                if (currentTotalAnnualLossUSD_quantify >= targetTotalAnnualLossUSD_quantify) {
+                    lossCounterTotalAnnualUSD.textContent = `$${targetTotalAnnualLossUSD_quantify.toFixed(0)} Billion`;
+                    if(counterIntervalTotalAnnualUSD_quantify) clearInterval(counterIntervalTotalAnnualUSD_quantify);
+                } else {
+                    lossCounterTotalAnnualUSD.textContent = `$${currentTotalAnnualLossUSD_quantify.toFixed(1)} Billion`;
+                }
+            }
+            counterIntervalTotalAnnualUSD_quantify = setInterval(animateTotalAnnualCounterUSD_quantify, 30);
+        }
+      
+        // Value Leak Concept Donut Chart
+        const valueLeakConceptCtx = document.getElementById('valueLeakConceptDonutChart');
+        if (valueLeakConceptCtx) {
+            new Chart(valueLeakConceptCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Potential Return Kept', 'Annual Value Leak'],
+                    datasets: [{
+                        data: [98, 2], 
+                        backgroundColor: ['rgba(59, 130, 246, 0.7)', 'rgba(239, 68, 68, 0.7)'], 
+                        borderColor: '#ffffff', borderWidth: 3, hoverOffset: 4
+                    }]
+                },
+                options: { 
+                    responsive: true, maintainAspectRatio: false, cutout: '70%',
+                    plugins: { 
+                        title: { display: true, text: 'The ~1-2% Annual Value Leak Concept', color: '#1f2937', font: {size: 14} },
+                        legend: { display: true, position: 'bottom', labels:{ boxWidth: 15, padding:10 } },
+                        tooltip: { callbacks: { label: (context) => `${context.label}: ${context.raw}%` } }
+                    } 
+                }
+            });
+        }
+
+        // Cumulative Loss Projection Chart (Updated for $14B base)
+        const cumulativeLossCtx = document.getElementById('cumulativeLossProjectionChart');
+        if (cumulativeLossCtx) {
+            const initialAnnualLeak_USD_Billion = 14; 
+            const aumGrowthRateEquivalent = 0.10; 
+
+            let cumulativeLossData = [];
+            let yearLabels = [];
+            let currentYearLeak = initialAnnualLeak_USD_Billion;
+            let totalCumulativeLoss = 0;
+
+            for (let i = 1; i <= 10; i++) {
+                yearLabels.push(`Year ${i}`);
+                if (i > 1) {
+                    currentYearLeak *= (1 + aumGrowthRateEquivalent); 
+                }
+                totalCumulativeLoss += currentYearLeak;
+                cumulativeLossData.push(totalCumulativeLoss.toFixed(2));
+            }
+
+            new Chart(cumulativeLossCtx, {
+                type: 'line',
+                data: {
+                    labels: yearLabels,
+                    datasets: [{
+                        label: 'Projected Cumulative Value Leak (USD Billions)',
+                        data: cumulativeLossData,
+                        borderColor: 'rgba(220, 53, 69, 1)', 
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: 'Cumulative Loss (USD Billions)' },
+                            ticks: { callback: function(value) { return '$' + parseFloat(value).toFixed(0) + 'B'; } } 
+                        },
+                        x: {
+                            title: { display: true, text: 'Projection Horizon (Years)' }
+                        }
+                    },
+                    plugins: {
+                        title: { display: true, text: '10-Year Projected Cumulative Value Leak (Illustrative)', font: { size: 16 } },
+                        tooltip: { callbacks: { label: (context) => `Cumulative Leak: $${parseFloat(context.raw).toFixed(2)} Billion` } }
+                    }
+                }
+            });
+        }
+
+        // Competitive Landscape Radar Chart
+        const competitiveRadarCtx = document.getElementById('competitiveLandscapeRadarChart');
+        if(competitiveRadarCtx){
+            new Chart(competitiveRadarCtx, {
+                type: 'radar',
+                data: {
+                    labels: wrapLabel(['Factor Analysis Depth', 'Fee Transparency', 'Scientific Rigor', 'Holistic View', 'Personalization'], 15),
+                    datasets: [
+                        {
+                            label: 'Portfolio Intelligence Platform', data: [9, 8, 9, 8, 7],
+                            fill: true, backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: 'rgba(59, 130, 246, 1)',
+                            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        },
+                        {
+                            label: 'Typical Retail App / Advisory', data: [2, 5, 3, 4, 4],
+                            fill: true, backgroundColor: 'rgba(249, 115, 22, 0.2)', borderColor: 'rgba(249, 115, 22, 1)',
+                            pointBackgroundColor: 'rgba(249, 115, 22, 1)',
+                        }
+                    ]
+                },
+                options: { 
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { r: { angleLines: { color: '#d1d5db' }, grid: { color: '#d1d5db' }, pointLabels: { font: { size: 10 }, color: '#374151' }, ticks: { backdropColor: 'white', color: '#4b5563'} } },
+                    plugins: { title: { display: true, text: 'Capability Comparison', font: { size: 16 } } }
+                }
+            });
+        }
+    
+        // Market Share Pie Chart
+        const marketShareCtx = document.getElementById('marketShareAdvicePieChart');
+        if(marketShareCtx){
+            new Chart(marketShareCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Bank RMs', 'Independent Financial Advisors', 'Online Influencers / Friends', 'Robo-Advisors', 'Self-Directed'],
+                    datasets: [{
+                        data: [35, 25, 15, 10, 15],
+                        backgroundColor: [ brilliantBluesPalette.darkBlue, brilliantBluesPalette.brightBlue, brilliantBluesPalette.mediumBlue, '#a0aec0', brilliantBluesPalette.lightBlue ],
+                        borderColor: '#ffffff', borderWidth: 2,
+                    }]
+                },
+                options: { 
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { 
+                        title: { display: true, text: 'Primary Source of Investment Advice (Illustrative)', font: {size: 16} },
+                        legend: { position: 'bottom' }
+                    } 
+                }
+            });
+        }
+    
+        // Simulate click for cost cards
+        document.querySelectorAll('.cost-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const titleText = card.querySelector('h4').textContent;
+                // Custom Modal Logic (from original value_leak.html, adapted)
+                const existingModal = document.getElementById('infoModal');
+                if (existingModal) existingModal.remove();
+
+                const modal = document.createElement('div');
+                modal.id = 'infoModal';
+                modal.style.position = 'fixed';
+                modal.style.left = '0';
+                modal.style.top = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.backgroundColor = 'rgba(0,0,0,0.6)';
+                modal.style.display = 'flex';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+                modal.style.zIndex = '1000';
+                modal.onclick = function(event) { // Close modal if backdrop is clicked
+                    if (event.target === modal) {
+                        modal.remove();
+                    }
+                };
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.backgroundColor = 'white';
+                modalContent.style.padding = '2rem'; // Increased padding
+                modalContent.style.borderRadius = '0.5rem'; // Tailwind's rounded-lg
+                modalContent.style.maxWidth = '500px'; // Max width
+                modalContent.style.width = '90%'; // Responsive width
+                modalContent.style.textAlign = 'left'; // Align text left for readability
+                modalContent.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)'; // Shadow
+                
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = card.querySelector('h4').textContent;
+                titleElement.className = 'text-xl font-bold text-blue-700 mb-3'; // Styled title
+
+                modalContent.appendChild(titleElement);
+                const hr = document.createElement('hr');
+                hr.style.margin = '0.75rem 0'; // Tailwind's my-3
+                modalContent.appendChild(hr);
+
+                const detailText = document.createElement('p');
+                detailText.textContent = `Detailed information about ${card.querySelector('h4').textContent} (e.g., specific charge breakdowns, regulatory details, impact examples) would be presented here. This is a placeholder for more extensive content that would elaborate on how this cost component contributes to the overall value leak and what investors should look out for.`;
+                detailText.className = 'text-sm text-slate-600 leading-relaxed'; // Styled paragraph
+                modalContent.appendChild(detailText);
+                
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Close';
+                closeButton.className = 'mt-6 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300'; // Tailwind styled button
+                
+                closeButton.onclick = () => {
+                    modal.remove();
+                };
+                
+                modalContent.appendChild(closeButton);
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+            });
+        });
+
+        // Simple CSS for animations (if not using Tailwind's animation utilities extensively)
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fade-in-down { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
+            @keyframes fade-in-up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+            .animate-fade-in-down { animation: fade-in-down 0.8s ease-out forwards; }
+            .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+        `;
+        document.head.appendChild(styleSheet);
+
+
+    </script>
+</body>
+</html>
