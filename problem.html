@@ -8,16 +8,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: 'Inter', sans-serif; /* Assuming Inter is a commonly available sans-serif font, fallback to system sans-serif */
+            font-family: 'Inter', sans-serif; 
         }
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 600px; /* Default max-width, can be overridden by Tailwind classes if needed */
+            max-width: 600px; 
             margin-left: auto;
             margin-right: auto;
-            height: 300px; /* Base height, adjust with Tailwind for responsiveness */
-            max-height: 400px; /* Default max-height */
+            height: 300px; 
+            max-height: 400px; 
         }
         @media (min-width: 768px) { /* md breakpoint */
             .chart-container {
@@ -37,7 +37,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .nav-link:hover, .nav-link.active {
-            background-color: #1E40AF; /* Example: bg-blue-700 */
+            background-color: #1E40AF; 
             color: white;
         }
         .accordion-content {
@@ -46,72 +46,69 @@
             transition: max-height 0.5s ease-out;
         }
         .accordion-button.active + .accordion-content {
-            max-height: 1000px; /* Arbitrary large number */
+            max-height: 1000px; 
         }
         .stat-card {
-            background-color: #f8fafc; /* slate-50 */
-            border: 1px solid #e2e8f0; /* slate-200 */
+            background-color: #f8fafc; 
+            border: 1px solid #e2e8f0; 
             padding: 1.5rem;
             border-radius: 0.5rem;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             text-align: center;
         }
         .stat-number {
-            font-size: 2.25rem; /* text-4xl */
+            font-size: 2.25rem; 
             font-weight: bold;
-            color: #1E3A8A; /* Example: text-blue-800 */
+            color: #1E3A8A; 
         }
         .stat-label {
-            font-size: 0.875rem; /* text-sm */
-            color: #475569; /* slate-600 */
+            font-size: 0.875rem; 
+            color: #475569; 
             margin-top: 0.5rem;
         }
-        /* Global h2/h3 styles for base, specific overrides in HTML for beautification */
         h2 {
-            font-size: 1.875rem; /* text-3xl */
+            font-size: 1.875rem; 
             font-weight: bold;
-            margin-bottom: 1rem; /* Default, can be overridden by classes like mb-10 */
-            color: #1e293b; /* slate-800, Default, overridden by gradient/specific colors */
+            margin-bottom: 1rem; 
+            color: #1e293b; 
         }
         h3 {
-            font-size: 1.5rem; /* text-2xl */
+            font-size: 1.5rem; 
             font-weight: bold;
-            margin-top: 1.5rem; /* Default mt-6, can be overridden */
-            margin-bottom: 0.75rem; /* Default mb-3, can be overridden */
-            color: #334155; /* slate-700, Default, overridden by text-blue-700 */
+            margin-top: 1.5rem; 
+            margin-bottom: 0.75rem; 
+            color: #334155; 
         }
         p, li {
-            color: #475569; /* slate-600 */
+            color: #475569; 
             line-height: 1.6;
         }
         .section-intro {
-            font-size: 1.125rem; /* text-lg */
-            color: #334155; /* slate-700 */
+            font-size: 1.125rem; 
+            color: #334155; 
             margin-bottom: 2rem;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
         }
         .highlight {
-            color: #1D4ED8; /* blue-700 */
+            color: #1D4ED8; 
             font-weight: 600;
         }
         .icon-placeholder {
             display: inline-block;
             width: 20px;
             height: 20px;
-            background-color: #93c5fd; /* blue-300 */
+            background-color: #93c5fd; 
             border-radius: 50%;
             margin-right: 8px;
             vertical-align: middle;
         }
-        /* Venn Diagram Styles */
         .venn-diagram-container { display: flex; justify-content: center; align-items: center; margin-top: 1rem; }
         .venn-circle-custom { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.75rem; font-weight: 600; color: #1E3A8A; }
         .venn-circle-a { background-color: rgba(59, 130, 246, 0.3); border: 2px solid rgba(59, 130, 246, 0.7); }
         .venn-circle-b { background-color: rgba(34, 197, 94, 0.3); border: 2px solid rgba(34, 197, 94, 0.7); margin-left: -20px; }
 
-        /* Timeline Styles for Solution Section */
         .solution-timeline { margin-top: 2rem; }
         .timeline-step { display: flex; align-items: flex-start; margin-bottom: 2rem; }
         .timeline-step-icon {
@@ -120,6 +117,23 @@
         }
         .timeline-step-content h4 { font-size: 1.25rem; font-weight: bold; color: #1E40AF; margin-bottom: 0.25rem; }
         .timeline-step-content p { font-size: 0.95rem; color: #475569; }
+
+        /* Styles for the new hero intro */
+        #hero-intro::before { /* Optional: if you want a pseudo-element for overlay instead of nested div */
+            content: '';
+            position: absolute;
+            inset: 0;
+            /* background-image: url('YOUR_BACKGROUND_IMAGE_URL_HERE.jpg'); */ /* Replace with actual image */
+            /* background-size: cover; */
+            /* background-position: center; */
+            /* filter: brightness(0.6); */ /* Adjust brightness if needed */
+            /* z-index: 0; */
+        }
+        .hero-overlay-content {
+            position: relative;
+            z-index: 10;
+        }
+
     </style>
 </head>
 <body class="bg-stone-100 text-slate-800">
@@ -133,34 +147,52 @@
                 </svg>
             </button>
             <div id="navLinks" class="hidden md:flex md:items-center w-full md:w-auto space-y-2 md:space-y-0 md:space-x-1 mt-2 md:mt-0">
-                <a href="#intro" class="nav-link block md:inline-block text-slate-700">Introduction</a>
+                <a href="#hero-intro" class="nav-link block md:inline-block text-slate-700">Introduction</a>
                 <a href="#understanding" class="nav-link block md:inline-block text-slate-700">Understanding</a>
                 <a href="#evidence" class="nav-link block md:inline-block text-slate-700">Evidence</a>
-                <a href="#quantifying" class="nav-link block md:inline-block text-slate-700">Scale</a>
+                <a href="#quantifying" class="nav-link block md:inline-block text-slate-700">Scale of Loss</a>
+                <a href="#competitive-landscape" class="nav-link block md:inline-block text-slate-700">Current Solutions</a>
                 <a href="#action" class="nav-link block md:inline-block text-slate-700">Action Plan</a>
-                <a href="#solution" class="nav-link block md:inline-block text-slate-700">Solutions</a>
+                <a href="#solution" class="nav-link block md:inline-block text-slate-700">Mitigation</a>
             </div>
         </div>
     </nav>
 
-    <main class="container mx-auto p-4 md:p-8" style="padding-bottom: 5vh;">
+    <main class="container mx-auto p-0 md:p-8" style="padding-bottom: 5vh;">
 
-        <section id="intro" class="py-12 md:py-16 text-center bg-gradient-to-r from-sky-100 to-indigo-100 rounded-xl shadow-lg mb-12 px-4 md:px-6 lg:px-8">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700">
-                Great Indian Value Leak: Your Portfolio Silently Losing Money.
-            </h1>
-            <p class="section-intro">
-                Many Indian investors unknowingly lose a significant portion of their portfolio's potential value annually due to a "value leak." This isn't typically a single overt fee, but rather a persistent drain caused by a combination of structural inefficiencies, hidden costs, suboptimal investment choices, and behavioral biases. This interactive report aims to shed light on the mechanics of this value leak, present evidence of its impact, quantify its potential scale, and outline actionable solutions to help investors protect and grow their wealth more effectively.
-                An estimated <span class="highlight">~2%</span> performance drag can translate into substantial figures, potentially eroding wealth by billions of dollars collectively each year.
-            </p>
-            <div class="mt-8">
-                <a href="#understanding" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 text-lg">
-                    Discover How It Happens
+        <!-- New Hero Intro Section -->
+        <section id="hero-intro" class="relative text-white py-20 md:py-32 px-4 text-center overflow-hidden bg-slate-800">
+            <!-- Background Image Placeholder (replace with actual image URL in style) -->
+            <div class="absolute inset-0 bg-cover bg-center" 
+                 style="background-image: url('https://placehold.co/1600x800/1a202c/4a5568?text=Visual+Concept:+Subtle+Financial+Graph'); opacity: 0.15;">
+            </div>
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-br from-slate-900/80 via-blue-800/70 to-indigo-700/60 "></div>
+
+            <div class="hero-overlay-content container mx-auto">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 leading-tight animate-fade-in-down">
+                    Is Your Portfolio <span class="text-sky-300">Silently Leaking</span> Value?
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-200 mb-8 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 0.3s;">
+                    Millions of Indian investors unknowingly lose a significant portion of their wealth annually to hidden costs, inefficiencies, and suboptimal allocation. This report uncovers how.
+                </p>
+
+                <div class="mb-10 animate-fade-in-up" style="animation-delay: 0.6s;">
+                    <p class="text-lg text-sky-200 mb-2">Estimated Annual Value Leak Across India:</p>
+                    <div id="introAnnualLossCounter" class="text-5xl md:text-6xl font-bold text-amber-400 tracking-tight">
+                        $0 Billion
+                    </div>
+                </div>
+
+                <a href="#understanding" 
+                   class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-4 px-10 rounded-lg shadow-xl transition duration-300 text-lg transform hover:scale-105 inline-block animate-fade-in-up"
+                   style="animation-delay: 0.9s;">
+                    Uncover the Truth &raquo;
                 </a>
             </div>
         </section>
 
-        <section id="understanding" class="py-12 md:py-16">
+        <section id="understanding" class="py-12 md:py-16 container mx-auto px-4 md:px-8">
             <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Deconstructing the Value Leak</h2>
             <p class="section-intro text-center">
                 The "Value Leak" isn't just about visible fees. It's a multifaceted erosion of your investment's potential, stemming from various direct and indirect factors. Understanding these components is the first step to plugging the leak.
@@ -217,7 +249,7 @@
             </div>
         </section>
 
-        <section id="evidence" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-50 rounded-xl shadow-lg mb-12">
+        <section id="evidence" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-50 rounded-xl shadow-lg mb-12 container mx-auto">
             <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">The Evidence: Value Leakage in India</h2>
             <p class="section-intro text-center">
                 The Value Leak is not just a concept; it's backed by substantial evidence. Key data reveals how active fund underperformance and high costs directly impact investor returns.
@@ -273,7 +305,7 @@
             </div>
         </section>
 
-        <section id="quantifying" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-sky-50 rounded-xl shadow-lg mb-12">
+        <section id="quantifying" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-sky-50 rounded-xl shadow-lg mb-12 container mx-auto">
             <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">The Staggering Scale: A Multi-Billion Dollar Annual Drain</h2>
             <p class="section-intro text-center">
                 The cumulative impact of inefficiencies, hidden costs, and suboptimal strategies results in a massive annual "Value Leak" for Indian investors. While individual experiences vary, industry analysis and observations suggest this collective erosion of wealth can reach an estimated <span class="highlight">$14 billion USD annually</span> when all contributing factors are considered. This isn't just about direct fees; it's about the total drag on potential returns.
@@ -350,9 +382,32 @@
                 </div>
                 <p class="text-xs mt-2 text-center text-slate-500">Note: Projection based on an illustrative $14 billion annual leak, assuming this figure grows proportionally with a 10% annual AUM growth. This highlights the compounding nature of the problem.</p>
             </div>
-        </section> 
+        </section>
 
-        <section id="action" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-800 text-slate-100 rounded-xl shadow-lg">
+        <section id="competitive-landscape" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-50 rounded-xl shadow-lg mb-12 container mx-auto">
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Market Landscape: Navigating Advice</h2>
+             <p class="section-intro text-center">
+                While various players exist, a new breed of "Portfolio Intelligence" platforms offers significantly deeper analysis than traditional tools. Understanding the source of advice is crucial.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-700 mt-8 mb-4 pb-2 border-b border-blue-200">Capability Comparison</h3>
+                    <p class="mb-4">Emerging Portfolio Intelligence platforms showcase a significant capability gap compared to typical retail apps or traditional advisory services, especially in depth of analysis and transparency.</p>
+                    <div class="chart-container h-80 md:h-96 max-w-xl">
+                        <canvas id="competitiveLandscapeRadarChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-700 mt-8 mb-4 pb-2 border-b border-blue-200">Primary Source of Investment Advice (Illustrative)</h3>
+                    <p class="mb-4">Despite the need for deep analysis, a large portion of the market still relies on traditional or superficial sources of advice, highlighting a massive opportunity for disruption by platforms offering genuine portfolio intelligence. Public data suggests reliance on brokers and personal networks, alongside growing digital platform use for self-directed investing.</p>
+                    <div class="chart-container h-80 md:h-96 max-w-xl">
+                        <canvas id="marketShareAdvicePieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>     
+
+        <section id="action" class="py-12 md:py-16 px-4 md:px-6 lg:px-8 bg-slate-800 text-slate-100 rounded-xl shadow-lg container mx-auto">
             <h2 class="text-center mb-10 text-3xl font-bold text-sky-300 pb-3 border-b-2 border-sky-500">Your Action Plan: Safeguard Your Wealth</h2>
             <p class="section-intro text-center text-slate-300">
                 Addressing the "Value Leak" requires vigilance and proactive steps. Here’s how you can start optimizing your portfolio and protecting your financial future.
@@ -382,52 +437,56 @@
                     <h4 class="font-semibold text-sky-300 mb-1">Mitigate Behavioral Biases</h4>
                     <p class="text-xs text-slate-200">Be aware of cognitive errors; avoid emotional decisions.</p>
                 </div>
+                 <div class="bg-slate-700 p-4 rounded-lg shadow sm:col-span-2">
+                    <h4 class="font-semibold text-sky-300 mb-1">Enhance Financial Literacy</h4>
+                    <p class="text-xs text-slate-200">Continuously learn. Informed investors make better decisions.</p>
+                </div>
             </div>
             <p class="text-center mt-10 text-slate-300">
                 By taking these steps, and leveraging innovative solutions, Indian investors can significantly reduce value leakage, fostering greater wealth creation and trust in the financial markets.
             </p>
-        </section>
-       
-        <section id="solution" class="py-13 md:py-16">
-            <h1 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Taking Control: The Path to Smarter Investing</h2>
+        </section>      
+
+        <section id="solution" class="py-12 md:py-16 container mx-auto px-4 md:px-8">
+            <h2 class="text-center mb-10 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700 pb-3 border-b-2 border-indigo-200">Taking Control: The Path to Smarter Investing</h2>
             <p class="section-intro text-center">
                 While the "Value Leak" is a pervasive issue, it's not insurmountable. Advanced portfolio analytics and a deeper understanding of investment drivers can empower you to identify and mitigate these losses. The market is responding with tech-first platforms acting as a "Financial MRI".
             </p>
-            <div class="bg-white p-7 md:p-8 rounded-lg shadow-xl border border-slate-200">
-                <h2 class="text-2xl font-bold text-center text-blue-700 mb-6 pb-2 border-b border-blue-200">The Process: From Chaos to Clarity</h3>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl border border-slate-200">
+                <h3 class="text-2xl font-bold text-center text-blue-700 mb-6 pb-2 border-b border-blue-200">The Process: From Chaos to Clarity</h3>
                 <div class="solution-timeline">
-                    <div class="timeline-step">
-                        <div class="timeline-step-icon">0</div>
-                        <div class="timeline-step-content">
-                            <h3>Unify the Financial Picture</h4>
-                            <p>Aggregate all investment data from scattered sources into a single, clear dashboard, solving portfolio fragmentation.</p>
-                        </div>
-                    </div>
                     <div class="timeline-step">
                         <div class="timeline-step-icon">1</div>
                         <div class="timeline-step-content">
-                            <h3>Diagnose with Factor Analysis</h4>
-                            <p>Leverage Nobel prize-winning research (e.g., Fama-French models) to decompose holdings and identify true drivers of returns and risks—like Value, Size, Quality, Momentum. This helps assess if high active fees are justified.</p>
+                            <h4>Unify the Financial Picture</h4>
+                            <p>Aggregate all investment data from scattered sources into a single, clear dashboard, solving portfolio fragmentation.</p>
                         </div>
                     </div>
                     <div class="timeline-step">
                         <div class="timeline-step-icon">2</div>
                         <div class="timeline-step-content">
-                            <h3>Deliver Actionable Clarity</h4>
+                            <h4>Diagnose with Factor Analysis</h4>
+                            <p>Leverage Nobel prize-winning research (e.g., Fama-French models) to decompose holdings and identify true drivers of returns and risks—like Value, Size, Quality, Momentum. This helps assess if high active fees are justified.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-step">
+                        <div class="timeline-step-icon">3</div>
+                        <div class="timeline-step-content">
+                            <h4>Deliver Actionable Clarity</h4>
                             <p>Translate complex analysis into simple, actionable remedies, often suggesting a switch to more efficient, scientifically constructed, low-cost portfolios. This shows true net-of-fee performance and the real impact of costs.</p>
                         </div>
                     </div>
                 </div>
-                <div class="mt-7 md:mt-0 border-2 border-dashed border-blue-300 p-6 rounded-lg text-center">
-                    <div class="text-7xl mb-4">🔬</div>
-                    <h3 class="text-xl font-semibold text-blue-600">Advanced Portfolio Analytics</h4>
-                    <p class="text-sm text-slate-601 mt-2">Understand if your returns are due to broad market movements (Beta), or specific factors like <span class="font-medium">Size</span>, <span class="font-medium">Value</span>, <span class="font-medium">Profitability</span>, or <span class="font-medium">Investment</span> style, rather than just manager "skill".</p>
+                <div class="mt-6 md:mt-0 border-2 border-dashed border-blue-300 p-6 rounded-lg text-center">
+                    <div class="text-6xl mb-4">🔬</div>
+                    <h4 class="text-xl font-semibold text-blue-600">Advanced Portfolio Analytics</h4>
+                    <p class="text-sm text-slate-600 mt-2">Understand if your returns are due to broad market movements (Beta), or specific factors like <span class="font-medium">Size</span>, <span class="font-medium">Value</span>, <span class="font-medium">Profitability</span>, or <span class="font-medium">Investment</span> style, rather than just manager "skill".</p>
                 </div>
-                <p class="mt-7 text-center text-md font-medium text-emerald-700">Empowering you to make data-driven decisions and potentially reclaim lost value.</p>
+                <p class="mt-6 text-center text-md font-medium text-emerald-700">Empowering you to make data-driven decisions and potentially reclaim lost value.</p>
             </div>
-        </section>
-        
-        <footer class="text-center py-8 text-sm text-slate-500">
+        </section>  
+
+        <footer class="text-center py-8 text-sm text-slate-500 container mx-auto px-4 md:px-8">
             <p>&copy; 2025 Elemental by Hyberfin.</p>
             <p>The Great Indian Value Leak: A Deep Research Report. This report incorporates publicly available data and established financial research principles for analysis.</p>
             <p>This interactive summary is for educational purposes only and does not constitute financial advice.</p>
@@ -439,9 +498,11 @@
         // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobileMenuButton');
         const navLinksContainer = document.getElementById('navLinks'); 
-        mobileMenuButton.addEventListener('click', () => {
-            navLinksContainer.classList.toggle('hidden');
-        });
+        if (mobileMenuButton && navLinksContainer) {
+            mobileMenuButton.addEventListener('click', () => {
+                navLinksContainer.classList.toggle('hidden');
+            });
+        }
 
         // Accordion functionality
         const accordionButtons = document.querySelectorAll('.accordion-button');
@@ -449,10 +510,12 @@
             button.addEventListener('click', () => {
                 button.classList.toggle('active');
                 const content = button.nextElementSibling;
-                if (button.classList.contains('active')) {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                } else {
-                    content.style.maxHeight = "0";
+                if (content) { // Check if content exists
+                    if (button.classList.contains('active')) {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    } else {
+                        content.style.maxHeight = "0";
+                    }
                 }
             });
         });
@@ -461,7 +524,8 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const targetElement = document.querySelector(this.getAttribute('href'));
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
                         behavior: 'smooth'
@@ -520,6 +584,27 @@
             lightBlue: '#CCE5FF', paleBlue: '#E5F2FF'
         };
 
+        // Animated Counter for Intro Section
+        const introLossCounter = document.getElementById('introAnnualLossCounter');
+        if (introLossCounter) {
+            const targetIntroLossUSD = 14; // Billions (representative broad estimate for intro)
+            let currentIntroLossUSD = 0;
+            const incrementIntroUSD = targetIntroLossUSD / 100; 
+            let counterIntervalIntroUSD; // Declare variable to hold interval ID
+
+            function animateIntroCounterUSD() {
+                currentIntroLossUSD += incrementIntroUSD;
+                if (currentIntroLossUSD >= targetIntroLossUSD) {
+                    introLossCounter.textContent = `$${targetIntroLossUSD.toFixed(0)} Billion`;
+                    if(counterIntervalIntroUSD) clearInterval(counterIntervalIntroUSD);
+                } else {
+                    introLossCounter.textContent = `$${currentIntroLossUSD.toFixed(1)} Billion`;
+                }
+            }
+            counterIntervalIntroUSD = setInterval(animateIntroCounterUSD, 35); 
+        }
+
+
         // SPIVA Chart
         const spivaCtx = document.getElementById('spivaChart');
         if (spivaCtx) {
@@ -567,23 +652,24 @@
             });
         }
         
-        // Animated Counter for Estimated Total Annual Loss (USD)
+        // Animated Counter for Estimated Total Annual Loss (USD) in Quantifying section
         const lossCounterTotalAnnualUSD = document.getElementById('estimatedTotalAnnualLossUSD');
         if (lossCounterTotalAnnualUSD) {
-            const targetTotalAnnualLossUSD = 14; // Billions (representative broad estimate)
-            let currentTotalAnnualLossUSD = 0;
-            const incrementTotalAnnualUSD = targetTotalAnnualLossUSD / 100; 
+            const targetTotalAnnualLossUSD_quantify = 14; 
+            let currentTotalAnnualLossUSD_quantify = 0;
+            const incrementTotalAnnualUSD_quantify = targetTotalAnnualLossUSD_quantify / 100; 
+            let counterIntervalTotalAnnualUSD_quantify;
 
-            function animateTotalAnnualCounterUSD() {
-                currentTotalAnnualLossUSD += incrementTotalAnnualUSD;
-                if (currentTotalAnnualLossUSD >= targetTotalAnnualLossUSD) {
-                    lossCounterTotalAnnualUSD.textContent = `$${targetTotalAnnualLossUSD.toFixed(0)} Billion`; // Using toFixed(0) for a round number
-                    clearInterval(counterIntervalTotalAnnualUSD);
+            function animateTotalAnnualCounterUSD_quantify() {
+                currentTotalAnnualLossUSD_quantify += incrementTotalAnnualUSD_quantify;
+                if (currentTotalAnnualLossUSD_quantify >= targetTotalAnnualLossUSD_quantify) {
+                    lossCounterTotalAnnualUSD.textContent = `$${targetTotalAnnualLossUSD_quantify.toFixed(0)} Billion`;
+                    if(counterIntervalTotalAnnualUSD_quantify) clearInterval(counterIntervalTotalAnnualUSD_quantify);
                 } else {
-                    lossCounterTotalAnnualLossUSD.textContent = `$${currentTotalAnnualLossUSD.toFixed(1)} Billion`;
+                    lossCounterTotalAnnualUSD.textContent = `$${currentTotalAnnualLossUSD_quantify.toFixed(1)} Billion`;
                 }
             }
-            const counterIntervalTotalAnnualUSD = setInterval(animateTotalAnnualCounterUSD, 30);
+            counterIntervalTotalAnnualUSD_quantify = setInterval(animateTotalAnnualCounterUSD_quantify, 30);
         }
       
         // Value Leak Concept Donut Chart
@@ -613,8 +699,8 @@
         // Cumulative Loss Projection Chart (Updated for $14B base)
         const cumulativeLossCtx = document.getElementById('cumulativeLossProjectionChart');
         if (cumulativeLossCtx) {
-            const initialAnnualLeak_USD_Billion = 14; // Broad estimated annual leak
-            const aumGrowthRateEquivalent = 0.10; // Assuming the leak grows with overall market/AUM growth at 10%
+            const initialAnnualLeak_USD_Billion = 14; 
+            const aumGrowthRateEquivalent = 0.10; 
 
             let cumulativeLossData = [];
             let yearLabels = [];
@@ -624,7 +710,7 @@
             for (let i = 1; i <= 10; i++) {
                 yearLabels.push(`Year ${i}`);
                 if (i > 1) {
-                    currentYearLeak *= (1 + aumGrowthRateEquivalent); // Grow the annual leak amount itself
+                    currentYearLeak *= (1 + aumGrowthRateEquivalent); 
                 }
                 totalCumulativeLoss += currentYearLeak;
                 cumulativeLossData.push(totalCumulativeLoss.toFixed(2));
@@ -650,7 +736,7 @@
                         y: {
                             beginAtZero: true,
                             title: { display: true, text: 'Cumulative Loss (USD Billions)' },
-                            ticks: { callback: function(value) { return '$' + parseFloat(value).toFixed(0) + 'B'; } } // Rounded to nearest billion for readability
+                            ticks: { callback: function(value) { return '$' + parseFloat(value).toFixed(0) + 'B'; } } 
                         },
                         x: {
                             title: { display: true, text: 'Projection Horizon (Years)' }
@@ -719,9 +805,77 @@
         document.querySelectorAll('.cost-card').forEach(card => {
             card.addEventListener('click', () => {
                 const titleText = card.querySelector('h4').textContent;
-                alert(`Detailed information about ${titleText} (e.g., specific charge breakdowns, regulatory details, impact examples) would be presented here. This is a placeholder for more extensive content.`);
+                // Custom Modal Logic (from original value_leak.html, adapted)
+                const existingModal = document.getElementById('infoModal');
+                if (existingModal) existingModal.remove();
+
+                const modal = document.createElement('div');
+                modal.id = 'infoModal';
+                modal.style.position = 'fixed';
+                modal.style.left = '0';
+                modal.style.top = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.backgroundColor = 'rgba(0,0,0,0.6)';
+                modal.style.display = 'flex';
+                modal.style.justifyContent = 'center';
+                modal.style.alignItems = 'center';
+                modal.style.zIndex = '1000';
+                modal.onclick = function(event) { // Close modal if backdrop is clicked
+                    if (event.target === modal) {
+                        modal.remove();
+                    }
+                };
+                
+                const modalContent = document.createElement('div');
+                modalContent.style.backgroundColor = 'white';
+                modalContent.style.padding = '2rem'; // Increased padding
+                modalContent.style.borderRadius = '0.5rem'; // Tailwind's rounded-lg
+                modalContent.style.maxWidth = '500px'; // Max width
+                modalContent.style.width = '90%'; // Responsive width
+                modalContent.style.textAlign = 'left'; // Align text left for readability
+                modalContent.style.boxShadow = '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)'; // Shadow
+                
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = card.querySelector('h4').textContent;
+                titleElement.className = 'text-xl font-bold text-blue-700 mb-3'; // Styled title
+
+                modalContent.appendChild(titleElement);
+                const hr = document.createElement('hr');
+                hr.style.margin = '0.75rem 0'; // Tailwind's my-3
+                modalContent.appendChild(hr);
+
+                const detailText = document.createElement('p');
+                detailText.textContent = `Detailed information about ${card.querySelector('h4').textContent} (e.g., specific charge breakdowns, regulatory details, impact examples) would be presented here. This is a placeholder for more extensive content that would elaborate on how this cost component contributes to the overall value leak and what investors should look out for.`;
+                detailText.className = 'text-sm text-slate-600 leading-relaxed'; // Styled paragraph
+                modalContent.appendChild(detailText);
+                
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Close';
+                closeButton.className = 'mt-6 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300'; // Tailwind styled button
+                
+                closeButton.onclick = () => {
+                    modal.remove();
+                };
+                
+                modalContent.appendChild(closeButton);
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
             });
         });
+
+        // Simple CSS for animations (if not using Tailwind's animation utilities extensively)
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            @keyframes fade-in-down { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
+            @keyframes fade-in-up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+            .animate-fade-in-down { animation: fade-in-down 0.8s ease-out forwards; }
+            .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+        `;
+        document.head.appendChild(styleSheet);
+
+
     </script>
 </body>
 </html>
