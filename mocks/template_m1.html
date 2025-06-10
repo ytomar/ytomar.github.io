@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -7,142 +8,180 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
-            overflow: hidden; /* Prevent body scrolling, main-content will scroll */
+            overflow: hidden;
+            /* Prevent body scrolling, main-content will scroll */
         }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; 
-            color: #1f2937; 
+            background-color: #f3f4f6;
+            color: #1f2937;
             display: flex;
             flex-direction: column;
         }
+
         .app-header {
             background-color: white;
-            border-bottom: 1px solid #e5e7eb; /* Gray-200 */
-            padding: 0.75rem 1rem; /* 12px 16px */
+            border-bottom: 1px solid #e5e7eb;
+            /* Gray-200 */
+            padding: 0.75rem 1rem;
+            /* 12px 16px */
             text-align: center;
             position: sticky;
             top: 0;
             z-index: 10;
         }
+
         .main-content {
             flex-grow: 1;
-            overflow-y: auto; 
-            padding: 1rem; /* Add padding to the scrollable area */
-            padding-bottom: calc(65px + 1rem); /* Space for bottom nav + content padding */
+            overflow-y: auto;
+            padding: 1rem;
+            /* Add padding to the scrollable area */
+            padding-bottom: calc(65px + 1rem);
+            /* Space for bottom nav + content padding */
         }
+
         .card {
             background-color: white;
-            border-radius: 0.75rem; 
+            border-radius: 0.75rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            padding: 1rem; 
-            margin-bottom: 1rem; 
+            padding: 1rem;
+            margin-bottom: 1rem;
         }
+
         .btn-primary {
-            background-color: #2563eb; 
+            background-color: #2563eb;
             color: white;
-            font-weight: 600; /* Increased font-weight for better visibility */
-            padding: 0.75rem 1.5rem; 
+            font-weight: 600;
+            /* Increased font-weight for better visibility */
+            padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
             transition: background-color 0.3s;
-            display: block; 
+            display: block;
             text-align: center;
-            width: 100%; /* Make buttons full width by default for app feel */
+            width: 100%;
+            /* Make buttons full width by default for app feel */
         }
+
         .btn-primary:hover {
-            background-color: #1d4ed8; 
+            background-color: #1d4ed8;
         }
+
         .btn-secondary {
-            background-color: #e5e7eb; 
-            color: #374151; 
-            font-weight: 600; /* Increased font-weight */
-            padding: 0.75rem 1.5rem; 
+            background-color: #e5e7eb;
+            color: #374151;
+            font-weight: 600;
+            /* Increased font-weight */
+            padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
             transition: background-color 0.3s;
-            display: block; 
+            display: block;
             text-align: center;
-            width: 100%; /* Make buttons full width */
+            width: 100%;
+            /* Make buttons full width */
         }
+
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 65px; 
+            height: 65px;
             background-color: white;
             border-top: 1px solid #e5e7eb;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
             z-index: 10;
         }
+
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 0.625rem; /* 10px */
-            color: #6b7280; /* Gray-500 */
+            font-size: 0.625rem;
+            /* 10px */
+            color: #6b7280;
+            /* Gray-500 */
             cursor: pointer;
             flex-grow: 1;
-            padding: 4px 2px; /* Adjusted padding */
-            text-align: center; /* Ensure text is centered */
-            min-width: 0; /* Allow items to shrink */
+            padding: 4px 2px;
+            /* Adjusted padding */
+            text-align: center;
+            /* Ensure text is centered */
+            min-width: 0;
+            /* Allow items to shrink */
         }
+
         .nav-item.active {
-            color: #2563eb; /* Blue-600 */
+            color: #2563eb;
+            /* Blue-600 */
         }
+
         .nav-item svg {
-            width: 22px; /* Slightly smaller icons */
+            width: 22px;
+            /* Slightly smaller icons */
             height: 22px;
             margin-bottom: 2px;
         }
+
         .chat-container {
             flex: 1;
             overflow-y: auto;
-            border: 1px solid #d1d5db; 
+            border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             padding: 0.75rem;
             margin-bottom: 1rem;
-            background-color: #f9fafb; 
-            min-height: 200px; /* Ensure a minimum height */
+            background-color: #f9fafb;
+            min-height: 200px;
+            /* Ensure a minimum height */
         }
+
         .chat-message {
             padding: 0.5rem 0.75rem;
             border-radius: 0.375rem;
             margin-bottom: 0.5rem;
-            max-width: 85%; 
+            max-width: 85%;
             word-wrap: break-word;
-            font-size: 0.875rem; 
+            font-size: 0.875rem;
         }
+
         .user-message {
-            background-color: #dbeafe; 
-            color: #1e40af; 
+            background-color: #dbeafe;
+            color: #1e40af;
             align-self: flex-end;
             margin-left: auto;
         }
+
         .ai-message {
-            background-color: #e5e7eb; 
-            color: #374151; 
+            background-color: #e5e7eb;
+            color: #374151;
             align-self: flex-start;
         }
+
         .chat-input-area {
             display: flex;
             gap: 0.5rem;
-            align-items: center; /* Vertically align items */
+            align-items: center;
+            /* Vertically align items */
         }
+
         .chat-input {
             flex-grow: 1;
-            padding: 0.625rem; 
+            padding: 0.625rem;
             border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             font-size: 0.875rem;
         }
+
         .send-btn {
-            padding: 0.5rem; /* Square button */
+            padding: 0.5rem;
+            /* Square button */
             background-color: #2563eb;
             color: white;
             border-radius: 0.5rem;
@@ -150,6 +189,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .send-btn svg {
             width: 20px;
             height: 20px;
@@ -162,7 +202,7 @@
             });
             const screenToShow = document.getElementById(screenId);
             if (screenToShow) {
-                 screenToShow.classList.remove('hidden');
+                screenToShow.classList.remove('hidden');
             }
 
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -172,7 +212,7 @@
             if (activeItem) {
                 activeItem.classList.add('active');
             }
-            
+
             const headerTitleElement = document.getElementById('headerTitle');
             if (headerTitleElement && activeItem) {
                 const titleSpan = activeItem.querySelector('span');
@@ -187,33 +227,34 @@
             const scoreArcElement = document.getElementById('healthScoreArc');
 
             if (scoreArcElement) {
-                const totalLength = scoreArcElement.getTotalLength(); 
+                const totalLength = scoreArcElement.getTotalLength();
                 scoreArcElement.style.strokeDasharray = totalLength;
                 scoreArcElement.style.strokeDashoffset = totalLength * (1 - percentage);
 
                 let strokeColor = "#f59e0b";
                 let textColorClass = "text-amber-600";
 
-                if (percentage < 0.4) { 
-                    strokeColor = "#ef4444"; 
+                if (percentage < 0.4) {
+                    strokeColor = "#ef4444";
                     textColorClass = "text-red-600";
-                } else if (percentage < 0.7) { 
-                    strokeColor = "#f59e0b"; 
+                } else if (percentage < 0.7) {
+                    strokeColor = "#f59e0b";
                     textColorClass = "text-amber-600";
-                } else { 
+                } else {
                     strokeColor = "#22c55e";
                     textColorClass = "text-green-600";
                 }
                 scoreArcElement.setAttribute('stroke', strokeColor);
-                
+
                 const scoreTextElement = document.getElementById('healthScoreGradeText');
-                if(scoreTextElement) {
+                if (scoreTextElement) {
                     scoreTextElement.className = `text-xl font-bold ${textColorClass}`; // Adjusted size
                 }
             }
         }
     </script>
 </head>
+
 <body>
 
     <header class="app-header">
@@ -240,102 +281,161 @@
             </div>
 
             <!-- MODIFICATION: "Real-World Impact" Section converted to a slider -->
-        <div class="w-full max-w-md mx-auto mt-8 animate-fade-in" style="animation-delay: 200ms;">
-            <h2 class="text-lg font-bold text-slate-900 text-center mb-1">The Real-World Impact of Your Value Leak</h2>
-            <p class="text-sm text-slate-500 text-center mb-6">Small leaks today can lead to big differences in your future lifestyle.</p>
+            <div class="w-full max-w-md mx-auto mt-8 animate-fade-in" style="animation-delay: 200ms;">
+                <h2 class="text-lg font-bold text-slate-900 text-center mb-1">The Real-World Impact of Your Value Leak
+                </h2>
+                <p class="text-sm text-slate-500 text-center mb-6">Small leaks today can lead to big differences in your
+                    future lifestyle.</p>
 
-           <div class="relative">
-               <!-- Slider container -->
-               <div class="overflow-hidden rounded-2xl shadow-lg border border-slate-200/80 bg-white">
-                   <!-- Slider track -->
-                   <div id="slider-track" class="slider-track flex">
-                       
-                       <!-- Slide 1: Car -->
-                       <div class="w-full flex-shrink-0 p-5">
-                           <h3 class="font-bold text-base text-slate-800 mb-4 text-center">Your Retirement Drive</h3>
-                           <div class="grid grid-cols-2 items-center gap-4 text-center">
-                               <div class="flex flex-col items-center p-3 rounded-lg bg-red-50 text-red-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16.5 8 13H5.6a2 2 0 0 0-1.8 2.2l1 5.4A2 2 0 0 0 6.6 22H10h4a2 2 0 0 0 2-2v-2m-6-1.5v-5a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v5"/><path d="M14 9h4a2 2 0 0 1 2 2v2.5"/><path d="M14 9h4a2 2 0 0 1 2 2v2.5M18 16.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/><path d="M5 16.5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z"/></svg>
-                                   <span class="font-semibold text-sm mt-2">A Maruti Nexa</span>
-                                   <span class="text-xs font-medium text-red-500">The Current Path</span>
-                               </div>
-                               <div class="flex flex-col items-center p-3 rounded-lg bg-green-50 text-green-700">
-                                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 12 2-10 6 4-3.5 7.5"/><path d="m8.5 14-1.5 4-5-4 1-4.5"/><path d="M12 22V12l-2-3-2 3z"/><circle cx="12" cy="7" r="1"/><circle cx="6.5" cy="17.5" r="1"/><circle cx="17.5" cy="17.5" r="1"/></svg>
-                                   <span class="font-semibold text-sm mt-2">A BMW 2 Series</span>
-                                    <span class="text-xs font-medium text-green-600">The True Path</span>
-                               </div>
-                           </div>
-                       </div>
+                <div class="relative">
+                    <!-- Slider container -->
+                    <div class="overflow-hidden rounded-2xl shadow-lg border border-slate-200/80 bg-white">
+                        <!-- Slider track -->
+                        <div id="slider-track" class="slider-track flex">
+                            <!-- Slide 3: Wedding -->
+                            <div class="w-full flex-shrink-0 p-5">
+                                <h3 class="font-bold text-base text-slate-800 mb-4 text-center">Your Child's Wedding
+                                </h3>
+                                <div class="grid grid-cols-2 items-center gap-4 text-center">
+                                    <div class="flex flex-col items-center p-3 rounded-lg bg-red-50 text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                        <span class="font-semibold text-sm mt-2">A Local Celebration</span>
+                                        <span class="text-xs font-medium text-red-500">The Current Path</span>
+                                    </div>
+                                    <div class="flex flex-col items-center p-3 rounded-lg bg-green-50 text-green-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
+                                        </svg>
+                                        <span class="font-semibold text-sm mt-2">A Destination Wedding</span>
+                                        <span class="text-xs font-medium text-green-600">The True Path</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                       <!-- Slide 2: Home -->
-                        <div class="w-full flex-shrink-0 p-5">
-                           <h3 class="font-bold text-base text-slate-800 mb-4 text-center">Your Retirement Home</h3>
-                           <div class="grid grid-cols-2 items-center gap-4 text-center">
-                               <div class="flex flex-col items-center p-3 rounded-lg bg-red-50 text-red-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22v-4a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M9 9h6v6H9z"/></svg>
-                                   <span class="font-semibold text-sm mt-2">A 2BHK Flat</span>
-                                    <span class="text-xs font-medium text-red-500">The Current Path</span>
-                               </div>
-                               <div class="flex flex-col items-center p-3 rounded-lg bg-green-50 text-green-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 22v-4a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v4"/><path d="m22 12-1.29-1.29a2 2 0 0 0-2.82 0L12 16.42l-5.88-5.88a2 2 0 0 0-2.82 0L2 12"/><path d="M4 4h16v4H4z"/></svg>
-                                   <span class="font-semibold text-sm mt-2">A Spacious Villa</span>
-                                   <span class="text-xs font-medium text-green-600">The True Path</span>
-                               </div>
-                           </div>
-                       </div>
 
-                       <!-- Slide 3: Wedding -->
-                       <div class="w-full flex-shrink-0 p-5">
-                          <h3 class="font-bold text-base text-slate-800 mb-4 text-center">Your Child's Wedding</h3>
-                          <div class="grid grid-cols-2 items-center gap-4 text-center">
-                              <div class="flex flex-col items-center p-3 rounded-lg bg-red-50 text-red-700">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-                                  <span class="font-semibold text-sm mt-2">A Local Celebration</span>
-                                   <span class="text-xs font-medium text-red-500">The Current Path</span>
-                              </div>
-                              <div class="flex flex-col items-center p-3 rounded-lg bg-green-50 text-green-700">
-                                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
-                                  <span class="font-semibold text-sm mt-2">A Destination Wedding</span>
-                                  <span class="text-xs font-medium text-green-600">The True Path</span>
-                              </div>
-                          </div>
-                      </div>
+                            <!-- Slide 1: Car -->
+                            <div class="w-full flex-shrink-0 p-5">
+                                <h3 class="font-bold text-base text-slate-800 mb-4 text-center">Your Retirement Drive
+                                </h3>
+                                <div class="grid grid-cols-2 items-center gap-4 text-center">
+                                    <div class="flex flex-col items-center p-3 rounded-lg bg-red-50 text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M10 16.5 8 13H5.6a2 2 0 0 0-1.8 2.2l1 5.4A2 2 0 0 0 6.6 22H10h4a2 2 0 0 0 2-2v-2m-6-1.5v-5a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v5" />
+                                            <path d="M14 9h4a2 2 0 0 1 2 2v2.5" />
+                                            <path
+                                                d="M14 9h4a2 2 0 0 1 2 2v2.5M18 16.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                                            <path d="M5 16.5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0Z" />
+                                        </svg>
+                                        <span class="font-semibold text-sm mt-2">A Maruti Nexa</span>
+                                        <span class="text-xs font-medium text-red-500">The Current Path</span>
+                                    </div>
+                                    <div class="flex flex-col items-center p-3 rounded-lg bg-green-50 text-green-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="m12 12 2-10 6 4-3.5 7.5" />
+                                            <path d="m8.5 14-1.5 4-5-4 1-4.5" />
+                                            <path d="M12 22V12l-2-3-2 3z" />
+                                            <circle cx="12" cy="7" r="1" />
+                                            <circle cx="6.5" cy="17.5" r="1" />
+                                            <circle cx="17.5" cy="17.5" r="1" />
+                                        </svg>
+                                        <span class="font-semibold text-sm mt-2">A BMW 2 Series</span>
+                                        <span class="text-xs font-medium text-green-600">The True Path</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                   </div>
-               </div>
+                            <!-- Slide 2: Home -->
+                            <div class="w-full flex-shrink-0 p-5">
+                                <h3 class="font-bold text-base text-slate-800 mb-4 text-center">Your Retirement Home
+                                </h3>
+                                <div class="grid grid-cols-2 items-center gap-4 text-center">
+                                    <div class="flex flex-col items-center p-3 rounded-lg bg-red-50 text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M16 22v-4a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v4" />
+                                            <rect width="18" height="18" x="3" y="4" rx="2" />
+                                            <path d="M9 9h6v6H9z" />
+                                        </svg>
+                                        <span class="font-semibold text-sm mt-2">A 2BHK Flat</span>
+                                        <span class="text-xs font-medium text-red-500">The Current Path</span>
+                                    </div>
+                                    <div class="flex flex-col items-center p-3 rounded-lg bg-green-50 text-green-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 22v-4a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v4" />
+                                            <path
+                                                d="m22 12-1.29-1.29a2 2 0 0 0-2.82 0L12 16.42l-5.88-5.88a2 2 0 0 0-2.82 0L2 12" />
+                                            <path d="M4 4h16v4H4z" />
+                                        </svg>
+                                        <span class="font-semibold text-sm mt-2">A Spacious Villa</span>
+                                        <span class="text-xs font-medium text-green-600">The True Path</span>
+                                    </div>
+                                </div>
+                            </div>
 
-               <!-- Slider Controls -->
-               <div class="flex justify-center items-center mt-4">
-                   <button id="prev-btn" class="p-2 rounded-full bg-white shadow border border-slate-200 text-slate-500 disabled:opacity-50 transition-opacity">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                   </button>
-                   <div id="slider-dots" class="flex items-center space-x-2 mx-4">
-                       <!-- Dots will be generated by JS -->
-                   </div>
-                   <button id="next-btn" class="p-2 rounded-full bg-white shadow border border-slate-200 text-slate-500 disabled:opacity-50 transition-opacity">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                   </button>
-               </div>
-           </div>
 
-       </div>
+                        </div>
+                    </div>
+
+                    <!-- Slider Controls -->
+                    <div class="flex justify-center items-center mt-4">
+                        <button id="prev-btn"
+                            class="p-2 rounded-full bg-white shadow border border-slate-200 text-slate-500 disabled:opacity-50 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="m15 18-6-6 6-6" />
+                            </svg>
+                        </button>
+                        <div id="slider-dots" class="flex items-center space-x-2 mx-4">
+                            <!-- Dots will be generated by JS -->
+                        </div>
+                        <button id="next-btn"
+                            class="p-2 rounded-full bg-white shadow border border-slate-200 text-slate-500 disabled:opacity-50 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="m9 18 6-6-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
 
 
             <div class="card text-center">
                 <h3 class="text-sm font-semibold text-gray-700 mb-2">Portfolio Health Score</h3>
-                <div class="relative w-28 h-14 mx-auto"> 
+                <div class="relative w-28 h-14 mx-auto">
                     <svg viewBox="0 0 100 50" class="w-full h-full">
                         <path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" stroke-width="12" />
-                        <path id="healthScoreArc" d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#f59e0b" stroke-width="12" stroke-linecap="round"/>
+                        <path id="healthScoreArc" d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#f59e0b"
+                            stroke-width="12" stroke-linecap="round" />
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center pt-1">
                         <span id="healthScoreGradeText" class="text-xl font-bold text-amber-600">C+</span>
                         <span class="text-xxs text-gray-500">(68/100)</span>
                     </div>
                 </div>
-                 <p class="text-xs font-medium text-amber-600 mt-1.5">Needs Improvement</p>
+                <p class="text-xs font-medium text-amber-600 mt-1.5">Needs Improvement</p>
             </div>
-            
+
             <div class="card">
                 <h3 class="text-sm font-semibold text-gray-700 mb-3">Key MRI Findings</h3>
                 <div class="space-y-3">
@@ -343,21 +443,24 @@
                         <span class="text-xl mr-3">📉</span>
                         <div>
                             <h4 class="font-semibold text-gray-800 text-xs">Benchmark Underperformance</h4>
-                            <p class="text-xxs text-gray-600">Trailing benchmark by <span class="font-bold text-red-600">-2.3%</span> annually.</p>
+                            <p class="text-xxs text-gray-600">Trailing benchmark by <span
+                                    class="font-bold text-red-600">-2.3%</span> annually.</p>
                         </div>
                     </div>
                     <div class="flex items-center p-2.5 bg-gray-50 rounded-lg">
                         <span class="text-xl mr-3">💰</span>
                         <div>
                             <h4 class="font-semibold text-gray-800 text-xs">High Costs & Fees</h4>
-                            <p class="text-xxs text-gray-600">Potential annual savings of <span class="font-bold text-green-600">~₹35,000</span>.</p>
+                            <p class="text-xxs text-gray-600">Potential annual savings of <span
+                                    class="font-bold text-green-600">~₹35,000</span>.</p>
                         </div>
                     </div>
                     <div class="flex items-center p-2.5 bg-gray-50 rounded-lg">
                         <span class="text-xl mr-3">🔄</span>
                         <div>
                             <h4 class="font-semibold text-gray-800 text-xs">Portfolio Overlap</h4>
-                            <p class="text-xxs text-gray-600">Key stocks held in multiple funds, reducing diversification.</p>
+                            <p class="text-xxs text-gray-600">Key stocks held in multiple funds, reducing
+                                diversification.</p>
                         </div>
                     </div>
                 </div>
@@ -365,22 +468,27 @@
         </section>
 
         <section id="deepDiveAnalysis" class="screen-content hidden">
-             <div class="card">
+            <div class="card">
                 <h3 class="text-sm font-semibold text-gray-700 mb-2 text-center">Performance Attribution</h3>
                 <div class="bg-gray-50 p-3 rounded-lg">
                     <div class="space-y-1 text-xs">
-                        <div class="flex justify-between"><span>Portfolio Gross Return:</span> <span class="font-semibold">12.1%</span></div>
-                        <div class="flex justify-between text-red-600"><span>Minus: Fees & Charges:</span> <span class="font-semibold">-1.1%</span></div>
-                        <div class="flex justify-between text-red-600"><span>Minus: Underperformance (Alpha vs. Factors):</span> <span class="font-semibold">-0.8%</span></div>
+                        <div class="flex justify-between"><span>Portfolio Gross Return:</span> <span
+                                class="font-semibold">12.1%</span></div>
+                        <div class="flex justify-between text-red-600"><span>Minus: Fees & Charges:</span> <span
+                                class="font-semibold">-1.1%</span></div>
+                        <div class="flex justify-between text-red-600"><span>Minus: Underperformance (Alpha vs.
+                                Factors):</span> <span class="font-semibold">-0.8%</span></div>
                         <hr class="my-1 border-gray-300">
-                        <div class="flex justify-between text-blue-600"><span>Your Actual Net Return:</span> <span class="font-bold text-md">10.2%</span></div>
+                        <div class="flex justify-between text-blue-600"><span>Your Actual Net Return:</span> <span
+                                class="font-bold text-md">10.2%</span></div>
                     </div>
                 </div>
             </div>
-             <div class="card">
+            <div class="card">
                 <h3 class="text-sm font-semibold text-gray-700 mb-3">Factor Analysis</h3>
-                <p class="text-xs text-gray-600 mb-3">Understand if returns are due to market movements (Beta), specific factors (Size, Value), or manager 'skill' (Alpha).</p>
-                <div class="grid grid-cols-2 gap-2.5"> 
+                <p class="text-xs text-gray-600 mb-3">Understand if returns are due to market movements (Beta), specific
+                    factors (Size, Value), or manager 'skill' (Alpha).</p>
+                <div class="grid grid-cols-2 gap-2.5">
                     <div class="p-2.5 bg-blue-50 rounded-lg">
                         <h4 class="font-semibold text-blue-700 text-xxs">Market Risk (Beta)</h4>
                         <p class="text-lg font-bold text-blue-800">1.05</p>
@@ -398,10 +506,11 @@
                         <p class="text-lg font-bold text-red-800">-0.8%</p>
                     </div>
                 </div>
-                 <div class="mt-3 p-2.5 bg-amber-50 border-l-4 border-amber-500 rounded">
+                <div class="mt-3 p-2.5 bg-amber-50 border-l-4 border-amber-500 rounded">
                     <h4 class="font-semibold text-amber-700 text-xs">Key Insight:</h4>
                     <p class="text-xxs text-amber-800">
-                        Your portfolio closely mimics a basic index fund but costs significantly more in fees. Active management has not added value.
+                        Your portfolio closely mimics a basic index fund but costs significantly more in fees. Active
+                        management has not added value.
                     </p>
                 </div>
             </div>
@@ -420,15 +529,18 @@
                 <ul class="space-y-3">
                     <li class="p-2.5 border border-red-200 rounded-lg bg-red-50">
                         <span class="font-bold text-red-700 text-xxs">High Priority: Reduce High-Cost Funds</span>
-                        <p class="text-xxs text-gray-700 mt-0.5">Switch from <span class="font-semibold">"ABC Growth Fund" (TER: 2.2%)</span> to a low-cost Index Fund.</p>
+                        <p class="text-xxs text-gray-700 mt-0.5">Switch from <span class="font-semibold">"ABC Growth
+                                Fund" (TER: 2.2%)</span> to a low-cost Index Fund.</p>
                     </li>
                     <li class="p-2.5 border border-amber-200 rounded-lg bg-amber-50">
                         <span class="font-bold text-amber-700 text-xxs">Medium Priority: Consolidate Overlap</span>
-                        <p class="text-xxs text-gray-700 mt-0.5">Your portfolio holds 4 funds with 65% overlap. Consolidate for better diversification.</p>
+                        <p class="text-xxs text-gray-700 mt-0.5">Your portfolio holds 4 funds with 65% overlap.
+                            Consolidate for better diversification.</p>
                     </li>
-                     <li class="p-2.5 border border-blue-200 rounded-lg bg-blue-50">
+                    <li class="p-2.5 border border-blue-200 rounded-lg bg-blue-50">
                         <span class="font-bold text-blue-700 text-xxs">Long-Term: Optimize Tax Harvesting</span>
-                        <p class="text-xxs text-gray-700 mt-0.5">Book unrealized losses of <span class="font-semibold">₹12,000</span> to offset future capital gains.</p>
+                        <p class="text-xxs text-gray-700 mt-0.5">Book unrealized losses of <span
+                                class="font-semibold">₹12,000</span> to offset future capital gains.</p>
                     </li>
                 </ul>
             </div>
@@ -445,46 +557,70 @@
 
         <section id="aiChat" class="screen-content hidden h-full flex flex-col">
             <div class="flex flex-col h-full">
-            <div id="chatMessages" class="chat-container flex flex-col p-3">
-                <div class="chat-message ai-message">
-                    Hello! I'm your Elemental AI assistant. How can I help you understand your portfolio today?
+                <div id="chatMessages" class="chat-container flex flex-col p-3">
+                    <div class="chat-message ai-message">
+                        Hello! I'm your Elemental AI assistant. How can I help you understand your portfolio today?
+                    </div>
                 </div>
-            </div>
-            <div class="p-3 border-t border-gray-200 bg-white sticky bottom-0">
-                <div class="chat-input-area">
-                    <input type="text" id="userInput" class="chat-input" placeholder="Ask a question...">
-                    <button id="sendMessageBtn" class="send-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
-                    </button>
+                <div class="p-3 border-t border-gray-200 bg-white sticky bottom-0">
+                    <div class="chat-input-area">
+                        <input type="text" id="userInput" class="chat-input" placeholder="Ask a question...">
+                        <button id="sendMessageBtn" class="send-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
             </div>
         </section>
     </main>
 
     <footer class="bottom-nav">
         <div class="nav-item active" data-screen="summaryDashboard" onclick="showScreen('summaryDashboard')">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M4.5 3.75a3 3 0 00-3 3v10.5a3 3 0 003 3h15a3 3 0 003-3V6.75a3 3 0 00-3-3h-15zm4.125 3a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zm-3.873 5.043a.75.75 0 00-.926.518l-.91 3.64a.75.75 0 00.575.912l3.64.91a.75.75 0 00.912-.575l.91-3.64a.75.75 0 00-.575-.912l-3.64-.91zM17.625 7.5a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM16.5 12.75a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75h-.008a.75.75 0 01-.75-.75v-.008zm1.5.008a.75.75 0 00-.75-.75h-.008a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75v-.008zm1.5.008a.75.75 0 01.75-.75h.009a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75h-.009a.75.75 0 01-.75-.75V12.75z" clip-rule="evenodd" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd"
+                    d="M4.5 3.75a3 3 0 00-3 3v10.5a3 3 0 003 3h15a3 3 0 003-3V6.75a3 3 0 00-3-3h-15zm4.125 3a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zm-3.873 5.043a.75.75 0 00-.926.518l-.91 3.64a.75.75 0 00.575.912l3.64.91a.75.75 0 00.912-.575l.91-3.64a.75.75 0 00-.575-.912l-3.64-.91zM17.625 7.5a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM16.5 12.75a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75h-.008a.75.75 0 01-.75-.75v-.008zm1.5.008a.75.75 0 00-.75-.75h-.008a.75.75 0 00-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 00.75-.75v-.008zm1.5.008a.75.75 0 01.75-.75h.009a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75h-.009a.75.75 0 01-.75-.75V12.75z"
+                    clip-rule="evenodd" />
+            </svg>
             <span>MRI Summary</span>
         </div>
         <div class="nav-item" data-screen="deepDiveAnalysis" onclick="showScreen('deepDiveAnalysis')">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" /><path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                <path fill-rule="evenodd"
+                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                    clip-rule="evenodd" />
+            </svg>
             <span>Deep Dive</span>
         </div>
         <div class="nav-item" data-screen="actionPlan" onclick="showScreen('actionPlan')">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z" clip-rule="evenodd" /><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm1.5 0c0-4.56 3.69-8.25 8.25-8.25s8.25 3.69 8.25 8.25-3.69 8.25-8.25 8.25S3.75 16.56 3.75 12z" clip-rule="evenodd" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd"
+                    d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z"
+                    clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm1.5 0c0-4.56 3.69-8.25 8.25-8.25s8.25 3.69 8.25 8.25-3.69 8.25-8.25 8.25S3.75 16.56 3.75 12z"
+                    clip-rule="evenodd" />
+            </svg>
             <span>Action Plan</span>
         </div>
         <div class="nav-item" data-screen="aiChat" onclick="showScreen('aiChat')">
-             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.252 0 9.75-3.699 9.75-8.25s-4.498-8.25-9.75-8.25S3 6.099 3 10.65c0 1.47.362 2.87.996 4.126a6.703 6.703 0 00-.599 2.206c-.03.121-.044.244-.044.369a.75.75 0 001.14.678l1.268-.713zM10.5 13.061a.75.75 0 00-1.5 0v.032a.75.75 0 001.5 0v-.032zm3.468-1.424a.75.75 0 10-1.06-1.061 3.752 3.752 0 00-1.909 2.122.75.75 0 101.395.713 2.251 2.251 0 011.149-1.294.75.75 0 00-.575-.5z" clip-rule="evenodd" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                <path fill-rule="evenodd"
+                    d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.252 0 9.75-3.699 9.75-8.25s-4.498-8.25-9.75-8.25S3 6.099 3 10.65c0 1.47.362 2.87.996 4.126a6.703 6.703 0 00-.599 2.206c-.03.121-.044.244-.044.369a.75.75 0 001.14.678l1.268-.713zM10.5 13.061a.75.75 0 00-1.5 0v.032a.75.75 0 001.5 0v-.032zm3.468-1.424a.75.75 0 10-1.06-1.061 3.752 3.752 0 00-1.909 2.122.75.75 0 101.395.713 2.251 2.251 0 011.149-1.294.75.75 0 00-.575-.5z"
+                    clip-rule="evenodd" />
+            </svg>
             <span>Ideate</span>
         </div>
     </footer>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            updateHealthScoreArc(); 
-            showScreen('summaryDashboard'); 
+        document.addEventListener('DOMContentLoaded', function () {
+            updateHealthScoreArc();
+            showScreen('summaryDashboard');
 
             const sendMessageBtn = document.getElementById('sendMessageBtn');
             const userInput = document.getElementById('userInput');
@@ -492,32 +628,32 @@
             const loadingIndicator = document.getElementById('loadingIndicator'); // Ensure this exists if used
 
             function addChatMessage(message, type) {
-                if (!chatMessagesContainer) return; 
+                if (!chatMessagesContainer) return;
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('chat-message', type === 'user' ? 'user-message' : 'ai-message');
                 messageDiv.textContent = message;
                 chatMessagesContainer.appendChild(messageDiv);
-                chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight; 
+                chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
             }
 
             async function handleSendMessage() {
                 // Ensure all elements are present before proceeding
-                if (!userInput || !chatMessagesContainer ) return; 
-                
+                if (!userInput || !chatMessagesContainer) return;
+
                 const messageText = userInput.value.trim();
                 if (messageText === '') return;
 
                 addChatMessage(messageText, 'user');
-                userInput.value = ''; 
-                
-                // Handle loading indicator if it exists
-                if (loadingIndicator) loadingIndicator.classList.remove('hidden'); 
+                userInput.value = '';
 
-                let chatHistory = []; 
+                // Handle loading indicator if it exists
+                if (loadingIndicator) loadingIndicator.classList.remove('hidden');
+
+                let chatHistory = [];
                 chatHistory.push({ role: "user", parts: [{ text: messageText }] });
 
                 const payload = { contents: chatHistory };
-                const apiKey = ""; 
+                const apiKey = "";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 try {
@@ -531,7 +667,7 @@
                         const errorData = await response.json();
                         console.error('API Error:', errorData);
                         addChatMessage(`Error: ${errorData.error?.message || 'Failed to get response from AI.'}`, 'ai');
-                        return; 
+                        return;
                     }
 
                     const result = await response.json();
@@ -549,7 +685,7 @@
                     console.error("Fetch error:", error);
                     addChatMessage("An error occurred while contacting the AI. Please try again.", 'ai');
                 } finally {
-                     if(loadingIndicator) loadingIndicator.classList.add('hidden'); 
+                    if (loadingIndicator) loadingIndicator.classList.add('hidden');
                 }
             }
 
@@ -557,7 +693,7 @@
                 sendMessageBtn.addEventListener('click', handleSendMessage);
             }
             if (userInput) {
-                userInput.addEventListener('keypress', function(event) {
+                userInput.addEventListener('keypress', function (event) {
                     if (event.key === 'Enter') {
                         handleSendMessage();
                     }
@@ -567,9 +703,9 @@
     </script>
     <script>
         // Self-executing function to encapsulate the slider logic
-        (function() {
+        (function () {
             // Wait for the DOM to be fully loaded before running the script
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 const sliderTrack = document.getElementById('slider-track');
                 // Ensure the track exists before proceeding
                 if (!sliderTrack) return;
@@ -589,7 +725,7 @@
                     if (dotsContainer) dotsContainer.style.display = 'none';
                     return;
                 }
-                
+
                 // --- Create navigation dots ---
                 slides.forEach((_, i) => {
                     const dot = document.createElement('button');
@@ -600,7 +736,7 @@
                     });
                     dotsContainer.appendChild(dot);
                 });
-                
+
                 const dots = Array.from(dotsContainer.children);
 
                 // --- Core Slider Functions ---
@@ -644,11 +780,12 @@
                         goToSlide(currentIndex - 1);
                     }
                 });
-                
+
                 // --- Initialize Slider ---
                 goToSlide(0);
             });
         })();
     </script>
 </body>
+
 </html>
