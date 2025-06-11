@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is Your Portfolio Leaking Money?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-text {
+            background: -webkit-linear-gradient(#facc15, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .fade-in {
+            animation: fadeIn 1.2s ease-in-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+
+    <div class="max-w-3xl mx-auto px-4 py-12 sm:px-6 sm:py-16">
+
+        <!-- Header -->
+        <header class="text-center mb-12 fade-in">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-4">
+                Your Investments May Be <span class="gradient-text">Silently Leaking</span> Money.
+            </h1>
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto">
+                Most Indian investors lose money not to bad stocks, but to hidden inefficiencies. We call this the "Value Leak".
+            </p>
+        </header>
+
+        <!-- Main Problem: Underperformance -->
+        <div class="bg-slate-800/50 rounded-2xl p-6 sm:p-8 mb-12 fade-in delay-1 border border-amber-500/30">
+            <div class="flex flex-col md:flex-row items-center md:items-start text-center md:text-left">
+                <div class="flex-shrink-0 mb-4 md:mb-0 md:mr-6">
+                    <div class="bg-amber-500/10 rounded-full p-3">
+                       <!-- MODIFICATION: Replaced icon with a leaky faucet -->
+                       <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-400">
+                           <path d="M15 3h3a2 2 0 0 1 2 2v2"/>
+                           <path d="M18 12h-5a4 4 0 0 1-4-4V3"/>
+                           <path d="M9 12v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-6"/>
+                           <path d="M12 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                       </svg> -->
+                       <img src="assets/faucet.png" alt="Leaky Faucet" 
+                            class="mx-auto rounded-lg shadow-xl border border-gray-300 max-w-3xl" width="40" height="40">
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-2">The Biggest Leak: Underperforming the Market</h2>
+                    <p class="text-slate-300">
+                        Think of the market (like the Nifty 50) as a car's engine. Even with a powerful engine, 
+                        a bad driver can get poor mileage. Similarly, most investment portfolios are 'bad drivers'—they 
+                        fail to capture the market's full potential. 
+                        But you know what - we have driver-less cars now.
+                    </p>
+                    <p class="text-sm text-amber-300/80 mt-3 font-semibold">
+                        Industry Fact: Over 80% of active mutual funds fail to beat their benchmark over the long term (Source: S&P SPIVA report).
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- The Compounding Loss: VISUALIZED -->
+        <div class="text-center mb-12 fade-in delay-2">
+            <h2 class="text-3xl font-bold text-white mb-2">This Leak Drains Your Wealth Over Time</h2>
+            <p class="text-slate-400 mb-8">A small annual leak of just 2% becomes a huge loss due to the power of compounding.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <!-- 1 Year -->
+                <div class="bg-yellow-500/10 p-5 rounded-xl border border-yellow-500/30 text-center">
+                    <p class="text-sm font-semibold text-yellow-300 mb-1">After 1 Year</p>
+                    <p class="text-3xl font-black text-white">-₹50,000</p>
+                </div>
+                <!-- 5 Years -->
+                <div class="bg-amber-500/10 p-5 rounded-xl border border-amber-500/30 text-center">
+                    <p class="text-sm font-semibold text-amber-300 mb-1">After 5 Years</p>
+                    <p class="text-3xl font-black text-white">-₹3.1 Lakhs</p>
+                </div>
+                <!-- 10 Years -->
+                <div class="bg-orange-500/10 p-5 rounded-xl border border-orange-500/30 text-center">
+                    <p class="text-sm font-semibold text-orange-300 mb-1">After 10 Years</p>
+                    <p class="text-3xl font-black text-white">-₹8.6 Lakhs</p>
+                </div>
+                <!-- 20 Years -->
+                <div class="bg-red-500/10 p-5 rounded-xl border border-red-500/30 text-center">
+                    <p class="text-sm font-semibold text-red-300 mb-1">After 20 Years</p>
+                    <p class="text-3xl font-black text-white">-₹30 Lakhs</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-4">*Based on a `₹25 Lakh` portfolio with a 2% annual leak, compounded at 11%.</p>
+        </div>
+
+        <!-- The Solution -->
+        <div class="text-center fade-in delay-3">
+             <h2 class="text-3xl font-bold text-white mb-2">How to Plug the Leak?</h2>
+             <p class="text-slate-400 max-w-xl mx-auto mb-6">You don't need complicated products. You need a portfolio that is scientifically built to capture the market's true returns, efficiently and at a low cost.</p>
+             <a href="https://ytomar.github.io/mocks/template_m1.html" class="inline-block bg-amber-500 text-slate-900 font-bold py-3 px-8 rounded-lg text-lg hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/20">
+                Find Your Value Leak Now
+             </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
