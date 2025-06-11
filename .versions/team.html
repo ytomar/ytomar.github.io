@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elemental - Our Story</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .story-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .story-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">A Team Forged Over Two Decades, Built for This Mission.</h1>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">We're a rare blend of hedge-fund quants, proven B2C builders, and deep-tech thinkers who have stayed together through thick and thin.</p>
+            </div>
+
+            <!-- The Story Timeline -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- Phase 1: Mastering the Science -->
+                <div class="story-card bg-white rounded-2xl shadow-lg border border-slate-200/80 p-6 flex flex-col fade-in-up delay-1">
+                    <div class="flex-shrink-0">
+                        <div class="w-14 h-14 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                        </div>
+                        <h2 class="text-sm font-bold text-blue-600 tracking-wider uppercase mt-4">Phase 1</h2>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">Mastering the Science</h3>
+                    </div>
+                    <p class="text-slate-600 mt-4 flex-grow">At institutions like <span class="font-bold">Nomura</span>, we built world-class analytical tools and quantitative strategies from the ground up. This is where we laid our foundation in deep financial science.</p>
+                </div>
+
+                <!-- Phase 2: Cracking Consumer Growth -->
+                <div class="story-card bg-white rounded-2xl shadow-lg border border-slate-200/80 p-6 flex flex-col fade-in-up delay-2">
+                    <div class="flex-shrink-0">
+                        <div class="w-14 h-14 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12V8a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z"/><path d="m22 2-8.3 8.3"/><path d="M16 2h6v6"/></svg>
+                        </div>
+                        <h2 class="text-sm font-bold text-green-600 tracking-wider uppercase mt-4">Phase 2</h2>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">Cracking Consumer Growth</h3>
+                    </div>
+                    <p class="text-slate-600 mt-4 flex-grow">We built <span class="font-bold">Buyt.in</span>, sold it to Dailyhunt, and then scaled their business from <span class="font-bold">zero to $50M</span>. We learned how to build and scale a product that millions of Indians love, from soup to nuts.</p>
+                </div>
+
+                <!-- Phase 3: Generating Elite Returns -->
+                <div class="story-card bg-white rounded-2xl shadow-lg border border-slate-200/80 p-6 flex flex-col fade-in-up delay-3">
+                     <div class="flex-shrink-0">
+                        <div class="w-14 h-14 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8"/><path d="M12 17V3"/><path d="m15 6-3-3-3 3"/><path d="M12 3v10a2 2 0 0 1-2 2H7a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h1.5"/></svg>
+                        </div>
+                        <h2 class="text-sm font-bold text-purple-600 tracking-wider uppercase mt-4">Phase 3</h2>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">Generating Elite Returns</h3>
+                    </div>
+                    <p class="text-slate-600 mt-4 flex-grow">As part of an elite hedge fund, we managed over <span class="font-bold">$100M</span> in quantitative strategies, delivering a realized Sharpe ratio of <span class="font-bold">2.25</span> and annual returns exceeding <span class="font-bold">20%</span>.</p>
+                </div>
+                
+                <!-- Phase 4: Democratizing the Edge -->
+                <div class="story-card bg-white rounded-2xl shadow-lg border border-slate-200/80 p-6 flex flex-col fade-in-up delay-4">
+                     <div class="flex-shrink-0">
+                        <div class="w-14 h-14 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.6,2.7l-1.9,1.9a1,1,0,0,0,0,1.4l1.9,1.9"/><path d="M12.4,21.3l1.9-1.9a1,1,0,0,0,0-1.4l-1.9-1.9"/><path d="M6.1,9.2l-1.9,1.9a1,1,0,0,0,0,1.4l1.9,1.9"/><path d="M17.9,14.8l1.9-1.9a1,1,0,0,0,0-1.4l-1.9-1.9"/><circle cx="12" cy="12" r="3"/></svg>
+                        </div>
+                        <h2 class="text-sm font-bold text-amber-600 tracking-wider uppercase mt-4">Phase 4</h2>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">Democratizing the Edge</h3>
+                    </div>
+                    <p class="text-slate-600 mt-4 flex-grow">Now, at <span class="font-bold">South Park Commons</span>, we're building deep science tooling to bring this institutional-grade edge to everyone, backed by our patent-pending, India-specific risk model.</p>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-12">
+                <p class="text-lg text-slate-600">The only thing we haven't done together is win an Olympic gold medal. <span class="font-semibold">We're working on it.</span></p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
