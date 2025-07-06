@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elemental: Go-To-Market Strategy Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#003f5c] mb-2">Elemental</h1>
+            <h2 class="text-xl md:text-2xl font-semibold text-[#58508d]">Go-To-Market Strategy: Acquiring Our First 100,000 Users</h2>
+        </header>
+
+        <section id="problem" class="mb-16">
+            <div class="text-center mb-8">
+                <h3 class="text-3xl font-bold text-[#003f5c]">The Silent Emergency: India's "Value Leak"</h3>
+                <p class="text-lg text-gray-600 mt-2 max-w-3xl mx-auto">Millions of Indian investors lose wealth not to high fees, but to flawed portfolio construction. We call this the Great Indian Value Leak, a massive, unaddressed problem.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+                    <p class="text-2xl font-semibold text-gray-700">Estimated Annual Loss</p>
+                    <p class="text-7xl font-extrabold text-[#bc5090] my-4">~$14 Billion</p>
+                    <p class="text-gray-500">This massive value leak represents a silent emergency and a huge opportunity for a real solution.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-bold text-center mb-4 text-[#003f5c]">Sources of the "Value Leak"</h4>
+                    <div class="chart-container">
+                        <canvas id="valueLeakChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="solution-flow" class="mb-16">
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold text-[#003f5c]">Our Solution: The "Painkiller" Funnel</h3>
+                <p class="text-lg text-gray-600 mt-2 max-w-3xl mx-auto">We guide users from discovering their problem to implementing the solution, turning them into advocates for our platform.</p>
+            </div>
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-4">
+                <div class="kpi-card w-full md:w-1/4">
+                    <div class="text-4xl mb-3 text-[#ffa600]">📢</div>
+                    <h4 class="text-xl font-bold text-[#003f5c]">1. Awareness</h4>
+                    <p class="text-gray-600 mt-2">Users discover Elemental via high-value content and partner referrals.</p>
+                </div>
+                 <div class="text-2xl font-bold text-gray-400 hidden md:block">→</div>
+                <div class="kpi-card w-full md:w-1/4">
+                    <div class="text-4xl mb-3 text-[#ffa600]">💡</div>
+                    <h4 class="text-xl font-bold text-[#003f5c]">2. Activation</h4>
+                    <p class="text-gray-600 mt-2">The "Aha!" moment: Running the free Financial MRI and seeing their quantified Value Leak.</p>
+                </div>
+                <div class="text-2xl font-bold text-gray-400 hidden md:block">→</div>
+                <div class="kpi-card w-full md:w-1/4">
+                     <div class="text-4xl mb-3 text-[#ffa600]">💸</div>
+                    <h4 class="text-xl font-bold text-[#003f5c]">3. Conversion</h4>
+                    <p class="text-gray-600 mt-2">Subscribing to "The Remedy" to fix the issues with our automated algos.</p>
+                </div>
+                 <div class="text-2xl font-bold text-gray-400 hidden md:block">→</div>
+                 <div class="kpi-card w-full md:w-1/4">
+                     <div class="text-4xl mb-3 text-[#ffa600]">❤️</div>
+                    <h4 class="text-xl font-bold text-[#003f5c]">4. Advocacy</h4>
+                    <p class="text-gray-600 mt-2">Delighted users join our community and drive our viral referral loop.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="channels" class="mb-16">
+             <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold text-[#003f5c]">Phase 1 GTM: The Path to 100k Users</h3>
+                <p class="text-lg text-gray-600 mt-2 max-w-3xl mx-auto">Our growth strategy focuses on three complementary channels, designed to build trust, leverage existing networks, and foster community.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
+                <div class="kpi-card">
+                    <h4 class="text-2xl font-bold text-[#003f5c] mb-3">Content as a Magnet</h4>
+                    <p class="text-gray-600">Becoming the most trusted voice in sophisticated portfolio management through reports, blogs, and webinars. We educate to empower.</p>
+                </div>
+                 <div class="kpi-card">
+                    <h4 class="text-2xl font-bold text-[#003f5c] mb-3">Strategic Partnerships</h4>
+                    <p class="text-gray-600">Collaborating with trusted CAs and data-driven financial influencers to reach our target audience through networks they already trust.</p>
+                </div>
+                 <div class="kpi-card">
+                    <h4 class="text-2xl font-bold text-[#003f5c] mb-3">Community & Referrals</h4>
+                    <p class="text-gray-600">Turning our most passionate users into advocates through an exclusive "Founder's Circle" and targeted referral programs.</p>
+                </div>
+            </div>
+             <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h4 class="text-xl font-bold text-center mb-4 text-[#003f5c]">Projected User Growth Towards 100k</h4>
+                <div class="chart-container h-96 max-h-96">
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="kpis" class="mb-16">
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold text-[#003f5c]">Measuring Our Success</h3>
+                <p class="text-lg text-gray-600 mt-2 max-w-3xl mx-auto">We will rigorously track these Key Performance Indicators to ensure our GTM strategy is efficient, effective, and sustainable.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="kpi-card">
+                    <p class="text-lg font-semibold text-gray-700">Cost Per Activated User</p>
+                    <p class="text-6xl font-extrabold text-[#003f5c] my-3">&lt; ₹500</p>
+                    <p class="text-gray-500">Ensuring efficient and scalable user acquisition.</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="text-lg font-semibold text-gray-700">Activation-to-Paid Rate</p>
+                    <p class="text-6xl font-extrabold text-[#58508d] my-3">&gt; 10%</p>
+                    <p class="text-gray-500">Demonstrating the power of our "Painkiller" value proposition.</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="text-lg font-semibold text-gray-700">Net Promoter Score (NPS)</p>
+                    <p class="text-6xl font-extrabold text-[#bc5090] my-3">&gt; 70</p>
+                    <p class="text-gray-500">Building a product users love and a brand they trust.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-200">
+            <h4 class="text-2xl font-bold text-[#003f5c]">The Two-Engine Vision</h4>
+            <p class="text-lg text-gray-600 mt-2 max-w-4xl mx-auto">Acquiring our first 100,000 users is just the beginning. This B2C trust layer is the foundation for our ultimate goal: becoming the foundational "Intel Inside" that powers the entire Indian asset management industry.</p>
+        </footer>
+
+    </div>
+
+<script>
+    const wrapLabel = (label, maxWidth = 16) => {
+        if (label.length <= maxWidth) {
+            return label;
+        }
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxWidth) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        if (currentLine) {
+            lines.push(currentLine.trim());
+        }
+        return lines;
+    };
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        return Array.isArray(label) ? label.join(' ') : label;
+    };
+
+    const chartTooltipConfig = {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    title: tooltipTitleCallback
+                },
+                backgroundColor: '#003f5c',
+                titleFont: { size: 14, weight: 'bold' },
+                bodyFont: { size: 12 },
+                padding: 12,
+                cornerRadius: 8,
+                displayColors: false,
+            }
+        }
+    };
+    
+    const palette = {
+        blue: '#003f5c',
+        purple: '#58508d',
+        magenta: '#bc5090',
+        orange: '#ff6361',
+        yellow: '#ffa600'
+    };
+
+    const valueLeakCtx = document.getElementById('valueLeakChart').getContext('2d');
+    new Chart(valueLeakCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Hidden Overlaps', 'Unrewarded Risk', 'Suboptimal Allocation'],
+            datasets: [{
+                label: 'Sources of Value Leak',
+                data: [45, 35, 20],
+                backgroundColor: [palette.purple, palette.magenta, palette.orange],
+                borderColor: '#ffffff',
+                borderWidth: 4,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                ...chartTooltipConfig.plugins,
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: palette.blue,
+                        font: {
+                            size: 14
+                        }
+                    }
+                }
+            },
+            cutout: '60%',
+        }
+    });
+
+    const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+    new Chart(userGrowthCtx, {
+        type: 'line',
+        data: {
+            labels: ['M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9', 'M10', 'M11', 'M12'],
+            datasets: [{
+                label: 'Activated Users',
+                data: [1000, 3000, 7000, 12000, 20000, 30000, 45000, 60000, 75000, 85000, 95000, 100000],
+                backgroundColor: 'rgba(188, 80, 144, 0.2)',
+                borderColor: palette.magenta,
+                pointBackgroundColor: palette.magenta,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: palette.magenta,
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                 ...chartTooltipConfig.plugins,
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Users',
+                        color: palette.blue,
+                        font: { size: 14, weight: 'bold' }
+                    },
+                    ticks: {
+                       color: palette.blue
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month',
+                        color: palette.blue,
+                        font: { size: 14, weight: 'bold' }
+                    },
+                    ticks: {
+                       color: palette.blue
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
